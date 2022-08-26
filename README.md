@@ -7,16 +7,18 @@
 
 [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.zh.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-39a27f2-orange)](https://github.com/itorr/sakana)
+[![Upstream](https://img.shields.io/badge/upstream-b1962ab-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 
-Sakana~ emulator for usage as Web widget.
-
-Demo: https://sakana.dsrkafuu.net/
+Sakana~ emulator for usage as Web widget; DEMO: <https://sakana.dsrkafuu.net>.
 
 ## License
 
 Released under MIT License, please note that the images **should not be used for any commercial activities**, please replace the images and compile the library yourself under such circumstances.
+
+This project is based on https://github.com/itorr/sakana.
+
+Image source: 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
 
 ## Feature
 
@@ -71,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
+## Fun Options
+
+Use options below to get a slow-motion/infinite takina:
+
+```ts
+SakanaWidget({
+  character: 'takina',
+  inertia: 0.001,
+  decay: 1,
+});
+```
+
 ## API
 
 ### Params
@@ -122,9 +136,3 @@ export interface SakanaWidgetInstance {
   destroy: () => void;
 }
 ```
-
-## Reference
-
-This project is based on https://github.com/itorr/sakana.
-
-Image source: 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)

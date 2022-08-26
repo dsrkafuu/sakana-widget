@@ -7,16 +7,18 @@
 
 [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.zh.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-39a27f2-orange)](https://github.com/itorr/sakana)
+[![Upstream](https://img.shields.io/badge/upstream-b1962ab-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 
-网页小组件版本的石蒜模拟器。
-
-Demo: https://sakana.dsrkafuu.net/
+网页小组件版本的石蒜模拟器；DEMO：<https://sakana.dsrkafuu.net>。
 
 ## License
 
 本项目代码基于 MIT 协议授权，请注意图片**不可用于任何商业活动**，此类场景请自行替换图片并编译。
+
+本项目是基于 https://github.com/itorr/sakana 的二次开发。
+
+插画来源： 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
 
 ## 功能
 
@@ -71,6 +73,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
+## 有意思的参数
+
+使用以下参数可以获得一个超慢速无阻尼 (永续) 的泷奈：
+
+```ts
+SakanaWidget({
+  character: 'takina',
+  inertia: 0.001,
+  decay: 1,
+});
+```
+
 ## API
 
 ### 参数
@@ -122,9 +136,3 @@ export interface SakanaWidgetInstance {
   destroy: () => void;
 }
 ```
-
-## 参考
-
-本项目是基于 https://github.com/itorr/sakana 的二次开发。
-
-插画来源： 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
