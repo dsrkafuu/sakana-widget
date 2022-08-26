@@ -1,5 +1,5 @@
 import './index.scss';
-import { cloneDeep } from './utils';
+import { cloneDeep, getCanvasCtx } from './utils';
 import { isync, igithub, iperson, iclose } from './icons';
 
 /**
@@ -41,6 +41,11 @@ export interface SakanaWidgetOptions {
    * canvas stroke color
    */
   strokeColor?: string;
+  /**
+   * render device pixel ratio of canvas stroke,
+   * default is 2 * window.devicePixelRatio
+   */
+  canvasDevicePixelRatio?: number;
 }
 
 /**
@@ -124,12 +129,16 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   app.style.width = `${appSize}px`;
   app.style.height = `${appSize}px`;
   node.appendChild(app);
-  const cvs = document.createElement('canvas');
-  cvs.className = 'sakana-widget-canvas';
-  const ctx = cvs.getContext('2d') as CanvasRenderingContext2D;
-  cvs.width = appSize;
-  cvs.height = appSize;
-  app.appendChild(cvs);
+  const canvas = document.createElement('canvas');
+  canvas.className = 'sakana-widget-canvas';
+  canvas.style.width = `${appSize}px`;
+  canvas.style.height = `${appSize}px`;
+  const ctx = getCanvasCtx(
+    canvas,
+    appSize,
+    options.canvasDevicePixelRatio
+  ) as CanvasRenderingContext2D;
+  app.appendChild(canvas);
   const box = document.createElement('div');
   box.className = 'sakana-widget-box';
   app.appendChild(box);
@@ -359,7 +368,10 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     // clear the timer or start a timer
     clearTimeout(magicForceTimeout);
     if (magicForceEnabled) {
-      magicForceTimeout = window.setTimeout(magicForce, Math.random() * 1000 + 500);
+      magicForceTimeout = window.setTimeout(
+        magicForce,
+        Math.random() * 1000 + 500
+      );
     }
   };
   magic.addEventListener('click', triggetMagic);
