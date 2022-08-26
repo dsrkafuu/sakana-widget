@@ -11,7 +11,7 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
     position: absolute;
   }
 
-  &-box {
+  &-main {
     pointer-events: none;
     position: absolute;
     left: 0;
@@ -24,12 +24,11 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
     align-items: center;
   }
 
-  &-main {
+  &-img {
     pointer-events: auto;
+    cursor: pointer;
     background: no-repeat 50% 50%;
     background-size: cover;
-    cursor: pointer;
-
     &--chisato {
       background-image: url('./assets/chisato.png');
     }
@@ -56,7 +55,6 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
       align-items: center;
       color: $color-font;
       background-color: transparent;
-
       &:hover {
         color: $color-font;
         background-color: $color-backdrop-active;
@@ -67,7 +65,6 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   &-icon {
     height: 18px;
     width: 18px;
-
     &--rotate {
       animation: sakana-widget-spin 2s linear infinite;
     }

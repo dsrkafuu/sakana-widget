@@ -14,39 +14,57 @@ interface SakanaWidgetStateValues {
 }
 
 /**
+ * initial motion states
+ */
+const initialValues: {
+  [key: string]: SakanaWidgetStateValues;
+} = {
+  chisato: { r: 1, y: 40, t: 0, w: 0, d: 0.99 },
+  takina: { r: 12, y: 2, t: 0, w: 0, d: 0.988 },
+};
+
+/**
  * widget customization options
  */
 export interface SakanaWidgetOptions {
   /**
-   * widget size
+   * mounting container or css query selector, default to `#sakana-widget`
    */
-  appSize?: number;
+  container?: HTMLElement | string;
   /**
-   * mounting container
+   * widget size, default to `200`
    */
-  container?: HTMLElement;
+  size?: number;
   /**
-   * default character
+   * default character, default to `chisato`
    */
-  defaultCharacter?: 'chisato' | 'takina';
+  character?: 'chisato' | 'takina';
   /**
-   * character decay
+   * image motion inertia, default to `0.08`
    */
   inertia?: number;
   /**
-   * character decay
+   * image motion decay, default to different value based on character
    */
   decay?: number;
   /**
-   * canvas stroke color
+   * canvas stroke color, default to `#b4b4b4`
    */
   strokeColor?: string;
   /**
-   * render device pixel ratio of canvas stroke,
-   * default is 2 * window.devicePixelRatio
+   * canvas stroke width, default to `10`
    */
-  canvasDevicePixelRatio?: number;
+  strokeWidth?: number;
 }
+
+const defaultOptions: SakanaWidgetOptions = {
+  container: '#sakana-widget',
+  size: 200,
+  character: 'chisato',
+  inertia: 0.08,
+  strokeColor: '#b4b4b4',
+  strokeWidth: 10,
+};
 
 /**
  * widget instance
@@ -55,7 +73,7 @@ export interface SakanaWidgetInstance {
   /**
    * instance dom element
    */
-  element: HTMLElement;
+  node: HTMLElement;
   /**
    * remove the widget
    */
@@ -73,84 +91,76 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     return _instance;
   }
 
-  // init size data
-  const appSize = options.appSize || 200; // widget size
-  const mainSize = appSize / 1.25; // image size
-  const strokeColor = options.strokeColor || '#b4b4b4'; // canvas color
+  // init options
+  const opts = Object.assign({}, defaultOptions, options);
 
-  /**
-   * initial states
-   */
-  const initialValues = {
-    chisato: { r: 1, y: 40, t: 0, w: 0, d: 0.99 },
-    takina: { r: 12, y: 2, t: 0, w: 0, d: 0.988 },
-  };
-  // characters
-  let character = options.defaultCharacter || 'chisato';
+  // widget states
+  const size = opts.size!;
+  const imgSize = size / 1.25;
+  let character = opts.character!;
   if (!initialValues[character]) {
-    throw new Error(`Invalid character ${character}`);
+    throw new Error('invalid character');
   }
-
-  // basic props
   const sticky = 0.1;
-  const inertia = options.inertia || 0.08;
-  if (typeof options.decay === 'number') {
+  const inertia = opts.inertia!;
+  if (typeof opts.decay === 'number') {
     Object.keys(initialValues).forEach((key) => {
       const item = initialValues[key as keyof typeof initialValues];
-      item.d = options.decay as number;
+      item.d = opts.decay!;
     });
   }
+  const strokeColor = opts.strokeColor!;
+  const strokeWidth = opts.strokeWidth!;
+  let running = true;
+  const values: SakanaWidgetStateValues = cloneDeep(initialValues[character]);
 
   // limitation props
-  let maxR = appSize / 5;
+  let maxR = size / 5;
   if (maxR < 30) {
     maxR = 30;
   } else if (maxR > 60) {
     maxR = 60;
   }
-  const maxY = appSize / 4;
+  const maxY = size / 4;
   const minY = -maxY;
 
-  // widget status
-  let running = true;
-  const values: SakanaWidgetStateValues = cloneDeep(initialValues[character]);
-
   // init dom nodes
-  let container = document.querySelector('#sakana-widget');
-  if (options.container && container instanceof HTMLElement) {
-    container = options.container;
+  let oldNode: HTMLElement | null = null;
+  if (typeof opts.container === 'string') {
+    oldNode = document.querySelector(opts.container);
+  } else if (opts.container instanceof HTMLElement) {
+    oldNode = opts.container;
   }
-  if (!container) {
-    throw new Error('Invalid mounting container');
+  if (!oldNode) {
+    throw new Error('invalid container');
   }
-  const node = container.cloneNode() as HTMLElement;
+  const node = oldNode.cloneNode() as HTMLElement;
   const app = document.createElement('div');
   app.className = 'sakana-widget-app';
-  app.style.width = `${appSize}px`;
-  app.style.height = `${appSize}px`;
+  app.style.width = `${size}px`;
+  app.style.height = `${size}px`;
   node.appendChild(app);
   const canvas = document.createElement('canvas');
   canvas.className = 'sakana-widget-canvas';
-  canvas.style.width = `${appSize}px`;
-  canvas.style.height = `${appSize}px`;
-  const ctx = getCanvasCtx(
-    canvas,
-    appSize,
-    options.canvasDevicePixelRatio
-  ) as CanvasRenderingContext2D;
+  canvas.style.width = `${size}px`;
+  canvas.style.height = `${size}px`;
+  const ctx = getCanvasCtx(canvas, size);
+  if (!ctx) {
+    throw new Error('canvas not supported');
+  }
   app.appendChild(canvas);
-  const box = document.createElement('div');
-  box.className = 'sakana-widget-box';
-  app.appendChild(box);
   const main = document.createElement('div');
-  main.className = `sakana-widget-main sakana-widget-main--${character}`;
-  main.style.width = `${mainSize}px`;
-  main.style.height = `${mainSize}px`;
-  main.style.transformOrigin = `50% ${appSize}px`; // use the bottom center of widget as trans origin
-  box.appendChild(main);
+  main.className = 'sakana-widget-main';
+  app.appendChild(main);
+  const img = document.createElement('div');
+  img.className = `sakana-widget-img sakana-widget-img--${character}`;
+  img.style.width = `${imgSize}px`;
+  img.style.height = `${imgSize}px`;
+  img.style.transformOrigin = `50% ${size}px`; // use the bottom center of widget as trans origin
+  main.appendChild(img);
   const ctrl = document.createElement('div');
   ctrl.className = 'sakana-widget-ctrl';
-  box.appendChild(ctrl);
+  main.appendChild(ctrl);
   const itemClass = 'sakana-widget-ctrl-item';
   const person = document.createElement('div');
   person.className = itemClass;
@@ -195,16 +205,16 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     // move the image
     const { r, y } = values;
     const x = r * 1;
-    main.style.transform = `rotate(${r}deg) translateX(${x}px) translateY(${y}px)`;
+    img.style.transform = `rotate(${r}deg) translateX(${x}px) translateY(${y}px)`;
     // draw the canvas line
-    ctx.clearRect(0, 0, appSize, appSize);
+    ctx.clearRect(0, 0, size, size);
     ctx.save();
-    ctx.translate(appSize / 2, appSize); // use the bottom center of widget as axis origin
+    ctx.translate(size / 2, size); // use the bottom center of widget as axis origin
     ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = 10;
+    ctx.lineWidth = strokeWidth;
     ctx.beginPath();
     ctx.moveTo(0, -10); // use the bottom center of widget as start of the line
-    const radius = appSize - mainSize / 2;
+    const radius = size - imgSize / 2;
     const { nx, ny } = calcCenterPoint(r, radius, x, y);
     ctx.lineTo(nx, -ny);
     ctx.stroke();
@@ -267,7 +277,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   /**
    * handle mouse events
    */
-  main.onmousedown = (e) => {
+  img.onmousedown = (e) => {
     e.preventDefault();
     running = false;
     const { pageY } = e;
@@ -280,7 +290,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
       run();
     };
     document.onmousemove = (e) => {
-      const rect = box.getBoundingClientRect();
+      const rect = main.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
       const { pageX, pageY } = e;
       const x = pageX - leftCenter;
@@ -292,7 +302,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   /**
    * handle touch events
    */
-  main.ontouchstart = (e) => {
+  img.ontouchstart = (e) => {
     e.preventDefault();
     running = false;
     if (!e.touches[0]) {
@@ -310,7 +320,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
       if (!e.touches[0]) {
         return;
       }
-      const rect = box.getBoundingClientRect();
+      const rect = main.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
       const { pageX, pageY } = e.touches[0];
       const x = pageX - leftCenter;
@@ -321,10 +331,10 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
 
   // handle character switch
   const switchCharacter = () => {
-    main.classList.remove(`sakana-widget-main--${character}`);
+    img.classList.remove(`sakana-widget-main--${character}`);
     character = character === 'chisato' ? 'takina' : 'chisato';
     Object.assign(values, cloneDeep(initialValues[character]));
-    main.classList.add(`sakana-widget-main--${character}`);
+    img.classList.add(`sakana-widget-main--${character}`);
   };
   person.addEventListener('click', switchCharacter);
 
@@ -377,16 +387,15 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   magic.addEventListener('click', triggetMagic);
 
   // mount the node
-  const parent = container.parentNode;
-  if (parent) {
-    parent.replaceChild(node, container);
-  } else {
-    throw new Error('Unable to find parent element of container');
+  const parent = oldNode.parentNode!;
+  if (!parent) {
+    throw new Error('invalid container');
   }
+  parent.replaceChild(node, oldNode);
 
   // create and return instance
   const instance: SakanaWidgetInstance = {
-    element: node,
+    node,
     destroy: () => {
       node.remove();
     },

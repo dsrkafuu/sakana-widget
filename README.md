@@ -45,15 +45,16 @@ Default mounting element is `#sakana-widget`, checkout [API](#api) section for p
 After HTML `body`:
 
 ```html
+<div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
-    SakanaWidget({ defaultCharacter: 'takina' });
+    SakanaWidget({ character: 'takina' });
   }
 </script>
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.0.0/dist/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.0/dist/sakana.min.js"
 ></script>
 ```
 
@@ -66,7 +67,7 @@ npm add sakana-wdiget
 ```ts
 import SakanaWidget from 'sakana-wdiget';
 document.addEventListener('DOMContentLoaded', () => {
-  SakanaWidget({ defaultCharacter: 'chisato' });
+  SakanaWidget({ character: 'chisato' });
 });
 ```
 
@@ -77,29 +78,33 @@ document.addEventListener('DOMContentLoaded', () => {
 ```ts
 export interface SakanaWidgetOptions {
   /**
-   * widget size
+   * mounting container or css query selector, default to `#sakana-widget`
    */
-  appSize?: number;
+  container?: HTMLElement | string;
   /**
-   * mounting container
+   * widget size, default to `200`
    */
-  container?: HTMLElement;
+  size?: number;
   /**
-   * default character
+   * default character, default to `chisato`
    */
-  defaultCharacter?: 'chisato' | 'takina';
+  character?: 'chisato' | 'takina';
   /**
-   * character decay
+   * image motion inertia, default to `0.08`
    */
   inertia?: number;
   /**
-   * character decay
+   * image motion decay, default to different value based on character
    */
   decay?: number;
   /**
-   * canvas stroke color
+   * canvas stroke color, default to `#b4b4b4`
    */
   strokeColor?: string;
+  /**
+   * canvas stroke width, default to `10`
+   */
+  strokeWidth?: number;
 }
 ```
 
@@ -110,7 +115,7 @@ export interface SakanaWidgetInstance {
   /**
    * instance dom element
    */
-  element: HTMLElement;
+  node: HTMLElement;
   /**
    * remove the widget
    */
