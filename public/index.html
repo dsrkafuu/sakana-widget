@@ -41,14 +41,18 @@
       main {
         text-align: center;
         margin: 48px 24px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
       }
-      div {
-        margin: 0 auto;
+      main div {
+        margin-top: 16px;
         display: flex;
       }
-      a,
-      a:visited {
-        display: inline-block;
+      main a,
+      main a:visited {
+        margin-top: 16px;
+        display: block;
         width: 120px;
         height: 48px;
         color: inherit;
@@ -58,8 +62,8 @@
         border-radius: 6px;
         text-decoration: none;
       }
-      a:hover,
-      a:active {
+      main a:hover,
+      main a:active {
         color: #ffffff;
         background-color: #8aa2d3;
         text-decoration: none;

@@ -12,6 +12,8 @@
 
 Sakana~ emulator for usage as Web widget.
 
+Demo: https://sakana.dsrkafuu.net/
+
 ## License
 
 Released under MIT License, please note that the images **should not be used for any commercial activities**, please replace the images and compile the library yourself under such circumstances.
