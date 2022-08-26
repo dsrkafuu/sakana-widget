@@ -359,7 +359,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     // clear the timer or start a timer
     clearTimeout(magicForceTimeout);
     if (magicForceEnabled) {
-      magicForceTimeout = setTimeout(magicForce, Math.random() * 1000 + 500);
+      magicForceTimeout = window.setTimeout(magicForce, Math.random() * 1000 + 500);
     }
   };
   magic.addEventListener('click', triggetMagic);
