@@ -48,7 +48,11 @@ function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
     SakanaWidget({ defaultCharacter: 'takina' });
   }
 </script>
-<script async onload="initSakanaWidget()" src=""></script>
+<script
+  async
+  onload="initSakanaWidget()"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.0.0/dist/sakana.min.js"
+></script>
 ```
 
 ### 通过 NPM 安装

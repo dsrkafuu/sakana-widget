@@ -48,7 +48,11 @@ After HTML `body`:
     SakanaWidget({ defaultCharacter: 'takina' });
   }
 </script>
-<script async onload="initSakanaWidget()" src=""></script>
+<script
+  async
+  onload="initSakanaWidget()"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.0.0/dist/sakana.min.js"
+></script>
 ```
 
 ### NPM Import
