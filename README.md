@@ -1,11 +1,13 @@
+<p align="center">
 <img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/chisato.png" height="160px">
 <img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/sakana.png" height="160px">
+</p>
 
 # 🐟「Sakana! Widget」石蒜模拟器网页小组件
 
 [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.en.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-2112-orange)](https://github.com/itorr/sakana)
+[![Upstream](https://img.shields.io/badge/upstream-39a27f2-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 
 网页小组件版本的石蒜模拟器。
