@@ -53,7 +53,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.0.0/dist/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.0.0/lib/sakana.min.js"
 ></script>
 ```
 
