@@ -1,6 +1,6 @@
 <p align="center">
 <img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/chisato.png" height="160px">
-<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/sakana.png" height="160px">
+<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/takina.png" height="160px">
 </p>
 
 # 🐟「Sakana! Widget」石蒜模拟器网页小组件
