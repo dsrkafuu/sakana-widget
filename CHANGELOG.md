@@ -1,5 +1,9 @@
 ## v1.1.2
 
+- able to hide control bar
+
+## v1.1.2
+
 - fix image switch issue
 
 ## v1.1.1

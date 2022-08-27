@@ -46,9 +46,9 @@ Default mounting element is `#sakana-widget`, checkout [API](#api) section for p
 
 Choose the CDN provider you want to use:
 
-- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js`
-- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.1.1/sakana.min.js`
-- UNPKG: `https://unpkg.com/sakana-widget@1.1.1/lib/sakana.min.js`
+- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js`
+- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.2.0/sakana.min.js`
+- UNPKG: `https://unpkg.com/sakana-widget@1.2.0/lib/sakana.min.js`
 
 After HTML `body`:
 
@@ -62,7 +62,7 @@ After HTML `body`:
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js"
 ></script>
 ```
 
@@ -125,6 +125,10 @@ export interface SakanaWidgetOptions {
    * canvas stroke width, default to `10`
    */
   strokeWidth?: number;
+  /**
+   * hide control bar, default to `false`
+   */
+  hideControls?: boolean;
 }
 ```
 
@@ -136,6 +140,14 @@ export interface SakanaWidgetInstance {
    * instance dom element
    */
   node: HTMLElement;
+  /**
+   * switch to another character
+   */
+  switchCharacter: () => void;
+  /**
+   * toggle auto mode
+   */
+  toggleMagicForce: () => void;
   /**
    * remove the widget
    */

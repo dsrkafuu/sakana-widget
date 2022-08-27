@@ -55,6 +55,10 @@ export interface SakanaWidgetOptions {
    * canvas stroke width, default to `10`
    */
   strokeWidth?: number;
+  /**
+   * hide control bar, default to `false`
+   */
+  hideControls?: boolean;
 }
 
 const defaultOptions: SakanaWidgetOptions = {
@@ -64,6 +68,7 @@ const defaultOptions: SakanaWidgetOptions = {
   inertia: 0.08,
   strokeColor: '#b4b4b4',
   strokeWidth: 10,
+  hideControls: false,
 };
 
 /**
@@ -74,6 +79,14 @@ export interface SakanaWidgetInstance {
    * instance dom element
    */
   node: HTMLElement;
+  /**
+   * switch to another character
+   */
+  switchCharacter: () => void;
+  /**
+   * toggle auto mode
+   */
+  toggleMagicForce: () => void;
   /**
    * remove the widget
    */
@@ -111,6 +124,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   }
   const strokeColor = opts.strokeColor!;
   const strokeWidth = opts.strokeWidth!;
+  const hideControls = opts.hideControls!;
   let running = true;
   const values: SakanaWidgetStateValues = cloneDeep(initialValues[character]);
 
@@ -162,7 +176,9 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   main.appendChild(img);
   const ctrl = document.createElement('div');
   ctrl.className = 'sakana-widget-ctrl';
-  main.appendChild(ctrl);
+  if (!hideControls) {
+    main.appendChild(ctrl);
+  }
   const itemClass = 'sakana-widget-ctrl-item';
   const person = document.createElement('div');
   person.className = itemClass;
@@ -214,8 +230,14 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     ctx.translate(size / 2, size); // use the bottom center of widget as axis origin
     ctx.strokeStyle = strokeColor;
     ctx.lineWidth = strokeWidth;
+    ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(0, -10); // use the bottom center of widget as start of the line
+    // use the bottom center (different offset) of widget as start of the line
+    if (hideControls) {
+      ctx.moveTo(0, 10);
+    } else {
+      ctx.moveTo(0, -10);
+    }
     const radius = size - imgSize / 2;
     const { nx, ny } = calcCenterPoint(r, radius, x, y);
     ctx.lineTo(nx, -ny);
@@ -407,6 +429,8 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   // create and return instance
   const instance: SakanaWidgetInstance = {
     node,
+    switchCharacter,
+    toggleMagicForce: triggetMagic,
     destroy: () => {
       node.remove();
     },
