@@ -279,21 +279,14 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   /**
    * handle mouse events
    */
-  img.onmousedown = (e) => {
+  const onMouseDown = (e: MouseEvent) => {
     e.preventDefault();
     running = false;
     const { pageY } = e;
     const _downPageY = pageY;
     values.w = 0;
     values.t = 0;
-    document.onmouseup = (e) => {
-      e.preventDefault();
-      document.onmousemove = null;
-      document.onmouseup = null;
-      running = true;
-      run();
-    };
-    document.onmousemove = (e) => {
+    const onMouseMove = (e: MouseEvent) => {
       const rect = main.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
       const { pageX, pageY } = e;
@@ -301,12 +294,21 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
       const y = pageY - _downPageY;
       move(x, y);
     };
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      running = true;
+      requestAnimationFrame(run);
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
+  img.addEventListener('mousedown', onMouseDown);
 
   /**
    * handle touch events
    */
-  img.ontouchstart = (e) => {
+  const onTouchStart = (e: TouchEvent) => {
     e.preventDefault();
     running = false;
     if (!e.touches[0]) {
@@ -316,13 +318,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     const _downPageY = pageY;
     values.w = 0;
     values.t = 0;
-    document.ontouchend = () => {
-      document.ontouchmove = null;
-      document.ontouchend = null;
-      running = true;
-      run();
-    };
-    document.ontouchmove = (e) => {
+    const onTouchMove = (e: TouchEvent) => {
       if (!e.touches[0]) {
         return;
       }
@@ -333,7 +329,16 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
       const y = pageY - _downPageY;
       move(x, y);
     };
+    const onTouchEnd = () => {
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend', onTouchEnd);
+      running = true;
+      requestAnimationFrame(run);
+    };
+    document.addEventListener('touchmove', onTouchMove);
+    document.addEventListener('touchend', onTouchEnd);
   };
+  img.addEventListener('touchstart', onTouchStart);
 
   // handle character switch
   const switchCharacter = () => {
