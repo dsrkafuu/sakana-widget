@@ -17,7 +17,7 @@ const site = merge(common, {
   entry: path.resolve(__dirname, '../src/index.ts'),
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: 'sakana.min.js',
+    filename: 'index.[contenthash:8].min.js',
     library: umdLibrary,
   },
   optimization: {
