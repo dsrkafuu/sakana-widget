@@ -1,3 +1,7 @@
+## v1.1.2
+
+- fix image switch issue
+
 ## v1.1.1
 
 - fix css position when not mounted on a bfc element

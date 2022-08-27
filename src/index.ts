@@ -342,10 +342,10 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
 
   // handle character switch
   const switchCharacter = () => {
-    img.classList.remove(`sakana-widget-main--${character}`);
+    img.classList.remove(`sakana-widget-img--${character}`);
     character = character === 'chisato' ? 'takina' : 'chisato';
     Object.assign(values, cloneDeep(initialValues[character]));
-    img.classList.add(`sakana-widget-main--${character}`);
+    img.classList.add(`sakana-widget-img--${character}`);
   };
   person.addEventListener('click', switchCharacter);
 
