@@ -44,6 +44,12 @@ function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
 
 ### 通过 CDN 引入
 
+选择想使用的 CDN 提供商：
+
+- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js`
+- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.1.1/sakana.min.js`
+- UNPKG: `https://unpkg.com/sakana-widget@1.1.1/lib/sakana.min.js`
+
 在 HTML `body` 的末尾添加：
 
 ```html
@@ -56,7 +62,7 @@ function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.0/dist/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js"
 ></script>
 ```
 

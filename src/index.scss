@@ -6,6 +6,11 @@ $color-backdrop-active: rgba(255, 255, 255, 0.25);
 $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
 
 .sakana-widget {
+  &-app {
+    pointer-events: none;
+    position: relative;
+  }
+
   &-canvas {
     pointer-events: none;
     position: absolute;
@@ -14,10 +19,6 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   &-main {
     pointer-events: none;
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -25,8 +26,9 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   &-img {
+    cursor: move;
     pointer-events: auto;
-    cursor: pointer;
+    position: relative;
     background: no-repeat 50% 50%;
     background-size: cover;
     &--chisato {
@@ -38,18 +40,18 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   &-ctrl {
-    pointer-events: auto;
-    height: 24px;
-    width: 120px;
     cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    height: 24px;
+    width: 28px * 4;
     display: flex;
     border-radius: $corner-radius-sm;
     background-color: $color-backdrop;
     box-shadow: $box-shadow-backdrop;
-
     &-item {
       height: 24px;
-      width: 30px;
+      width: 28px;
       display: flex;
       justify-content: center;
       align-items: center;

@@ -1,3 +1,7 @@
+## v1.1.1
+
+- fix css position when not mounted on a bfc element
+
 ## v1.1.0
 
 - rename some constructor prop names

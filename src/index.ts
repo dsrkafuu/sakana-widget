@@ -151,6 +151,8 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
   app.appendChild(canvas);
   const main = document.createElement('div');
   main.className = 'sakana-widget-main';
+  main.style.width = `${size}px`;
+  main.style.height = `${size}px`;
   app.appendChild(main);
   const img = document.createElement('div');
   img.className = `sakana-widget-img sakana-widget-img--${character}`;

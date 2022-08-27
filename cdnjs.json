@@ -1,0 +1,23 @@
+{
+  "name": "sakana-widget",
+  "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
+  "keywords": ["widget", "lycoris", "recoil", "chisato", "takina"],
+  "license": "MIT",
+  "homepage": "https://sakana.dsrkafuu.net",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsrkafuu/sakana-widget.git"
+  },
+  "authors": [{ "name": "DSRKafuU" }, { "name": "itorr" }],
+  "autoupdate": {
+    "source": "npm",
+    "target": "sakana-widget",
+    "fileMap": [
+      {
+        "basePath": "lib",
+        "files": ["*.js?(.map)", "**/*.d.ts"]
+      }
+    ]
+  },
+  "filename": "sakana.min.js"
+}

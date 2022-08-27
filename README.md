@@ -44,6 +44,12 @@ Default mounting element is `#sakana-widget`, checkout [API](#api) section for p
 
 ### CDN Import
 
+Choose the CDN provider you want to use:
+
+- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js`
+- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.1.1/sakana.min.js`
+- UNPKG: `https://unpkg.com/sakana-widget@1.1.1/lib/sakana.min.js`
+
 After HTML `body`:
 
 ```html
@@ -56,7 +62,7 @@ After HTML `body`:
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.0/dist/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.1.1/lib/sakana.min.js"
 ></script>
 ```
 
