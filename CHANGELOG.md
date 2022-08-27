@@ -1,6 +1,7 @@
 ## v1.1.1
 
 - fix css position when not mounted on a bfc element
+- sync upstream dbf7c6d
 
 ## v1.1.0
 

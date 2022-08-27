@@ -284,6 +284,8 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     running = false;
     const { pageY } = e;
     const _downPageY = pageY;
+    values.w = 0;
+    values.t = 0;
     document.onmouseup = (e) => {
       e.preventDefault();
       document.onmousemove = null;
@@ -312,6 +314,8 @@ function SakanaWidget(options: SakanaWidgetOptions = {}) {
     }
     const { pageY } = e.touches[0];
     const _downPageY = pageY;
+    values.w = 0;
+    values.t = 0;
     document.ontouchend = () => {
       document.ontouchmove = null;
       document.ontouchend = null;

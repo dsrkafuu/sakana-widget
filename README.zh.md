@@ -7,7 +7,7 @@
 
 [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.zh.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-b1962ab-orange)](https://github.com/itorr/sakana)
+[![Upstream](https://img.shields.io/badge/upstream-dbf7c6d-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 
 网页小组件版本的石蒜模拟器；DEMO：<https://sakana.dsrkafuu.net>。
