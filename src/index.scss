@@ -12,11 +12,13 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   &-canvas {
+    z-index: 10;
     pointer-events: none;
     position: absolute;
   }
 
   &-main {
+    z-index: 20;
     pointer-events: none;
     position: absolute;
     display: flex;
@@ -26,6 +28,7 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   &-img {
+    z-index: 40;
     cursor: move;
     pointer-events: auto;
     position: relative;
@@ -34,6 +37,7 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   &-ctrl {
+    z-index: 30;
     cursor: pointer;
     pointer-events: auto;
     position: relative;

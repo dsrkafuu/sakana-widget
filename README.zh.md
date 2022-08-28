@@ -70,6 +70,15 @@ SakanaWidget.registerCharacter('takina-slow', takina);
 new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
 ```
 
+当然，你也可以使用自己的图片 (url 或 base64) 作为角色比如 GitHub 的图标：
+
+```ts
+const github = SakanaWidget.getCharacter('chisato');
+github.image = `https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/public/github.png`;
+SakanaWidget.registerCharacter('github', github);
+new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
+```
+
 详细的参数和返回实例请见下文 [API](#api) 章节。
 
 ## API
