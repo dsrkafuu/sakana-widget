@@ -1,9 +1,8 @@
 import './index.scss';
+import type { RequiredDeep } from './utils';
+import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
 import { cloneDeep, merge as mergeDeep } from 'lodash-es';
-import characters, {
-  SakanaWidgetCharacter,
-  SakanaWidgetState,
-} from './characters';
+import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import { getCanvasCtx } from './utils';
 

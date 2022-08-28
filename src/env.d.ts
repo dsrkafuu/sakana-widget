@@ -1,7 +1,3 @@
-declare type RequiredDeep<T> = {
-  [K in keyof T]: RequiredDeep<T[K]>;
-} & Required<T>;
-
 declare module '*.css' {
   const css: string;
   export default css;
