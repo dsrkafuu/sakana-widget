@@ -70,6 +70,15 @@ SakanaWidget.registerCharacter('takina-slow', takina);
 new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
 ```
 
+Of course, you can use your own image (url or base64) as a character, e.g. GitHub's icon:
+
+```ts
+const github = SakanaWidget.getCharacter('chisato');
+github.image = `https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/public/github.png`;
+SakanaWidget.registerCharacter('github', github);
+new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
+```
+
 See the [API](#api) section below for detailed parameters and class type.
 
 ## API
@@ -108,6 +117,10 @@ class SakanaWidget {
    * get data of a registered character
    */
   static getCharacter(name: string): SakanaWidgetCharacter | null;
+  /**
+   * get all registered character
+   */
+  static getCharacters();
   /**
    * registered a new character
    */

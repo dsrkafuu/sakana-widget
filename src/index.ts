@@ -88,6 +88,15 @@ class SakanaWidget {
   /**
    * @public
    * @static
+   * get all registered character
+   */
+  static getCharacters() {
+    return _characters;
+  }
+
+  /**
+   * @public
+   * @static
    * registered a new character
    */
   static registerCharacter(name: string, character: SakanaWidgetCharacter) {
@@ -461,7 +470,7 @@ class SakanaWidget {
 
     // refresh the widget image
     if (this._domImage) {
-      this._domImage.style.backgroundImage = `url(${this._image})`;
+      this._domImage.style.backgroundImage = `url('${this._image}')`;
     }
     return this;
   }

@@ -109,6 +109,10 @@ class SakanaWidget {
    */
   static getCharacter(name: string): SakanaWidgetCharacter | null;
   /**
+   * get all registered character
+   */
+  static getCharacters();
+  /**
    * registered a new character
    */
   static registerCharacter(name: string, character: SakanaWidgetCharacter);
