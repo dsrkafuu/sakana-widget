@@ -41,9 +41,14 @@
       href="https://cdn.jsdelivr.net/npm/dsr-design@3.5.1/css/reset.css"
     />
     <style>
-      #sakana-widget {
+      #sakana-widget-chisato {
         position: fixed;
         right: 24px;
+        bottom: 24px;
+      }
+      #sakana-widget-takina {
+        position: fixed;
+        left: 24px;
         bottom: 24px;
       }
       main {
@@ -101,10 +106,14 @@
         GitHub
       </a>
     </main>
-    <div id="sakana-widget"></div>
+    <div id="sakana-widget-chisato"></div>
+    <div id="sakana-widget-takina"></div>
     <script>
       window.addEventListener('DOMContentLoaded', () => {
-        new SakanaWidget().mount('#sakana-widget');
+        new SakanaWidget().mount('#sakana-widget-chisato');
+        new SakanaWidget({ character: 'takina' }).mount(
+          '#sakana-widget-takina'
+        );
       });
     </script>
   </body>

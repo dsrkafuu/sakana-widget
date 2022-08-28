@@ -1,5 +1,9 @@
 ## v2.0.0
 
+- fix css z-index issue
+
+## v2.0.0
+
 - refactor code and update init api
 - fix render issue under high refresh rate
 

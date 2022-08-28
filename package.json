@@ -3,7 +3,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "name": "sakana-widget",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Add the Sakana! Widget to your own web page! | 把石蒜模拟器添加到你自己的网页内！",
   "keywords": [
     "widget",
