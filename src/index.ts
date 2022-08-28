@@ -43,16 +43,21 @@ const defaultOptions: SakanaWidgetOptions = {
  */
 class SakanaWidget {
   _options: RequiredDeep<SakanaWidgetOptions>;
+
   // app metadata
   _imageSize: number;
   _limit!: { maxR: number; maxY: number; minY: number };
+  _lastRunUnix = Date.now();
+  _frameUnix = 1000 / 60; // default to speed of 60 fps
   _running = true;
   _magicForceTimeout = 0;
   _magicForceEnabled = false;
+
   // character related
   _characters: { [key: string]: SakanaWidgetCharacter } = {};
   _image!: string;
   _state!: SakanaWidgetState;
+
   // dom element related
   _domApp!: HTMLDivElement;
   _domCanvas!: HTMLCanvasElement;
@@ -128,12 +133,14 @@ class SakanaWidget {
   _updateDom() {
     const { size, controls } = this._options;
     const imageSize = this._imageSize;
+
     // widget root app
     const app = document.createElement('div');
     app.className = 'sakana-widget-app';
     app.style.width = `${size}px`;
     app.style.height = `${size}px`;
     this._domApp = app;
+
     // canvas stroke palette
     const canvas = document.createElement('canvas');
     canvas.className = 'sakana-widget-canvas';
@@ -146,6 +153,7 @@ class SakanaWidget {
     app.appendChild(canvas);
     this._domCanvas = canvas;
     this._domCanvasCtx = ctx;
+
     // widget main container
     const main = document.createElement('div');
     main.className = 'sakana-widget-main';
@@ -153,6 +161,7 @@ class SakanaWidget {
     main.style.height = `${size}px`;
     app.appendChild(main);
     this._domMain = main;
+
     // widget image
     const img = document.createElement('div');
     img.className = 'sakana-widget-img';
@@ -162,6 +171,7 @@ class SakanaWidget {
     img.style.backgroundImage = `url('${this._image}')`;
     main.appendChild(img);
     this._domImage = img;
+
     // control bar
     const ctrl = document.createElement('div');
     ctrl.className = 'sakana-widget-ctrl';
@@ -217,9 +227,11 @@ class SakanaWidget {
     const img = this._domImage;
     const imgSize = this._imageSize;
     const ctx = this._domCanvasCtx;
+
     // move the image
     const x = r * 1;
     img.style.transform = `rotate(${r}deg) translateX(${x}px) translateY(${y}px)`;
+
     // draw the canvas line
     ctx.clearRect(0, 0, size, size);
     ctx.save();
@@ -246,21 +258,32 @@ class SakanaWidget {
    * run the widget in animation frame
    */
   _run() {
-    const or = 0;
+    const originRotate = 0;
     const cut = 0.1;
     if (!this._running) {
       return;
     }
     let { r, y, t, w } = this._state;
     const { d, i } = this._state;
-    w = w - r * 2 - or;
-    r = r + w * i * 1.2;
+
+    const thisRunUnix = Date.now();
+    const lastRunUnixDiff = thisRunUnix - this._lastRunUnix;
+    let _inertia = i;
+    // ignore if frame diff is above 40ms (25fps)
+    if (lastRunUnixDiff < 40) {
+      _inertia = (i / this._frameUnix) * lastRunUnixDiff;
+    }
+    this._lastRunUnix = thisRunUnix;
+
+    w = w - r * 2 - originRotate;
+    r = r + w * _inertia * 1.2;
     this._state.w = w * d;
     this._state.r = r;
     t = t - y * 2;
-    y = y + t * i * 2;
+    y = y + t * _inertia * 2;
     this._state.t = t * d;
     this._state.y = y;
+
     // stop if motion is too little
     if (
       Math.max(
@@ -273,6 +296,7 @@ class SakanaWidget {
       this._running = false;
       return;
     }
+
     this._draw();
     requestAnimationFrame(this._run);
   }
@@ -307,6 +331,7 @@ class SakanaWidget {
     const _downPageY = pageY;
     this._state.w = 0;
     this._state.t = 0;
+
     const onMouseMove = (e: MouseEvent) => {
       const rect = this._domMain.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
@@ -315,12 +340,14 @@ class SakanaWidget {
       const y = pageY - _downPageY;
       this._move(x, y);
     };
+
     const onMouseUp = () => {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
       this._running = true;
       requestAnimationFrame(this._run);
     };
+
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   }
@@ -339,6 +366,7 @@ class SakanaWidget {
     const _downPageY = pageY;
     this._state.w = 0;
     this._state.t = 0;
+
     const onTouchMove = (e: TouchEvent) => {
       if (!e.touches[0]) {
         return;
@@ -350,12 +378,14 @@ class SakanaWidget {
       const y = pageY - _downPageY;
       this._move(x, y);
     };
+
     const onTouchEnd = () => {
       document.removeEventListener('touchmove', onTouchMove);
       document.removeEventListener('touchend', onTouchEnd);
       this._running = true;
       requestAnimationFrame(this._run);
     };
+
     document.addEventListener('touchmove', onTouchMove);
     document.addEventListener('touchend', onTouchEnd);
   }
@@ -376,6 +406,7 @@ class SakanaWidget {
       this._state.t = this._state.t + (Math.random() - 0.5) * 150;
       this._state.w = this._state.w + (Math.random() - 0.5) * 200;
     }
+
     if (!this._running) {
       this._running = true;
       requestAnimationFrame(this._run);
@@ -419,6 +450,7 @@ class SakanaWidget {
     }
     this._image = targetChar.image;
     this.setState(targetChar.initialState);
+
     // refresh the widget image
     if (this._domImage) {
       this._domImage.style.backgroundImage = `url(${this._image})`;
@@ -432,6 +464,7 @@ class SakanaWidget {
    */
   triggetAutoMode() {
     this._magicForceEnabled = !this._magicForceEnabled;
+
     // toggle icon rotate
     const icon = this._domCtrlMagic.querySelector('svg') as SVGSVGElement;
     if (this._magicForceEnabled) {
@@ -439,6 +472,7 @@ class SakanaWidget {
     } else {
       icon.classList.remove('sakana-widget-icon--rotate');
     }
+
     // clear the timer or start a timer
     clearTimeout(this._magicForceTimeout);
     if (this._magicForceEnabled) {
@@ -466,10 +500,12 @@ class SakanaWidget {
     if (!parent) {
       throw new Error('Invalid mounting element parent');
     }
+
     // append event listeners
     this._domImage.addEventListener('mousedown', this._onMouseDown);
     this._domImage.addEventListener('touchstart', this._onTouchStart);
     this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
+
     // mount node
     const _newEl = _el.cloneNode(false) as HTMLElement;
     _newEl.appendChild(this._domApp);
@@ -487,6 +523,7 @@ class SakanaWidget {
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
     this._domCtrlMagic.removeEventListener('click', this.triggetAutoMode);
+
     // unmount node
     const _el = this._domApp.parentNode;
     if (!_el) {
