@@ -31,12 +31,6 @@ $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
     position: relative;
     background: no-repeat 50% 50%;
     background-size: cover;
-    &--chisato {
-      background-image: url('./assets/chisato.png');
-    }
-    &--takina {
-      background-image: url('./assets/takina.png');
-    }
   }
 
   &-ctrl {
