@@ -1,3 +1,8 @@
+## v2.0.0
+
+- refactor code and update init api
+- fix render issue under high refresh rate
+
 ## v1.2.0
 
 - able to hide control bar

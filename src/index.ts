@@ -38,6 +38,13 @@ const defaultOptions: SakanaWidgetOptions = {
   },
 };
 
+// register default characters
+const _characters: { [key: string]: SakanaWidgetCharacter } = {};
+(Object.keys(characters) as Array<keyof typeof characters>).forEach((key) => {
+  const _char = characters[key];
+  _characters[key] = cloneDeep(_char);
+});
+
 /**
  * widget instance class
  */
@@ -54,7 +61,6 @@ class SakanaWidget {
   _magicForceEnabled = false;
 
   // character related
-  _characters: { [key: string]: SakanaWidgetCharacter } = {};
   _image!: string;
   _state!: SakanaWidgetState;
 
@@ -70,6 +76,24 @@ class SakanaWidget {
   _domCtrlGitHub!: HTMLAnchorElement;
   _domCtrlClose!: HTMLDivElement;
 
+  /**
+   * @public
+   * @static
+   * get data of a registered character
+   */
+  static getCharacter(name: string): SakanaWidgetCharacter | null {
+    return _characters[name] || null;
+  }
+
+  /**
+   * @public
+   * @static
+   * registered a new character
+   */
+  static registerCharacter(name: string, character: SakanaWidgetCharacter) {
+    _characters[name] = cloneDeep(character);
+  }
+
   constructor(options: SakanaWidgetOptions = {}) {
     this._options = cloneDeep(
       defaultOptions
@@ -80,13 +104,7 @@ class SakanaWidget {
     this._imageSize = this._options.size / 1.25;
     this._updateLimit(this._options.size);
 
-    // init default characters
-    (Object.keys(characters) as Array<keyof typeof characters>).forEach(
-      (key) => {
-        const _char = characters[key];
-        this.registerCharacter(key, _char);
-      }
-    );
+    // init default character
     this.setCharacter(this._options.character);
 
     // init dom
@@ -103,7 +121,6 @@ class SakanaWidget {
     this._onTouchStart = this._onTouchStart.bind(this);
     this._magicForce = this._magicForce.bind(this);
     this.setState = this.setState.bind(this);
-    this.registerCharacter = this.registerCharacter.bind(this);
     this.setCharacter = this.setCharacter.bind(this);
     this.triggetAutoMode = this.triggetAutoMode.bind(this);
     this.mount = this.mount.bind(this);
@@ -397,7 +414,7 @@ class SakanaWidget {
   _magicForce() {
     // 0.1 probability to randomly switch character
     if (Math.random() < 0.1) {
-      const available = Object.keys(this._characters);
+      const available = Object.keys(_characters);
       const index = Math.floor(Math.random() * available.length);
       const _char = available[index];
       this.setCharacter(_char);
@@ -432,19 +449,10 @@ class SakanaWidget {
 
   /**
    * @public
-   * register a new character
-   */
-  registerCharacter(name: string, character: SakanaWidgetCharacter) {
-    this._characters[name] = cloneDeep(character);
-    return this;
-  }
-
-  /**
-   * @public
    * set current character of widget
    */
   setCharacter(name: string) {
-    const targetChar = this._characters[name];
+    const targetChar = _characters[name];
     if (!targetChar) {
       throw new Error(`invalid character ${name}`);
     }

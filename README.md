@@ -3,104 +3,81 @@
 <img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/takina.png" height="160px">
 </p>
 
-# 🐟「Sakana! Widget」石蒜模拟器网页小组件
+# 🐟「Sakana! Widget」
 
 [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.zh.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-dbf7c6d-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
+[![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
 
-Sakana~ emulator for usage as Web widget; DEMO: <https://sakana.dsrkafuu.net>.
+<https://sakana.dsrkafuu.net>
 
-## License
+Add the Sakana! Widget to your own web page! Support custom images, runtime parameters and more!
 
-Released under MIT License, please note that the images **should not be used for any commercial activities**, please replace the images and compile the library yourself under such circumstances.
+## Features
 
-This project is based on https://github.com/itorr/sakana.
-
-Image source: 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
-
-## Feature
-
+- Register and use your own character
 - Press and hold the stand and drag, after releasing the hand the stand will bounce in the opposite direction
 - Use control bar to switch roles and use other functions
 - Automatic mode, applying a force of random size at random intervals
-- Prepared for CDN/NPM import, custom parameters
-
-Features removed:
-
-- Gyroscope support
-- Sound playback
+- Prepared for CDN/NPM import, custom parameters, chained calls
 
 ## Usage
 
-This package's default export is a singleton function `SakanaWidget`:
-
-```ts
-function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
-```
-
-Default mounting element is `#sakana-widget`, checkout [API](#api) section for params & return instance details.
-
-### CDN Import
-
-Choose the CDN provider you want to use:
-
-- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js`
-- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.2.0/sakana.min.js`
-- UNPKG: `https://unpkg.com/sakana-widget@1.2.0/lib/sakana.min.js`
-
-After HTML `body`:
+First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.0.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.0.0/sakana.min.js -->
 <div id="sakana-widget"></div>
-<script>
-  function initSakanaWidget() {
-    SakanaWidget({ character: 'takina' });
-  }
-</script>
 <script
-  async
-  onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js"
+  defer
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.0.0/lib/sakana.min.js"
 ></script>
-```
-
-### NPM Import
-
-```bash
-npm add sakana-wdiget
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    new SakanaWidget().mount('#sakana-widget');
+  });
+</script>
 ```
 
 ```ts
+// npm install --save sakana-wdiget
 import SakanaWidget from 'sakana-wdiget';
-document.addEventListener('DOMContentLoaded', () => {
-  SakanaWidget({ character: 'chisato' });
-});
+new SakanaWidget().mount('#sakana-widget');
 ```
 
-## Fun Options
+This package exports a class `SakanaWidget` by default, through which a widget can be initialized. The code above initializes a widget with default settings and mounts it to the `#sakana-widget` element.
 
-Use options below to get a slow-motion/infinite takina:
+You can continue to create widget instances and mount to more DOM elements, where the data is completely independent between widgets except for roles, and non-static methods support chaining calls.
+
+For example, you can modify some settings before mounting a widget and get a super-slow Chisato:
 
 ```ts
-SakanaWidget({
-  character: 'takina',
-  inertia: 0.001,
-  decay: 1,
-});
+new SakanaWidget().setState({ i: 0.001, d: 1 }).mount('#sakana-widget');
 ```
+
+Or, get the built-in character object via the `getCharacter` static method, modify the parameters, and create a super-slow, non-damped (perpetual) Takina as a new character:
+
+```ts
+const takina = SakanaWidget.getCharacter('takina');
+takina.initialState = {
+  ...takina.initialState,
+  i: 0.001,
+  d: 1,
+};
+SakanaWidget.registerCharacter('takina-slow', takina);
+new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
+```
+
+See the [API](#api) section below for detailed parameters and class type.
 
 ## API
 
-### Params
+### Constructor Params
 
 ```ts
 export interface SakanaWidgetOptions {
-  /**
-   * mounting container or css query selector, default to `#sakana-widget`
-   */
-  container?: HTMLElement | string;
   /**
    * widget size, default to `200`
    */
@@ -110,47 +87,56 @@ export interface SakanaWidgetOptions {
    */
   character?: 'chisato' | 'takina';
   /**
-   * image motion inertia, default to `0.08`
+   * controls bar, default to `true`
    */
-  inertia?: number;
+  controls?: boolean;
   /**
-   * image motion decay, default to different value based on character
+   * canvas stroke settings, default to `#b4b4b4` & `10`
    */
-  decay?: number;
-  /**
-   * canvas stroke color, default to `#b4b4b4`
-   */
-  strokeColor?: string;
-  /**
-   * canvas stroke width, default to `10`
-   */
-  strokeWidth?: number;
-  /**
-   * hide control bar, default to `false`
-   */
-  hideControls?: boolean;
+  stroke?: {
+    color?: string;
+    width?: number;
+  };
 }
 ```
 
-### Return Instance
+### Widget Instance
 
 ```ts
-export interface SakanaWidgetInstance {
+class SakanaWidget {
   /**
-   * instance dom element
+   * get data of a registered character
    */
-  node: HTMLElement;
+  static getCharacter(name: string): SakanaWidgetCharacter | null;
   /**
-   * switch to another character
+   * registered a new character
    */
-  switchCharacter: () => void;
+  static registerCharacter(name: string, character: SakanaWidgetCharacter);
   /**
-   * toggle auto mode
+   * set current state of widget
    */
-  toggleMagicForce: () => void;
+  setState(state: Partial<SakanaWidgetState>);
   /**
-   * remove the widget
+   * set current character of widget
    */
-  destroy: () => void;
+  setCharacter(name: string);
+  /**
+   * switch the auto mode
+   */
+  triggetAutoMode();
+  /**
+   * mount the widget, default to `#sakana-widget`
+   */
+  mount(el: HTMLElement | string);
+  /**
+   * unmount the widget
+   */
+  unmount();
 }
 ```
+
+## License
+
+Released under MIT License, please note that the 2 default images **should not be used for any commercial activities**. This project used to be a secondary development based on https://github.com/itorr/sakana.
+
+Image source: 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)

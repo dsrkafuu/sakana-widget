@@ -1,106 +1,83 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/chisato.png" height="160px">
-<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/takina.png" height="160px">
+<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/chisato.png" height="160px">
+<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/takina.png" height="160px">
 </p>
 
 # 🐟「Sakana! Widget」石蒜模拟器网页小组件
 
 [English](https://github.com/dsrkafuu/sakana-widget/blob/main/README.md) | [简体中文](https://github.com/dsrkafuu/sakana-widget/blob/main/README.zh.md)
 
-[![Upstream](https://img.shields.io/badge/upstream-dbf7c6d-orange)](https://github.com/itorr/sakana)
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
+[![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
 
-网页小组件版本的石蒜模拟器；DEMO：<https://sakana.dsrkafuu.net>。
+<https://sakana.dsrkafuu.net>
 
-## License
-
-本项目代码基于 MIT 协议授权，请注意图片**不可用于任何商业活动**，此类场景请自行替换图片并编译。
-
-本项目是基于 https://github.com/itorr/sakana 的二次开发。
-
-插画来源： 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
+把石蒜模拟器添加到你自己的网页内！支持自定义图片、运行参数和更多！
 
 ## 功能
 
+- 注册并使用你自己的角色
 - 按住立牌拖拽，松手后立牌会向反方向弹跳
 - 底座控制栏切换角色和其他功能
 - 自走模式，以随机间隔施加一个大小随机的力
-- CDN/NPM 引入，自定义参数
-
-移除的功能：
-
-- 陀螺仪支持
-- 声音播放能力
+- CDN/NPM 引入，自定义参数，链式调用
 
 ## 使用
 
-本包默认导出一个单例模式函数 `SakanaWidget`：
-
-```ts
-function SakanaWidget(options: SakanaWidgetOptions = {}): SakanaWidgetInstance;
-```
-
-默认挂载容器为 `#sakana-widget`，参数和返回实例请见下文 [API](#api) 章节。
-
-### 通过 CDN 引入
-
-选择想使用的 CDN 提供商：
-
-- jsDelivr: `https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js`
-- cdnjs: `https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/1.2.0/sakana.min.js`
-- UNPKG: `https://unpkg.com/sakana-widget@1.2.0/lib/sakana.min.js`
-
-在 HTML `body` 的末尾添加：
+首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
 
 ```html
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.0.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.0.0/sakana.min.js -->
 <div id="sakana-widget"></div>
-<script>
-  function initSakanaWidget() {
-    SakanaWidget({ character: 'takina' });
-  }
-</script>
 <script
-  async
-  onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@1.2.0/lib/sakana.min.js"
+  defer
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.0.0/lib/sakana.min.js"
 ></script>
-```
-
-### 通过 NPM 安装
-
-```bash
-npm add sakana-wdiget
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    new SakanaWidget().mount('#sakana-widget');
+  });
+</script>
 ```
 
 ```ts
+// npm install --save sakana-wdiget
 import SakanaWidget from 'sakana-wdiget';
-document.addEventListener('DOMContentLoaded', () => {
-  SakanaWidget({ character: 'chisato' });
-});
+new SakanaWidget().mount('#sakana-widget');
 ```
 
-## 有意思的参数
+本包默认导出一个类 `SakanaWidget`，通过该类可以初始化一个小组件。上面的代码初始化了一个全默认设置的组件，并将其挂载到了 `#sakana-widget` 元素上。
 
-使用以下参数可以获得一个超慢速无阻尼 (永续) 的泷奈：
+你可以继续创建实例并挂载到更多的 DOM 元素上，组件之间除了角色以外，数据是完全独立的，非静态方法支持链式调用。
+
+例如，你可以在挂载组件之前修改一些设置，并获得一个超慢速的永续千束：
 
 ```ts
-SakanaWidget({
-  character: 'takina',
-  inertia: 0.001,
-  decay: 1,
-});
+new SakanaWidget().setState({ i: 0.001, d: 1 }).mount('#sakana-widget');
 ```
+
+又或者，通过 `getCharacter` 静态方法获取内置的角色对象，修改参数，并创建一个超慢速无阻尼 (永续) 的泷奈作为新角色：
+
+```ts
+const takina = SakanaWidget.getCharacter('takina');
+takina.initialState = {
+  ...takina.initialState,
+  i: 0.001,
+  d: 1,
+};
+SakanaWidget.registerCharacter('takina-slow', takina);
+new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
+```
+
+详细的参数和返回实例请见下文 [API](#api) 章节。
 
 ## API
 
-### 参数
+### 构造函数选项
 
 ```ts
 export interface SakanaWidgetOptions {
-  /**
-   * mounting container or css query selector, default to `#sakana-widget`
-   */
-  container?: HTMLElement | string;
   /**
    * widget size, default to `200`
    */
@@ -110,47 +87,56 @@ export interface SakanaWidgetOptions {
    */
   character?: 'chisato' | 'takina';
   /**
-   * image motion inertia, default to `0.08`
+   * controls bar, default to `true`
    */
-  inertia?: number;
+  controls?: boolean;
   /**
-   * image motion decay, default to different value based on character
+   * canvas stroke settings, default to `#b4b4b4` & `10`
    */
-  decay?: number;
-  /**
-   * canvas stroke color, default to `#b4b4b4`
-   */
-  strokeColor?: string;
-  /**
-   * canvas stroke width, default to `10`
-   */
-  strokeWidth?: number;
-  /**
-   * hide control bar, default to `false`
-   */
-  hideControls?: boolean;
+  stroke?: {
+    color?: string;
+    width?: number;
+  };
 }
 ```
 
 ### 返回实例
 
 ```ts
-export interface SakanaWidgetInstance {
+class SakanaWidget {
   /**
-   * instance dom element
+   * get data of a registered character
    */
-  node: HTMLElement;
+  static getCharacter(name: string): SakanaWidgetCharacter | null;
   /**
-   * switch to another character
+   * registered a new character
    */
-  switchCharacter: () => void;
+  static registerCharacter(name: string, character: SakanaWidgetCharacter);
   /**
-   * toggle auto mode
+   * set current state of widget
    */
-  toggleMagicForce: () => void;
+  setState(state: Partial<SakanaWidgetState>);
   /**
-   * remove the widget
+   * set current character of widget
    */
-  destroy: () => void;
+  setCharacter(name: string);
+  /**
+   * switch the auto mode
+   */
+  triggetAutoMode();
+  /**
+   * mount the widget, default to `#sakana-widget`
+   */
+  mount(el: HTMLElement | string);
+  /**
+   * unmount the widget
+   */
+  unmount();
 }
 ```
+
+## License
+
+本项目代码基于 MIT 协议授权，请注意默认的内置角色图片**不可用于任何商业活动**。本项目前期是基于 https://github.com/itorr/sakana 的二次开发。
+
+插画来源： 大伏アオ [@blue00f4](https://twitter.com/blue00f4) [pixiv](https://pixiv.me/aoiroblue1340)
