@@ -1,6 +1,6 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/chisato.png" height="160px">
-<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/html/takina.png" height="160px">
+<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/chisato.png" height="160px">
+<img src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/takina.png" height="160px">
 </p>
 
 # 🐟「Sakana! Widget」
@@ -27,12 +27,12 @@ Add the Sakana! Widget to your own web page! Support custom images, runtime para
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.1.0/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.1.0/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.1.1/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.1.1/sakana.min.js -->
 <div id="sakana-widget"></div>
 <script
   defer
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.1.0/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.1.1/lib/sakana.min.js"
 ></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
