@@ -7,7 +7,7 @@ import characters, {
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import { getCanvasCtx } from './utils';
 
-export interface SakanaWidgetOptions {
+interface SakanaWidgetOptions {
   /**
    * widget size, default to `200`
    */
@@ -552,3 +552,4 @@ class SakanaWidget {
 }
 
 export default SakanaWidget;
+export type { SakanaWidgetCharacter, SakanaWidgetState, SakanaWidgetOptions };

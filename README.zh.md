@@ -74,6 +74,46 @@ new SakanaWidget({ character: 'takina-slow' }).mount('#sakana-widget');
 
 ## API
 
+### 类型定义
+
+```ts
+export interface SakanaWidgetState {
+  /**
+   * inertia
+   */
+  i: number;
+  /**
+   * stickiness
+   */
+  s: number;
+  /**
+   * decay
+   */
+  d: number; // decay
+  /**
+   * angle
+   */
+  r: number;
+  /**
+   * height
+   */
+  y: number;
+  /**
+   * vertical speed
+   */
+  t: number;
+  /**
+   * horizontal speed
+   */
+  w: number;
+}
+
+export interface SakanaWidgetCharacter {
+  image: string;
+  initialState: SakanaWidgetState;
+}
+```
+
 ### 构造函数选项
 
 ```ts
