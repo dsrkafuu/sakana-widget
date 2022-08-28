@@ -1,10 +1,9 @@
 import './index.scss';
 import type { RequiredDeep } from './utils';
 import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
-import { cloneDeep, merge as mergeDeep } from 'lodash-es';
 import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
-import { getCanvasCtx } from './utils';
+import { cloneDeep, mergeDeep, getCanvasCtx } from './utils';
 
 interface SakanaWidgetOptions {
   /**
@@ -107,7 +106,7 @@ class SakanaWidget {
     this._options = cloneDeep(
       defaultOptions
     ) as RequiredDeep<SakanaWidgetOptions>;
-    mergeDeep(this._options, options);
+    this._options = mergeDeep(this._options, options);
 
     // init app metadata
     this._imageSize = this._options.size / 1.25;
@@ -453,7 +452,7 @@ class SakanaWidget {
     if (!this._state) {
       this._state = {} as SakanaWidgetState;
     }
-    mergeDeep(this._state, cloneDeep(state));
+    this._state = mergeDeep(this._state, cloneDeep(state));
     return this;
   }
 

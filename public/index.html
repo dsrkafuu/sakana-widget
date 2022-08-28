@@ -53,7 +53,7 @@
       }
       main {
         text-align: center;
-        margin: 48px 24px;
+        margin: 24px;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -61,6 +61,11 @@
       main div {
         margin-top: 16px;
         display: flex;
+      }
+      @media screen and (max-width: 768px) {
+        main div {
+          display: none;
+        }
       }
       main a,
       main a:visited {

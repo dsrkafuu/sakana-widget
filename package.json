@@ -27,11 +27,8 @@
     "dev": "webpack serve --config ./.webpack/webpack.dev.js",
     "build": "rimraf ./dist && rimraf ./lib && tsc && webpack --config ./.webpack/webpack.prod.js"
   },
-  "dependencies": {
-    "lodash-es": "~4.17.21"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@types/lodash-es": "^4.17.6",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "css-loader": "^6.7.1",
