@@ -1,4 +1,9 @@
-## v2.0.0
+## v2.1.0
+
+- fix control bar issues
+- add next char func
+
+## v2.0.1
 
 - fix css z-index issue
 

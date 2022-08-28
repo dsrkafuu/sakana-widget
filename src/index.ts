@@ -60,6 +60,7 @@ class SakanaWidget {
   _magicForceEnabled = false;
 
   // character related
+  _char!: string;
   _image!: string;
   _state!: SakanaWidgetState;
 
@@ -130,6 +131,7 @@ class SakanaWidget {
     this._magicForce = this._magicForce.bind(this);
     this.setState = this.setState.bind(this);
     this.setCharacter = this.setCharacter.bind(this);
+    this.nextCharacter = this.nextCharacter.bind(this);
     this.triggetAutoMode = this.triggetAutoMode.bind(this);
     this.mount = this.mount.bind(this);
     this.unmount = this.unmount.bind(this);
@@ -464,6 +466,7 @@ class SakanaWidget {
     if (!targetChar) {
       throw new Error(`invalid character ${name}`);
     }
+    this._char = name;
     this._image = targetChar.image;
     this.setState(targetChar.initialState);
 
@@ -471,6 +474,19 @@ class SakanaWidget {
     if (this._domImage) {
       this._domImage.style.backgroundImage = `url('${this._image}')`;
     }
+    return this;
+  }
+
+  /**
+   * @public
+   * set to next character of widget
+   */
+  nextCharacter() {
+    const _chars = Object.keys(SakanaWidget.getCharacters()).sort();
+    const curCharIdx = _chars.indexOf(this._char);
+    const nextCharIdx = (curCharIdx + 1) % _chars.length;
+    const nextChar = _chars[nextCharIdx];
+    this.setCharacter(nextChar);
     return this;
   }
 
@@ -520,7 +536,9 @@ class SakanaWidget {
     // append event listeners
     this._domImage.addEventListener('mousedown', this._onMouseDown);
     this._domImage.addEventListener('touchstart', this._onTouchStart);
+    this._domCtrlPerson.addEventListener('click', this.nextCharacter);
     this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
+    this._domCtrlClose.addEventListener('click', this.unmount);
 
     // mount node
     const _newEl = _el.cloneNode(false) as HTMLElement;
@@ -538,7 +556,9 @@ class SakanaWidget {
     // remove event listeners
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
+    this._domCtrlPerson.removeEventListener('click', this.nextCharacter);
     this._domCtrlMagic.removeEventListener('click', this.triggetAutoMode);
+    this._domCtrlClose.removeEventListener('click', this.unmount);
 
     // unmount node
     const _el = this._domApp.parentNode;
