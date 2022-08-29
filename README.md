@@ -147,6 +147,10 @@ export interface SakanaWidgetOptions {
     color?: string;
     width?: number;
   };
+  /**
+   * motion stop threshold, default to `0.1`
+   */
+  threshold?: number;
 }
 ```
 

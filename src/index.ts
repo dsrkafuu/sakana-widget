@@ -27,6 +27,10 @@ interface SakanaWidgetOptions {
     color?: string;
     width?: number;
   };
+  /**
+   * motion stop threshold, default to `0.1`
+   */
+  threshold?: number;
 }
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
@@ -36,6 +40,7 @@ const defaultOptions: SakanaWidgetOptions = {
     color: '#b4b4b4',
     width: 10,
   },
+  threshold: 0.1,
 };
 
 // register default characters
@@ -287,7 +292,7 @@ class SakanaWidget {
    */
   _run() {
     const originRotate = 0;
-    const cut = 0.1;
+    const cut = this._options.threshold;
     if (!this._running) {
       return;
     }
