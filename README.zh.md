@@ -151,6 +151,10 @@ export interface SakanaWidgetOptions {
    * motion stop threshold, default to `0.1`
    */
   threshold?: number;
+  /**
+   * rotate origin, default to `0`
+   */
+  rotate?: number;
 }
 ```
 

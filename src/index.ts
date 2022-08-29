@@ -31,6 +31,10 @@ interface SakanaWidgetOptions {
    * motion stop threshold, default to `0.1`
    */
   threshold?: number;
+  /**
+   * rotate origin, default to `0`
+   */
+  rotate?: number;
 }
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
@@ -41,6 +45,7 @@ const defaultOptions: SakanaWidgetOptions = {
     width: 10,
   },
   threshold: 0.1,
+  rotate: 0,
 };
 
 // register default characters
@@ -291,7 +296,7 @@ class SakanaWidget {
    * run the widget in animation frame
    */
   _run() {
-    const originRotate = 0;
+    const originRotate = this._options.rotate;
     const cut = this._options.threshold;
     if (!this._running) {
       return;
