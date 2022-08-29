@@ -6,6 +6,19 @@ $color-backdrop-active: rgba(255, 255, 255, 0.25);
 $box-shadow-backdrop: 0 8px 24px rgba(0, 0, 0, 0.1);
 
 .sakana-widget {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  &-wrapper {
+    pointer-events: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
   &-app {
     pointer-events: none;
     position: relative;

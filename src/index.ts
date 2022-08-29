@@ -5,13 +5,17 @@ import type { RequiredDeep } from './utils';
 import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
 import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
-import { cloneDeep, mergeDeep, getCanvasCtx } from './utils';
+import { cloneDeep, mergeDeep, throttle, getCanvasCtx } from './utils';
 
 interface SakanaWidgetOptions {
   /**
    * widget size, default to `200`
    */
   size?: number;
+  /**
+   * auto fit size (120px minimum), default to `false`
+   */
+  autoFit?: boolean;
   /**
    * default character, default to `chisato`
    */
@@ -38,6 +42,7 @@ interface SakanaWidgetOptions {
 }
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
+  autoFit: false,
   character: 'chisato',
   controls: true,
   stroke: {
@@ -62,7 +67,7 @@ class SakanaWidget {
   _options: RequiredDeep<SakanaWidgetOptions>;
 
   // app metadata
-  _imageSize: number;
+  _imageSize!: number;
   _limit!: { maxR: number; maxY: number; minY: number };
   _lastRunUnix = Date.now();
   _frameUnix = 1000 / 60; // default to speed of 60 fps
@@ -76,7 +81,9 @@ class SakanaWidget {
   _state!: SakanaWidgetState;
 
   // dom element related
-  _domApp!: HTMLDivElement;
+  _domEl: HTMLElement | null = null; // mounting element
+  _domWrapper!: HTMLDivElement; // this is needed for resize observer
+  _domApp!: HTMLDivElement; // actual app element
   _domCanvas!: HTMLCanvasElement;
   _domCanvasCtx!: CanvasRenderingContext2D;
   _domMain!: HTMLDivElement;
@@ -86,6 +93,7 @@ class SakanaWidget {
   _domCtrlMagic!: HTMLDivElement;
   _domCtrlGitHub!: HTMLAnchorElement;
   _domCtrlClose!: HTMLDivElement;
+  _resizeObserver: ResizeObserver | null = null;
 
   /**
    * @public
@@ -126,18 +134,17 @@ class SakanaWidget {
     ) as RequiredDeep<SakanaWidgetOptions>;
     this._options = mergeDeep(this._options, options);
 
-    // init app metadata
-    this._imageSize = this._options.size / 1.25;
-    this._updateLimit(this._options.size);
-
     // init default character
     this.setCharacter(this._options.character);
 
     // init dom
     this._updateDom();
+    this._updateSize(this._options.size);
+    this._updateLimit(this._options.size);
 
     // bind callbacks
     this._updateLimit = this._updateLimit.bind(this);
+    this._updateSize = this._updateSize.bind(this);
     this._updateDom = this._updateDom.bind(this);
     this._calcCenterPoint = this._calcCenterPoint.bind(this);
     this._draw = this._draw.bind(this);
@@ -146,10 +153,11 @@ class SakanaWidget {
     this._onMouseDown = this._onMouseDown.bind(this);
     this._onTouchStart = this._onTouchStart.bind(this);
     this._magicForce = this._magicForce.bind(this);
+    this.triggetAutoMode = this.triggetAutoMode.bind(this);
     this.setState = this.setState.bind(this);
     this.setCharacter = this.setCharacter.bind(this);
     this.nextCharacter = this.nextCharacter.bind(this);
-    this.triggetAutoMode = this.triggetAutoMode.bind(this);
+    this._onResize = this._onResize.bind(this);
     this.mount = this.mount.bind(this);
     this.unmount = this.unmount.bind(this);
   }
@@ -172,80 +180,101 @@ class SakanaWidget {
 
   /**
    * @private
+   * refresh widget size
+   */
+  _updateSize(size: number) {
+    this._options.size = size;
+    this._imageSize = this._options.size / 1.25;
+
+    // widget root app
+    this._domApp.style.width = `${size}px`;
+    this._domApp.style.height = `${size}px`;
+
+    // canvas stroke palette
+    this._domCanvas.style.width = `${size}px`;
+    this._domCanvas.style.height = `${size}px`;
+    const ctx = getCanvasCtx(this._domCanvas, size);
+    if (!ctx) {
+      throw new Error('Invalid canvas context');
+    }
+    this._domCanvasCtx = ctx;
+    this._draw(); // refresh canvas
+
+    // widget main container
+    this._domMain.style.width = `${size}px`;
+    this._domMain.style.height = `${size}px`;
+
+    // widget image
+    this._domImage.style.width = `${this._imageSize}px`;
+    this._domImage.style.height = `${this._imageSize}px`;
+    this._domImage.style.transformOrigin = `50% ${size}px`; // use the bottom center of widget as trans origin
+  }
+
+  /**
+   * @private
    * create widget dom elements
    */
   _updateDom() {
-    const { size, controls } = this._options;
-    const imageSize = this._imageSize;
+    // wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'sakana-widget-wrapper';
+    this._domWrapper = wrapper;
 
     // widget root app
     const app = document.createElement('div');
     app.className = 'sakana-widget-app';
-    app.style.width = `${size}px`;
-    app.style.height = `${size}px`;
     this._domApp = app;
+    wrapper.appendChild(app);
 
     // canvas stroke palette
     const canvas = document.createElement('canvas');
     canvas.className = 'sakana-widget-canvas';
-    canvas.style.width = `${size}px`;
-    canvas.style.height = `${size}px`;
-    const ctx = getCanvasCtx(canvas, size);
-    if (!ctx) {
-      throw new Error('Invalid canvas context');
-    }
-    app.appendChild(canvas);
     this._domCanvas = canvas;
-    this._domCanvasCtx = ctx;
+    app.appendChild(canvas);
 
     // widget main container
     const main = document.createElement('div');
     main.className = 'sakana-widget-main';
-    main.style.width = `${size}px`;
-    main.style.height = `${size}px`;
-    app.appendChild(main);
     this._domMain = main;
+    app.appendChild(main);
 
     // widget image
     const img = document.createElement('div');
     img.className = 'sakana-widget-img';
-    img.style.width = `${imageSize}px`;
-    img.style.height = `${imageSize}px`;
-    img.style.transformOrigin = `50% ${size}px`; // use the bottom center of widget as trans origin
     img.style.backgroundImage = `url('${this._image}')`;
-    main.appendChild(img);
     this._domImage = img;
+    main.appendChild(img);
 
     // control bar
     const ctrl = document.createElement('div');
     ctrl.className = 'sakana-widget-ctrl';
-    if (controls) {
+    this._domCtrl = ctrl;
+    if (this._options.controls) {
       main.appendChild(ctrl);
     }
-    this._domCtrl = ctrl;
     const itemClass = 'sakana-widget-ctrl-item';
     const person = document.createElement('div');
     person.className = itemClass;
     person.innerHTML = svgPerson;
-    ctrl.appendChild(person);
     this._domCtrlPerson = person;
+    ctrl.appendChild(person);
     const magic = document.createElement('div');
     magic.className = itemClass;
     magic.innerHTML = svgSync;
-    ctrl.appendChild(magic);
     this._domCtrlMagic = magic;
+    ctrl.appendChild(magic);
     const github = document.createElement('a');
     github.className = itemClass;
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
-    ctrl.appendChild(github);
     this._domCtrlGitHub = github;
+    ctrl.appendChild(github);
     const close = document.createElement('div');
     close.className = itemClass;
     close.innerHTML = svgClose;
-    ctrl.appendChild(close);
     this._domCtrlClose = close;
+    ctrl.appendChild(close);
   }
 
   /**
@@ -465,6 +494,31 @@ class SakanaWidget {
 
   /**
    * @public
+   * switch the auto mode
+   */
+  triggetAutoMode() {
+    this._magicForceEnabled = !this._magicForceEnabled;
+
+    // toggle icon rotate
+    const icon = this._domCtrlMagic.querySelector('svg') as SVGSVGElement;
+    if (this._magicForceEnabled) {
+      icon.classList.add('sakana-widget-icon--rotate');
+    } else {
+      icon.classList.remove('sakana-widget-icon--rotate');
+    }
+
+    // clear the timer or start a timer
+    clearTimeout(this._magicForceTimeout);
+    if (this._magicForceEnabled) {
+      this._magicForceTimeout = window.setTimeout(
+        this._magicForce,
+        Math.random() * 1000 + 500
+      );
+    }
+  }
+
+  /**
+   * @public
    * set current state of widget
    */
   setState(state: Partial<SakanaWidgetState>) {
@@ -509,28 +563,14 @@ class SakanaWidget {
   }
 
   /**
-   * @public
-   * switch the auto mode
+   * @private
+   * handle widget resize
    */
-  triggetAutoMode() {
-    this._magicForceEnabled = !this._magicForceEnabled;
-
-    // toggle icon rotate
-    const icon = this._domCtrlMagic.querySelector('svg') as SVGSVGElement;
-    if (this._magicForceEnabled) {
-      icon.classList.add('sakana-widget-icon--rotate');
-    } else {
-      icon.classList.remove('sakana-widget-icon--rotate');
-    }
-
-    // clear the timer or start a timer
-    clearTimeout(this._magicForceTimeout);
-    if (this._magicForceEnabled) {
-      this._magicForceTimeout = window.setTimeout(
-        this._magicForce,
-        Math.random() * 1000 + 500
-      );
-    }
+  _onResize(rect: DOMRect) {
+    let newSize = Math.min(rect.width, rect.height);
+    newSize = Math.max(120, newSize); // at least 120
+    this._updateSize(newSize);
+    this._updateLimit(newSize);
   }
 
   /**
@@ -546,6 +586,7 @@ class SakanaWidget {
     if (!_el) {
       throw new Error('Invalid mounting element');
     }
+    this._domEl = _el;
     const parent = _el.parentNode;
     if (!parent) {
       throw new Error('Invalid mounting element parent');
@@ -558,9 +599,23 @@ class SakanaWidget {
     this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
     this._domCtrlClose.addEventListener('click', this.unmount);
 
+    // if auto fit mode
+    if (this._options.autoFit) {
+      // initial resize
+      this._onResize(this._domWrapper.getBoundingClientRect());
+      // handle furture resize
+      this._resizeObserver = new ResizeObserver(
+        throttle((entries) => {
+          if (!entries || !entries[0]) return;
+          this._onResize(entries[0].contentRect);
+        })
+      );
+      this._resizeObserver.observe(this._domWrapper);
+    }
+
     // mount node
     const _newEl = _el.cloneNode(false) as HTMLElement;
-    _newEl.appendChild(this._domApp);
+    _newEl.appendChild(this._domWrapper);
     parent.replaceChild(_newEl, _el);
     requestAnimationFrame(this._run);
     return this;
@@ -578,12 +633,15 @@ class SakanaWidget {
     this._domCtrlMagic.removeEventListener('click', this.triggetAutoMode);
     this._domCtrlClose.removeEventListener('click', this.unmount);
 
+    // if auto fit mode
+    this._resizeObserver && this._resizeObserver.disconnect();
+
     // unmount node
-    const _el = this._domApp.parentNode;
+    const _el = this._domWrapper.parentNode;
     if (!_el) {
       throw new Error('Invalid mounting element');
     }
-    _el.removeChild(this._domApp);
+    _el.removeChild(this._domWrapper);
     return this;
   }
 }

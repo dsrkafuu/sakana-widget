@@ -93,10 +93,12 @@
     <main>
       <h1>🐟「Sakana! Widget」</h1>
       <p>
-        Add the Sakana! Widget to your own web page! Support custom images,
-        runtime parameters and more!
+        Add the Sakana! Widget to your own web page! Support custom images, auto
+        resizing and more runtime params!
       </p>
-      <p>把石蒜模拟器添加到你自己的网页内！支持自定义图片、运行参数和更多！</p>
+      <p>
+        把石蒜模拟器添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！
+      </p>
       <div>
         <img
           src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/chisato.png"
@@ -115,10 +117,10 @@
     <div id="sakana-widget-takina"></div>
     <script>
       window.addEventListener('DOMContentLoaded', () => {
-        new SakanaWidget().mount('#sakana-widget-chisato');
-        new SakanaWidget({ character: 'takina' }).mount(
-          '#sakana-widget-takina'
-        );
+        new SakanaWidget({}).mount('#sakana-widget-chisato');
+        new SakanaWidget({
+          character: 'takina',
+        }).mount('#sakana-widget-takina');
       });
     </script>
   </body>

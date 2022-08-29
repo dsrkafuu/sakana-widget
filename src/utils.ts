@@ -46,6 +46,27 @@ export function mergeDeep<T, U>(target: T, source: U): T & U {
 }
 
 /**
+ * throttle a func with requestAnimationFrame,
+ * https://github.com/wuct/raf-throttle/blob/master/rafThrottle.js
+ */
+export function throttle<T extends (...args: any[]) => any>(callback: T): T {
+  let requestId: number | null = null;
+  let lastArgs: any[];
+  const later = (context: any) => () => {
+    requestId = null;
+    callback.apply(context, lastArgs);
+  };
+  const throttled = function (...args: any[]) {
+    lastArgs = args;
+    if (requestId === null) {
+      // @ts-expect-error this refers to context inherited from outside
+      requestId = requestAnimationFrame(later(this));
+    }
+  } as T;
+  return throttled;
+}
+
+/**
  * get the canvas context with device pixel ratio
  */
 export function getCanvasCtx(
@@ -61,6 +82,7 @@ export function getCanvasCtx(
     return null;
   }
   // scale all drawing operations by the dpr
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(devicePixelRatio, devicePixelRatio);
   return ctx;
 }

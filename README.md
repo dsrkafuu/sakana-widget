@@ -13,11 +13,12 @@
 
 <https://sakana.dsrkafuu.net>
 
-Add the Sakana! Widget to your own web page! Support custom images, runtime parameters and more!
+Add the Sakana! Widget to your own web page! Support custom images, auto resizing and more runtime params!
 
 ## Features
 
 - Register and use your own character
+- Auto resizing support, 120px minimum
 - Press and hold the stand and drag, after releasing the hand the stand will bounce in the opposite direction
 - Use control bar to switch roles and use other functions
 - Automatic mode, applying a force of random size at random intervals
@@ -82,6 +83,12 @@ new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 
 See the [API](#api) section below for detailed parameters and class type.
 
+## Auto Resizing
+
+Set `autoFit: true` when initializing the component and it will automatically scale according to the size of its mount container, minimum 120px.
+
+Note that to turn on auto-scaling you need to **make sure the mounting container is a [BFC](https://developer.mozilla.org/docs/Web/Guide/CSS/Block_formatting_context)**, the easiest way to do this is to set ` position: relative` or `position: fixed`. Components in auto-scaling mode additionally add a wrapper container between the app and the mount container, and set its width and height to `100%` by which the actual size is detected, so the BFC is required.
+
 ## API
 
 ### Types
@@ -132,6 +139,10 @@ export interface SakanaWidgetOptions {
    * widget size, default to `200`
    */
   size?: number;
+  /**
+   * auto fit size (120px minimum), default to `false`
+   */
+  autoFit?: boolean;
   /**
    * default character, default to `chisato`
    */

@@ -13,11 +13,12 @@
 
 <https://sakana.dsrkafuu.net>
 
-把石蒜模拟器添加到你自己的网页内！支持自定义图片、运行参数和更多！
+把石蒜模拟器添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！
 
 ## 功能
 
 - 注册并使用你自己的角色
+- 自动缩放适应，最小 120px
 - 按住立牌拖拽，松手后立牌会向反方向弹跳
 - 底座控制栏切换角色和其他功能
 - 自走模式，以随机间隔施加一个大小随机的力
@@ -82,6 +83,12 @@ new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 
 详细的参数和返回实例请见下文 [API](#api) 章节。
 
+## 自动缩放
+
+在初始化组件的时候设置 `autoFit: true` 即可，组件会自动根据其挂载容器的大小进行缩放，最小 120px。
+
+注意，开启自动缩放时需要**确保挂载容器是一个 [BFC](https://developer.mozilla.org/docs/Web/Guide/CSS/Block_formatting_context)**，最简单的方式就是设置 `position: relative` 或 `position: fixed`。组件在自动缩放模式下会额外在 app 和挂载容器之间添加一个包裹容器，并将其宽高设置为 `100%`，通过该包裹容器侦测实际的大小，因此，BFC 是必须的。
+
 ## API
 
 ### 类型定义
@@ -132,6 +139,10 @@ export interface SakanaWidgetOptions {
    * widget size, default to `200`
    */
   size?: number;
+  /**
+   * auto fit size (120px minimum), default to `false`
+   */
+  autoFit?: boolean;
   /**
    * default character, default to `chisato`
    */
