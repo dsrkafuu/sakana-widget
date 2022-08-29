@@ -32,15 +32,16 @@
 <!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.2.0/lib/sakana.min.js -->
 <!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.2.0/sakana.min.js -->
 <div id="sakana-widget"></div>
+<script>
+  function initSakanaWidget() {
+    new SakanaWidget().mount('#sakana-widget');
+  }
+</script>
 <script
-  defer
+  async
+  onload="initSakanaWidget()"
   src="https://cdn.jsdelivr.net/npm/sakana-widget@2.2.0/lib/sakana.min.js"
 ></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    new SakanaWidget().mount('#sakana-widget');
-  });
-</script>
 ```
 
 ```ts
