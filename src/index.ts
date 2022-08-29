@@ -111,7 +111,13 @@ class SakanaWidget {
    * registered a new character
    */
   static registerCharacter(name: string, character: SakanaWidgetCharacter) {
-    _characters[name] = cloneDeep(character);
+    const _char = cloneDeep(character);
+    // validate inertia
+    let inertia = _char.initialState.i;
+    inertia = Math.min(0.5, Math.max(0, inertia));
+    _char.initialState.i = inertia;
+    // register character
+    _characters[name] = _char;
   }
 
   constructor(options: SakanaWidgetOptions = {}) {
@@ -296,7 +302,8 @@ class SakanaWidget {
    * run the widget in animation frame
    */
   _run() {
-    const originRotate = this._options.rotate;
+    let originRotate = this._options.rotate;
+    originRotate = Math.min(120, Math.max(0, originRotate));
     const cut = this._options.threshold;
     if (!this._running) {
       return;
