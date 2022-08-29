@@ -310,12 +310,12 @@ class SakanaWidget {
     }
     let { r, y, t, w } = this._state;
     const { d, i } = this._state;
-
     const thisRunUnix = Date.now();
-    const lastRunUnixDiff = thisRunUnix - this._lastRunUnix;
     let _inertia = i;
-    // ignore if frame diff is above 40ms (25fps)
-    if (lastRunUnixDiff < 40) {
+
+    // ignore if frame diff is above 16ms (60fps)
+    const lastRunUnixDiff = thisRunUnix - this._lastRunUnix;
+    if (lastRunUnixDiff < 16) {
       _inertia = (i / this._frameUnix) * lastRunUnixDiff;
     }
     this._lastRunUnix = thisRunUnix;
