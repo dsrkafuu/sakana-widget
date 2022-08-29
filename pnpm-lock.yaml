@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@juggle/resize-observer': ^3.4.0
   '@typescript-eslint/eslint-plugin': ^5.35.1
   '@typescript-eslint/parser': ^5.35.1
   css-loader: ^6.7.1
@@ -18,6 +19,9 @@ specifiers:
   webpack-cli: ^4.10.0
   webpack-dev-server: ^4.10.0
   webpack-merge: ^5.8.0
+
+dependencies:
+  '@juggle/resize-observer': 3.4.0
 
 devDependencies:
   '@typescript-eslint/eslint-plugin': 5.35.1_ktjxjibzrfqejavile4bhmzhjq
@@ -126,6 +130,10 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
+
+  /@juggle/resize-observer/3.4.0:
+    resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: false
 
   /@leichtgewicht/ip-codec/2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}

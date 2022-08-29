@@ -27,7 +27,9 @@
     "dev": "webpack serve --config ./.webpack/webpack.dev.js",
     "build": "rimraf ./dist && rimraf ./lib && tsc && webpack --config ./.webpack/webpack.prod.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@juggle/resize-observer": "^3.4.0"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
