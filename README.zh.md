@@ -29,12 +29,12 @@
 首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.1.1/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.1.1/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.2.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.2.0/sakana.min.js -->
 <div id="sakana-widget"></div>
 <script
   defer
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.1.1/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.2.0/lib/sakana.min.js"
 ></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

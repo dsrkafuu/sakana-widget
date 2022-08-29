@@ -1,3 +1,11 @@
+## v2.2.0
+
+- feat: auto resizing support
+- feat: configurable cut threshold
+- feat: configurable rotate origin
+- fix: limit inertia & rotate deg
+- fix: frame diff ignore threshold
+
 ## v2.1.1
 
 - fix readme image
