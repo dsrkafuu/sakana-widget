@@ -1,3 +1,5 @@
+/*! sakana-widget | DSRKafuU (https://dsrkafuu.net) | Copyright (c) MIT License */
+
 import './index.scss';
 import type { RequiredDeep } from './utils';
 import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';

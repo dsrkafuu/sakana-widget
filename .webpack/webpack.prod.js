@@ -22,7 +22,12 @@ const site = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [new ESBuildMinifyPlugin({ target: 'es2015' })],
+    minimizer: [
+      new ESBuildMinifyPlugin({
+        target: 'es2015',
+        legalComments: 'eof',
+      }),
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -42,7 +47,12 @@ const cdn = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [new ESBuildMinifyPlugin({ target: 'es2015' })],
+    minimizer: [
+      new ESBuildMinifyPlugin({
+        target: 'es2015',
+        legalComments: 'eof',
+      }),
+    ],
   },
 });
 
