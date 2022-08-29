@@ -9,6 +9,7 @@
 
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
+![Upstream](https://img.shields.io/badge/upstream-3ad748a-blue)
 
 <https://sakana.dsrkafuu.net>
 
