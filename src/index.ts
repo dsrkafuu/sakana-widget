@@ -575,7 +575,7 @@ class SakanaWidget {
 
   /**
    * @public
-   * mount the widget, default to `#sakana-widget`
+   * mount the widget
    */
   mount(el: HTMLElement | string) {
     // pre check

@@ -96,31 +96,31 @@ new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 ```ts
 export interface SakanaWidgetState {
   /**
-   * inertia
+   * 惯性
    */
   i: number;
   /**
-   * stickiness
+   * 粘性
    */
   s: number;
   /**
-   * decay
+   * 衰减
    */
-  d: number; // decay
+  d: number;
   /**
-   * angle
+   * 角度
    */
   r: number;
   /**
-   * height
+   * 高度
    */
   y: number;
   /**
-   * vertical speed
+   * 垂直速度
    */
   t: number;
   /**
-   * horizontal speed
+   * 水平速度
    */
   w: number;
 }
@@ -136,34 +136,34 @@ export interface SakanaWidgetCharacter {
 ```ts
 export interface SakanaWidgetOptions {
   /**
-   * widget size, default to `200`
+   * 组件大小，默认 `200`
    */
   size?: number;
   /**
-   * auto fit size (120px minimum), default to `false`
+   * 自动适应容器大小 (最小 120px)，默认 `false`
    */
   autoFit?: boolean;
   /**
-   * default character, default to `chisato`
+   * 角色，默认 `chisato`
    */
   character?: 'chisato' | 'takina';
   /**
-   * controls bar, default to `true`
+   * 控制栏，默认 `true`
    */
   controls?: boolean;
   /**
-   * canvas stroke settings, default to `#b4b4b4` & `10`
+   * canvas 线条设置，默认 `#b4b4b4` & `10`
    */
   stroke?: {
     color?: string;
     width?: number;
   };
   /**
-   * motion stop threshold, default to `0.1`
+   * 停止动画的阈值，默认 `0.1`
    */
   threshold?: number;
   /**
-   * rotate origin, default to `0`
+   * 旋转角度，默认 `0`
    */
   rotate?: number;
 }
@@ -174,39 +174,39 @@ export interface SakanaWidgetOptions {
 ```ts
 class SakanaWidget {
   /**
-   * get data of a registered character
+   * 获取某个已注册角色的数据
    */
   static getCharacter(name: string): SakanaWidgetCharacter | null;
   /**
-   * get all registered character
+   * 获取所有已注册的角色
    */
   static getCharacters();
   /**
-   * registered a new character
+   * 注册一个新角色
    */
   static registerCharacter(name: string, character: SakanaWidgetCharacter);
   /**
-   * set current state of widget
+   * 设置组件的当前状态
    */
   setState(state: Partial<SakanaWidgetState>);
   /**
-   * set current character of widget
+   * 设置组件的当前角色
    */
   setCharacter(name: string);
   /**
-   * set to next character of widget
+   * 切换到下一个角色
    */
   nextCharacter();
   /**
-   * switch the auto mode
+   * 切换自走模式
    */
   triggetAutoMode();
   /**
-   * mount the widget, default to `#sakana-widget`
+   * 挂载组件
    */
   mount(el: HTMLElement | string);
   /**
-   * unmount the widget
+   * 移除组件
    */
   unmount();
 }

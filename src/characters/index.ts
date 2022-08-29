@@ -13,7 +13,7 @@ export interface SakanaWidgetState {
   /**
    * decay
    */
-  d: number; // decay
+  d: number;
   /**
    * angle
    */

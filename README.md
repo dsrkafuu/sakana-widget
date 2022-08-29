@@ -106,7 +106,7 @@ export interface SakanaWidgetState {
   /**
    * decay
    */
-  d: number; // decay
+  d: number;
   /**
    * angle
    */
@@ -202,7 +202,7 @@ class SakanaWidget {
    */
   triggetAutoMode();
   /**
-   * mount the widget, default to `#sakana-widget`
+   * mount the widget
    */
   mount(el: HTMLElement | string);
   /**
