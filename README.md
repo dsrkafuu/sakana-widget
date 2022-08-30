@@ -45,8 +45,8 @@ First you need to import the module, either directly using a CDN or by installin
 ```
 
 ```ts
-// npm install --save sakana-wdiget
-import SakanaWidget from 'sakana-wdiget';
+// npm install --save sakana-widget
+import SakanaWidget from 'sakana-widget';
 new SakanaWidget().mount('#sakana-widget');
 ```
 
