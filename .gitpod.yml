@@ -1,3 +1,5 @@
 tasks:
-  - init: pnpm install
+  - init: |
+      pnpm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+      pnpm install
     command: pnpm run dev
