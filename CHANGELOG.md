@@ -1,3 +1,7 @@
+## v2.2.1
+
+- fix: readme npm import example
+
 ## v2.2.0
 
 - feat: auto resizing support
