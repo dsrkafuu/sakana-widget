@@ -29,8 +29,8 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.2.1/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.2.1/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.2.2/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.2.2/sakana.min.js -->
 <div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
@@ -40,7 +40,7 @@ First you need to import the module, either directly using a CDN or by installin
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.2.1/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.2.2/lib/sakana.min.js"
 ></script>
 ```
 

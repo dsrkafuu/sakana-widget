@@ -1,3 +1,7 @@
+## v2.2.2
+
+- fix: side effect of `getCharacter(s)`
+
 ## v2.2.1
 
 - fix: readme npm import example
