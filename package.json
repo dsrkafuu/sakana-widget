@@ -23,6 +23,13 @@
   "main": "./lib/index.js",
   "module": "./lib/index.esm.js",
   "types": "./lib/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./lib/index.esm.js",
+      "types": "./lib/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "webpack serve --config ./.webpack/webpack.dev.js",
     "build": "rimraf ./dist && rimraf ./lib && tsc && webpack --config ./.webpack/webpack.prod.js"
