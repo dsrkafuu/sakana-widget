@@ -102,7 +102,8 @@ class SakanaWidget {
    * get data of a registered character
    */
   static getCharacter(name: string): SakanaWidgetCharacter | null {
-    return _characters[name] || null;
+    const _char = _characters[name];
+    return _char ? cloneDeep(_char) : null;
   }
 
   /**
@@ -111,7 +112,7 @@ class SakanaWidget {
    * get all registered character
    */
   static getCharacters() {
-    return _characters;
+    return cloneDeep(_characters);
   }
 
   /**
