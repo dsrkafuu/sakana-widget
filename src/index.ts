@@ -20,7 +20,7 @@ interface SakanaWidgetOptions {
   /**
    * default character, default to `chisato`
    */
-  character?: 'chisato' | 'takina';
+  character?: 'chisato' | 'takina' | string;
   /**
    * controls bar, default to `true`
    */
