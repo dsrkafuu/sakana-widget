@@ -65,36 +65,33 @@ const _characters: { [key: string]: SakanaWidgetCharacter } = {};
  * widget instance class
  */
 class SakanaWidget {
-  _options: RequiredDeep<SakanaWidgetOptions>;
+  private _options: RequiredDeep<SakanaWidgetOptions>;
 
   // app metadata
-  _imageSize!: number;
-  _limit!: { maxR: number; maxY: number; minY: number };
-  _lastRunUnix = Date.now();
-  _frameUnix = 1000 / 60; // default to speed of 60 fps
-  _running = true;
-  _magicForceTimeout = 0;
-  _magicForceEnabled = false;
+  private _imageSize!: number;
+  private _limit!: { maxR: number; maxY: number; minY: number };
+  private _lastRunUnix = Date.now();
+  private _frameUnix = 1000 / 60; // default to speed of 60 fps
+  private _running = true;
+  private _magicForceTimeout = 0;
+  private _magicForceEnabled = false;
 
   // character related
-  _char!: string;
-  _image!: string;
-  _state!: SakanaWidgetState;
+  private _char!: string;
+  private _image!: string;
+  private _state!: SakanaWidgetState;
 
   // dom element related
-  _domEl: HTMLElement | null = null; // mounting element
-  _domWrapper!: HTMLDivElement; // this is needed for resize observer
-  _domApp!: HTMLDivElement; // actual app element
-  _domCanvas!: HTMLCanvasElement;
-  _domCanvasCtx!: CanvasRenderingContext2D;
-  _domMain!: HTMLDivElement;
-  _domImage!: HTMLDivElement;
-  _domCtrl!: HTMLDivElement;
-  _domCtrlPerson!: HTMLDivElement;
-  _domCtrlMagic!: HTMLDivElement;
-  _domCtrlGitHub!: HTMLAnchorElement;
-  _domCtrlClose!: HTMLDivElement;
-  _resizeObserver: ResizeObserver | null = null;
+  private _domWrapper!: HTMLDivElement; // this is needed for resize observer
+  private _domApp!: HTMLDivElement; // actual app element
+  private _domCanvas!: HTMLCanvasElement;
+  private _domCanvasCtx!: CanvasRenderingContext2D;
+  private _domMain!: HTMLDivElement;
+  private _domImage!: HTMLDivElement;
+  private _domCtrlPerson!: HTMLDivElement;
+  private _domCtrlMagic!: HTMLDivElement;
+  private _domCtrlClose!: HTMLDivElement;
+  private _resizeObserver: ResizeObserver | null = null;
 
   /**
    * @public
@@ -168,7 +165,7 @@ class SakanaWidget {
    * @private
    * calculate limit and update from size
    */
-  _updateLimit(size: number) {
+  private _updateLimit(size: number) {
     let maxR = size / 5;
     if (maxR < 30) {
       maxR = 30;
@@ -184,7 +181,7 @@ class SakanaWidget {
    * @private
    * refresh widget size
    */
-  _updateSize(size: number) {
+  private _updateSize(size: number) {
     this._options.size = size;
     this._imageSize = this._options.size / 1.25;
 
@@ -216,7 +213,7 @@ class SakanaWidget {
    * @private
    * create widget dom elements
    */
-  _updateDom() {
+  private _updateDom() {
     // wrapper
     const wrapper = document.createElement('div');
     wrapper.className = 'sakana-widget-wrapper';
@@ -250,7 +247,6 @@ class SakanaWidget {
     // control bar
     const ctrl = document.createElement('div');
     ctrl.className = 'sakana-widget-ctrl';
-    this._domCtrl = ctrl;
     if (this._options.controls) {
       main.appendChild(ctrl);
     }
@@ -270,7 +266,6 @@ class SakanaWidget {
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
-    this._domCtrlGitHub = github;
     ctrl.appendChild(github);
     const close = document.createElement('div');
     close.className = itemClass;
@@ -283,7 +278,12 @@ class SakanaWidget {
    * @private
    * calculate center of the image
    */
-  _calcCenterPoint(degree: number, radius: number, x: number, y: number) {
+  private _calcCenterPoint(
+    degree: number,
+    radius: number,
+    x: number,
+    y: number
+  ) {
     const radian = (Math.PI / 180) * degree;
     const cos = Math.cos(radian);
     const sin = Math.sin(radian);
@@ -296,7 +296,7 @@ class SakanaWidget {
    * @private
    * draw a frame
    */
-  _draw() {
+  private _draw() {
     const { r, y } = this._state;
     const { size, controls, stroke } = this._options;
     const img = this._domImage;
@@ -332,7 +332,7 @@ class SakanaWidget {
    * @private
    * run the widget in animation frame
    */
-  _run() {
+  private _run() {
     let originRotate = this._options.rotate;
     originRotate = Math.min(120, Math.max(0, originRotate));
     const cut = this._options.threshold;
@@ -381,7 +381,7 @@ class SakanaWidget {
    * @private
    * manually move the widget
    */
-  _move(x: number, y: number) {
+  private _move(x: number, y: number) {
     const { maxR, maxY, minY } = this._limit;
     let r = x * this._state.s;
     r = Math.max(-maxR, r);
@@ -400,7 +400,7 @@ class SakanaWidget {
    * @private
    * handle mouse down event
    */
-  _onMouseDown(e: MouseEvent) {
+  private _onMouseDown(e: MouseEvent) {
     e.preventDefault();
     this._running = false;
     const { pageY } = e;
@@ -432,7 +432,7 @@ class SakanaWidget {
    * @private
    * handle touch start event
    */
-  _onTouchStart(e: TouchEvent) {
+  private _onTouchStart(e: TouchEvent) {
     e.preventDefault();
     this._running = false;
     if (!e.touches[0]) {
@@ -470,7 +470,7 @@ class SakanaWidget {
    * @private
    * do a force on widget (for auto mode)
    */
-  _magicForce() {
+  private _magicForce() {
     // 0.1 probability to randomly switch character
     if (Math.random() < 0.1) {
       const available = Object.keys(_characters);
@@ -588,7 +588,6 @@ class SakanaWidget {
     if (!_el) {
       throw new Error('Invalid mounting element');
     }
-    this._domEl = _el;
     const parent = _el.parentNode;
     if (!parent) {
       throw new Error('Invalid mounting element parent');
