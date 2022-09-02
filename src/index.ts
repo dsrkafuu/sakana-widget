@@ -69,6 +69,7 @@ class SakanaWidget {
 
   // app metadata
   private _imageSize!: number;
+  private _canvasSize!: number;
   private _limit!: { maxR: number; maxY: number; minY: number };
   private _lastRunUnix = Date.now();
   private _frameUnix = 1000 / 60; // default to speed of 60 fps
@@ -168,15 +169,16 @@ class SakanaWidget {
   private _updateSize = (size: number) => {
     this._options.size = size;
     this._imageSize = this._options.size / 1.25;
+    this._canvasSize = this._options.size * 1.5;
 
     // widget root app
     this._domApp.style.width = `${size}px`;
     this._domApp.style.height = `${size}px`;
 
     // canvas stroke palette
-    this._domCanvas.style.width = `${size}px`;
-    this._domCanvas.style.height = `${size}px`;
-    const ctx = getCanvasCtx(this._domCanvas, size);
+    this._domCanvas.style.width = `${this._canvasSize}px`;
+    this._domCanvas.style.height = `${this._canvasSize}px`;
+    const ctx = getCanvasCtx(this._domCanvas, this._canvasSize);
     if (!ctx) {
       throw new Error('Invalid canvas context');
     }
@@ -292,9 +294,11 @@ class SakanaWidget {
     img.style.transform = `rotate(${r}deg) translateX(${x}px) translateY(${y}px)`;
 
     // draw the canvas line
-    ctx.clearRect(0, 0, size, size);
+    ctx.clearRect(0, 0, this._canvasSize, this._canvasSize);
     ctx.save();
-    ctx.translate(size / 2, size); // use the bottom center of widget as axis origin
+    // use the bottom center of widget as axis origin
+    // note that canvas is 1.5 times larger than widget
+    ctx.translate(this._canvasSize / 2, size + (this._canvasSize - size) / 2);
     ctx.strokeStyle = stroke.color;
     ctx.lineWidth = stroke.width;
     ctx.lineCap = 'round';
