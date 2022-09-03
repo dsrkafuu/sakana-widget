@@ -20,14 +20,16 @@
   "files": [
     "lib"
   ],
+  "types": "./lib/index.d.ts",
   "main": "./lib/index.js",
   "module": "./lib/index.esm.js",
-  "types": "./lib/index.d.ts",
+  "unpkg": "./lib/sakana.min.js",
+  "jsdelivr": "./lib/sakana.min.js",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "require": "./lib/index.js",
-      "import": "./lib/index.esm.js",
-      "types": "./lib/index.d.ts"
+      "import": "./lib/index.esm.js"
     }
   },
   "scripts": {
