@@ -1,3 +1,10 @@
+## v2.3.0
+
+- feat: optimize canvas render size
+- fix: package export declaration
+- chore: bind this with arrow func
+- chore: ts private check
+
 ## v2.2.2
 
 - fix: side effect of `getCharacter(s)`

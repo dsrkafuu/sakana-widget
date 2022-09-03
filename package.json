@@ -3,7 +3,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "name": "sakana-widget",
-  "version": "2.2.2",
+  "version": "2.3.0",
   "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
   "keywords": [
     "widget",
@@ -38,22 +38,22 @@
     "@juggle/resize-observer": "^3.4.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.35.1",
-    "@typescript-eslint/parser": "^5.35.1",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
     "css-loader": "^6.7.1",
     "dsr-design": "~3.5.1",
     "esbuild-loader": "^2.19.0",
-    "eslint": "^8.22.0",
+    "eslint": "^8.23.0",
     "html-webpack-plugin": "^5.5.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.54.5",
+    "sass": "^1.54.8",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
     "svgo-loader": "^3.0.1",
-    "typescript": "^4.7.4",
+    "typescript": "^4.8.2",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.10.0",
+    "webpack-dev-server": "^4.10.1",
     "webpack-merge": "^5.8.0"
   }
 }

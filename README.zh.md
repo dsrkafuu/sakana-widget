@@ -9,7 +9,7 @@
 
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
-![Upstream](https://img.shields.io/badge/upstream-3ad748a-blue)
+![Upstream](https://img.shields.io/badge/upstream-4931309-blue)
 
 <https://sakana.dsrkafuu.net>
 
@@ -29,8 +29,8 @@
 首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.2.2/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.2.2/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.3.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.3.0/sakana.min.js -->
 <div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
@@ -40,7 +40,7 @@
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.2.2/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.0/lib/sakana.min.js"
 ></script>
 ```
 
