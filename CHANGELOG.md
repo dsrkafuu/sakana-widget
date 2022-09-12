@@ -1,3 +1,7 @@
+## v2.3.1
+
+- fix: mount to dom element
+
 ## v2.3.0
 
 - feat: optimize canvas render size
