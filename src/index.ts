@@ -572,6 +572,8 @@ class SakanaWidget {
     let _el: HTMLElement | null = null;
     if (typeof el === 'string') {
       _el = document.querySelector(el);
+    } else {
+      _el = el;
     }
     if (!_el) {
       throw new Error('Invalid mounting element');
