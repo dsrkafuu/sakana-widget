@@ -33,6 +33,7 @@
     }
   },
   "scripts": {
+    "lint": "eslint ./src",
     "dev": "webpack serve --config ./.webpack/webpack.dev.js",
     "build": "rimraf ./dist && rimraf ./lib && tsc && webpack --config ./.webpack/webpack.prod.js"
   },
