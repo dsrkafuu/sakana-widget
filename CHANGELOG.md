@@ -1,3 +1,7 @@
+## v2.3.2
+
+- fix: source map
+
 ## v2.3.1
 
 - fix: mount to dom element
