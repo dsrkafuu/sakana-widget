@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
 ![Upstream](https://img.shields.io/badge/upstream-4931309-blue)
 
-<https://sakana.dsrkafuu.net>
+<https://github.dsrkafuu.net/sakana-widget/>
 
 Add the Sakana! Widget to your own web page! Support custom images, auto resizing and more runtime params!
 

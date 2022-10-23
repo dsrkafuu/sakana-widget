@@ -11,7 +11,7 @@
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
 ![Upstream](https://img.shields.io/badge/upstream-4931309-blue)
 
-<https://sakana.dsrkafuu.net>
+<https://github.dsrkafuu.net/sakana-widget/>
 
 把石蒜模拟器添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！
 
