@@ -1,6 +1,0 @@
-tasks:
-  - before: |
-      eval $(command gp env -e)
-      pnpm config set //registry.npmjs.org/:_authToken "${NPM_TOKEN}"
-    init: pnpm install
-    command: pnpm run dev
