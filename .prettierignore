@@ -1,5 +1,7 @@
-dist/
-html/
+docs/**
+!docs/github.png
 lib/
 node_modules/
-pnpm-lock.yaml
+.DS_Store
+*-lock.*
+*.lock
