@@ -53,6 +53,7 @@ First you need to import the module, either directly using a CDN or by installin
 
 ```ts
 // npm install --save sakana-widget
+import 'sakana-widget/lib/index.css';
 import SakanaWidget from 'sakana-widget';
 new SakanaWidget().mount('#sakana-widget');
 ```

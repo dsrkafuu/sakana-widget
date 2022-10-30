@@ -1,5 +1,6 @@
-## v2.3.2
+## v2.4.0
 
+- feat: optimize ssr usage
 - build: move to rollup
 
 ## v2.3.2
