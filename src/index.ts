@@ -55,11 +55,15 @@ const defaultOptions: SakanaWidgetOptions = {
 };
 
 // register default characters
-const _characters: { [key: string]: SakanaWidgetCharacter } = {};
-(Object.keys(characters) as Array<keyof typeof characters>).forEach((key) => {
-  const _char = characters[key];
-  _characters[key] = cloneDeep(_char);
-});
+let _characters: { [key: string]: SakanaWidgetCharacter } = null as any;
+function _initCharacters() {
+  if (_characters) return;
+  _characters = {};
+  (Object.keys(characters) as Array<keyof typeof characters>).forEach((key) => {
+    const _char = characters[key];
+    _characters[key] = cloneDeep(_char);
+  });
+}
 
 /**
  * widget instance class
@@ -132,6 +136,8 @@ class SakanaWidget {
   };
 
   constructor(options: SakanaWidgetOptions = {}) {
+    _initCharacters();
+
     this._options = cloneDeep(
       defaultOptions
     ) as RequiredDeep<SakanaWidgetOptions>;
