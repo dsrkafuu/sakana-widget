@@ -28,8 +28,10 @@
   "jsdelivr": "./lib/sakana.min.js",
   "scripts": {
     "lint": "eslint",
-    "build": "rollup -c ./rollup.config.js",
-    "dev:rollup": "rollup --watch -c ./rollup.watch.js",
+    "build:docs": "rollup -c ./rollup.docs.js",
+    "build:lib": "rollup -c ./rollup.config.js",
+    "build": "npm-run-all -s build:*",
+    "dev:rollup": "rollup --watch -c ./rollup.docs.js",
     "dev:serve": "serve ./docs",
     "dev": "npm-run-all -p dev:*"
   },
