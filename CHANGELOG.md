@@ -1,5 +1,9 @@
 ## v2.3.2
 
+- build: move to rollup
+
+## v2.3.2
+
 - fix: source map
 
 ## v2.3.1

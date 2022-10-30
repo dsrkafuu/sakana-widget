@@ -24,11 +24,13 @@ const site = {
       declaration: false,
       outDir: './docs',
     }),
-    image(),
+    image({
+      exclude: './src/**/*.svg',
+    }),
+    svgo(),
     scss({
       outputStyle: 'compressed',
     }),
-    svgo(),
     html({
       template: () => fs.readFileSync('./index.html', 'utf-8'),
     }),

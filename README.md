@@ -9,7 +9,7 @@
 
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
-![Upstream](https://img.shields.io/badge/upstream-4931309-blue)
+![Upstream](https://img.shields.io/badge/upstream-670c1f1-blue)
 
 <https://github.dsrkafuu.net/sakana-widget/>
 
@@ -29,8 +29,15 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.3.3/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.3.3/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.css -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.0/sakana.min.css -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.0/sakana.min.js -->
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.css"
+/>
 <div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
@@ -40,7 +47,7 @@ First you need to import the module, either directly using a CDN or by installin
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.3.3/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.js"
 ></script>
 ```
 
@@ -77,7 +84,7 @@ Of course, you can use your own image (url or base64) as a character, e.g. GitHu
 
 ```ts
 const github = SakanaWidget.getCharacter('chisato');
-github.image = `https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/public/github.png`;
+github.image = `https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/docs/github.png`;
 SakanaWidget.registerCharacter('github', github);
 new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 ```

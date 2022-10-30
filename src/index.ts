@@ -1,9 +1,9 @@
 /*! sakana-widget | DSRKafuU (https://dsrkafuu.net) | Copyright (c) MIT License */
 
 import './index.scss';
-import { ResizeObserver } from '@juggle/resize-observer';
 import type { RequiredDeep } from './utils';
 import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
+import { ResizeObserver } from '@juggle/resize-observer';
 import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import { cloneDeep, mergeDeep, throttle, getCanvasCtx } from './utils';

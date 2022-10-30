@@ -22,7 +22,7 @@
     "fileMap": [
       {
         "basePath": "lib",
-        "files": ["*.js?(.map)", "**/*.d.ts"]
+        "files": ["**/*.css?(.map)", "**/*.js?(.map)", "**/*.d.ts"]
       }
     ]
   },

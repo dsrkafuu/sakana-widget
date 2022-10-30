@@ -16,7 +16,15 @@ const umd = {
     name,
     sourcemap: true,
   },
-  plugins: [nodeResolve(), typescript(), image(), scss(), svgo()],
+  plugins: [
+    nodeResolve(),
+    typescript(),
+    scss(),
+    image({
+      exclude: './src/**/*.svg',
+    }),
+    svgo(),
+  ],
 };
 
 /** @type {import('rollup').RollupOptions} */
@@ -30,9 +38,11 @@ const esm = {
   plugins: [
     nodeResolve(),
     typescript(),
-    image(),
     scss({
       output: false,
+    }),
+    image({
+      exclude: './src/**/*.svg',
     }),
     svgo(),
   ],
@@ -50,9 +60,11 @@ const cdn = {
   plugins: [
     nodeResolve(),
     typescript(),
-    image(),
     scss({
       outputStyle: 'compressed',
+    }),
+    image({
+      exclude: './src/**/*.svg',
     }),
     svgo(),
   ],
