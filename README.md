@@ -9,6 +9,7 @@
 
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
+[![Codacy](https://img.shields.io/codacy/grade/c978c911293b45ada37f1fa8db09d8a9)](https://www.codacy.com/gh/dsrkafuu/sakana-widget/dashboard)
 ![Upstream](https://img.shields.io/badge/upstream-670c1f1-blue)
 
 <https://github.dsrkafuu.net/sakana-widget/>
@@ -29,14 +30,14 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.css -->
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.0/sakana.min.css -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.0/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.1/lib/sakana.min.css -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.4.1/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.1/sakana.min.css -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.4.1/sakana.min.js -->
 
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.css"
+  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.1/lib/sakana.min.css"
 />
 <div id="sakana-widget"></div>
 <script>
@@ -47,7 +48,7 @@ First you need to import the module, either directly using a CDN or by installin
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.0/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.4.1/lib/sakana.min.js"
 ></script>
 ```
 

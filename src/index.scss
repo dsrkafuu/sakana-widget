@@ -1,5 +1,5 @@
-$color-font: #555555;
-$color-bg: #dddddd;
+$color-font: #555;
+$color-bg: #ddd;
 $color-bg-active: rgba(255, 255, 255, 0.25);
 $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 
@@ -61,6 +61,7 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     background-color: $color-bg;
     box-shadow: $box-shadow;
+
     &-item {
       height: 24px;
       width: 28px;
@@ -69,6 +70,7 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       align-items: center;
       color: $color-font;
       background-color: transparent;
+
       &:hover {
         color: $color-font;
         background-color: $color-bg-active;
@@ -79,6 +81,7 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   &-icon {
     height: 18px;
     width: 18px;
+
     &--rotate {
       animation: sakana-widget-spin 2s linear infinite;
     }

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const typescript = require('@rollup/plugin-typescript');
+const terser = require('@rollup/plugin-terser');
 const html = require('@rollup/plugin-html');
 const image = require('@rollup/plugin-image');
 const scss = require('rollup-plugin-scss');
@@ -34,6 +35,7 @@ const site = {
     html({
       template: () => fs.readFileSync('./index.html', 'utf-8'),
     }),
+    terser(),
   ],
 };
 

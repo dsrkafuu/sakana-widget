@@ -1,3 +1,7 @@
+## v2.4.1
+
+- fix: code styles
+
 ## v2.4.0
 
 - feat: optimize ssr usage

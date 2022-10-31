@@ -1,5 +1,6 @@
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const typescript = require('@rollup/plugin-typescript');
+const terser = require('@rollup/plugin-terser');
 const image = require('@rollup/plugin-image');
 const scss = require('rollup-plugin-scss');
 const svgo = require('rollup-plugin-svgo');
@@ -67,6 +68,7 @@ const cdn = {
       exclude: './src/**/*.svg',
     }),
     svgo(),
+    terser(),
   ],
 };
 
