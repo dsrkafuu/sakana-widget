@@ -10,6 +10,7 @@
 [![NPM](https://img.shields.io/npm/v/sakana-widget)](https://www.npmjs.com/package/sakana-widget)
 [![License](https://img.shields.io/github/license/dsrkafuu/sakana-widget)](https://github.com/dsrkafuu/sakana-widget/blob/main/LICENSE)
 [![Codacy](https://img.shields.io/codacy/grade/c978c911293b45ada37f1fa8db09d8a9)](https://www.codacy.com/gh/dsrkafuu/sakana-widget/dashboard)
+[![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/sakana-widget)](https://www.jsdelivr.com/package/npm/sakana-widget)
 ![Upstream](https://img.shields.io/badge/upstream-670c1f1-blue)
 
 <https://github.dsrkafuu.net/sakana-widget/>
