@@ -1,6 +1,10 @@
+## v2.4.2
+
+- fix: scss build issue
+
 ## v2.4.1
 
-- fix: code styles
+- chore: update deps
 
 ## v2.4.0
 
