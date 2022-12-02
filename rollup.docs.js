@@ -31,6 +31,7 @@ const site = {
     svgo(),
     scss({
       outputStyle: 'compressed',
+      fileName: 'sakana.min.css',
     }),
     html({
       template: () => fs.readFileSync('./index.html', 'utf-8'),

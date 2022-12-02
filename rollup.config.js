@@ -20,7 +20,9 @@ const umd = {
   plugins: [
     nodeResolve(),
     typescript(),
-    scss(),
+    scss({
+      fileName: 'index.css',
+    }),
     image({
       exclude: './src/**/*.svg',
     }),
@@ -63,6 +65,7 @@ const cdn = {
     typescript(),
     scss({
       outputStyle: 'compressed',
+      fileName: 'sakana.min.css',
     }),
     image({
       exclude: './src/**/*.svg',
