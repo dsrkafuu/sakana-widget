@@ -32,7 +32,7 @@
     "build:lib": "rollup -c ./rollup.config.js",
     "build": "npm-run-all -s build:*",
     "dev:rollup": "rollup --watch -c ./rollup.docs.js",
-    "dev:serve": "serve ./docs",
+    "dev:serve": "yarn build && serve ./docs",
     "dev": "npm-run-all -p dev:*"
   },
   "dependencies": {
