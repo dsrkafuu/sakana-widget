@@ -31,6 +31,10 @@ interface SakanaWidgetOptions {
   stroke?: {
     color?: string;
     width?: number;
+    /**
+     * 0.6 - 1.3
+     */
+    heightPercent?: number;
   };
   /**
    * motion stop threshold, default to `0.1`
@@ -49,6 +53,7 @@ const defaultOptions: SakanaWidgetOptions = {
   stroke: {
     color: '#b4b4b4',
     width: 10,
+    heightPercent: 1
   },
   threshold: 0.1,
   rotate: 0,
@@ -183,7 +188,7 @@ class SakanaWidget {
   private _updateSize = (size: number) => {
     this._options.size = size;
     this._imageSize = this._options.size / 1.25;
-    this._canvasSize = this._options.size * 1.5;
+    this._canvasSize = this._options.size * 1.5 * this._options.stroke.heightPercent;
 
     // widget root app
     this._domApp.style.width = `${size}px`;
@@ -312,7 +317,7 @@ class SakanaWidget {
     ctx.save();
     // use the bottom center of widget as axis origin
     // note that canvas is 1.5 times larger than widget
-    ctx.translate(this._canvasSize / 2, size + (this._canvasSize - size) / 2);
+    ctx.translate(this._canvasSize / 2, size + (this._canvasSize * stroke.heightPercent - size) / 2);
     ctx.strokeStyle = stroke.color;
     ctx.lineWidth = stroke.width;
     ctx.lineCap = 'round';
