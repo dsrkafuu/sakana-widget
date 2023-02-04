@@ -1,3 +1,7 @@
+## v2.5.0
+
+- fix: getCharacter before initCharacter
+
 ## v2.4.2
 
 - fix: scss build issue
