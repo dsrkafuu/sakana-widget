@@ -118,10 +118,8 @@
     <div id="sakana-widget-takina"></div>
     <script src="sakana.min.js"></script>
     <script>
-      new SakanaWidget({}).mount('#sakana-widget-chisato');
-      new SakanaWidget({
-        character: 'takina',
-      }).mount('#sakana-widget-takina');
+      new SakanaWidget().mount('#sakana-widget-chisato');
+      new SakanaWidget({ character: 'takina' }).mount('#sakana-widget-takina');
     </script>
   </body>
 </html>

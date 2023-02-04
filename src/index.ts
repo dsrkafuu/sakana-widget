@@ -104,6 +104,9 @@ class SakanaWidget {
    * get data of a registered character
    */
   static getCharacter = (name: string): SakanaWidgetCharacter | null => {
+    if (_characters == null) {
+      _initCharacters()
+    }
     const _char = _characters[name];
     return _char ? cloneDeep(_char) : null;
   };
@@ -114,6 +117,9 @@ class SakanaWidget {
    * get all registered character
    */
   static getCharacters = () => {
+    if (_characters == null) {
+      _initCharacters()
+    }
     return cloneDeep(_characters);
   };
 
@@ -136,7 +142,9 @@ class SakanaWidget {
   };
 
   constructor(options: SakanaWidgetOptions = {}) {
-    _initCharacters();
+    if (_characters == null) {
+      _initCharacters();
+    }
 
     this._options = cloneDeep(
       defaultOptions
