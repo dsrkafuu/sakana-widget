@@ -3,7 +3,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "name": "sakana-widget",
-  "version": "2.4.3",
+  "version": "2.5.0",
   "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
   "keywords": [
     "widget",
@@ -39,20 +39,20 @@
     "@juggle/resize-observer": "^3.4.0"
   },
   "devDependencies": {
-    "@dsrca/config": "^2.1.1",
-    "@rollup/plugin-html": "^1.0.0",
-    "@rollup/plugin-image": "^3.0.1",
+    "@dsrca/config": "^2.2.1",
+    "@rollup/plugin-html": "^1.0.2",
+    "@rollup/plugin-image": "^3.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-terser": "^0.1.0",
-    "@rollup/plugin-typescript": "^10.0.1",
-    "eslint": "^8.28.0",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "eslint": "^8.33.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.0",
-    "rollup": "^3.5.1",
+    "prettier": "^2.8.3",
+    "rollup": "^3.13.0",
     "rollup-plugin-scss": "^4.0.0",
     "rollup-plugin-svgo": "^2.0.0",
-    "sass": "^1.56.1",
-    "serve": "^14.1.2",
-    "typescript": "^4.9.3"
+    "sass": "^1.58.0",
+    "serve": "^14.2.0",
+    "typescript": "^4.9.5"
   }
 }
