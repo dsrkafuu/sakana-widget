@@ -40,6 +40,10 @@ interface SakanaWidgetOptions {
    * rotate origin, default to `0`
    */
   rotate?: number;
+  /**
+   * show spring rod
+   */
+  showRod?: boolean;
 }
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
@@ -52,6 +56,7 @@ const defaultOptions: SakanaWidgetOptions = {
   },
   threshold: 0.1,
   rotate: 0,
+  showRod: true
 };
 
 // register default characters
@@ -316,17 +321,21 @@ class SakanaWidget {
     ctx.strokeStyle = stroke.color;
     ctx.lineWidth = stroke.width;
     ctx.lineCap = 'round';
-    ctx.beginPath();
+    if (this._options.showRod) {
+      ctx.beginPath();
+    }
     // use the bottom center (different offset) of widget as start of the line
     if (controls) {
       ctx.moveTo(0, -10);
     } else {
       ctx.moveTo(0, 10);
     }
-    const radius = size - imgSize / 2;
-    const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
-    ctx.lineTo(nx, -ny);
-    ctx.stroke();
+    if (this._options.showRod) {
+      const radius = size - imgSize / 2;
+      const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
+      ctx.lineTo(nx, -ny);
+      ctx.stroke();
+    }
     ctx.restore();
   };
 
@@ -581,9 +590,9 @@ class SakanaWidget {
    * @public
    * mount the widget
    */
-  mount = (el: HTMLElement | string) => {
+  mount = (el: HTMLElement | string, canMove: boolean = true) => {
     // pre check
-    let _el: HTMLElement | null = null;
+    let _el: HTMLElement | null;
     if (typeof el === 'string') {
       _el = document.querySelector(el);
     } else {
@@ -598,8 +607,11 @@ class SakanaWidget {
     }
 
     // append event listeners
-    this._domImage.addEventListener('mousedown', this._onMouseDown);
-    this._domImage.addEventListener('touchstart', this._onTouchStart);
+    if (canMove) {
+      this._domImage.addEventListener('mousedown', this._onMouseDown);
+      this._domImage.addEventListener('touchstart', this._onTouchStart);
+    }
+
     this._domCtrlPerson.addEventListener('click', this.nextCharacter);
     this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
     this._domCtrlClose.addEventListener('click', this.unmount);
