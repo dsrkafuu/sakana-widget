@@ -26,6 +26,14 @@ interface SakanaWidgetOptions {
    */
   controls?: boolean;
   /**
+   * show spring rod, default to `true`
+   */
+  rod?: boolean;
+  /**
+   * character draggable, default to `true`
+   */
+  draggable?: boolean;
+  /**
    * canvas stroke settings, default to `#b4b4b4` & `10`
    */
   stroke?: {
@@ -40,23 +48,21 @@ interface SakanaWidgetOptions {
    * rotate origin, default to `0`
    */
   rotate?: number;
-  /**
-   * show spring rod
-   */
-  showRod?: boolean;
 }
+
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
   autoFit: false,
   character: 'chisato',
   controls: true,
+  rod: true,
+  draggable: true,
   stroke: {
     color: '#b4b4b4',
     width: 10,
   },
   threshold: 0.1,
   rotate: 0,
-  showRod: true
 };
 
 // register default characters
@@ -110,7 +116,7 @@ class SakanaWidget {
    */
   static getCharacter = (name: string): SakanaWidgetCharacter | null => {
     if (_characters == null) {
-      _initCharacters()
+      _initCharacters();
     }
     const _char = _characters[name];
     return _char ? cloneDeep(_char) : null;
@@ -123,7 +129,7 @@ class SakanaWidget {
    */
   static getCharacters = () => {
     if (_characters == null) {
-      _initCharacters()
+      _initCharacters();
     }
     return cloneDeep(_characters);
   };
@@ -321,7 +327,7 @@ class SakanaWidget {
     ctx.strokeStyle = stroke.color;
     ctx.lineWidth = stroke.width;
     ctx.lineCap = 'round';
-    if (this._options.showRod) {
+    if (this._options.rod) {
       ctx.beginPath();
     }
     // use the bottom center (different offset) of widget as start of the line
@@ -330,7 +336,7 @@ class SakanaWidget {
     } else {
       ctx.moveTo(0, 10);
     }
-    if (this._options.showRod) {
+    if (this._options.rod) {
       const radius = size - imgSize / 2;
       const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
       ctx.lineTo(nx, -ny);
@@ -590,7 +596,7 @@ class SakanaWidget {
    * @public
    * mount the widget
    */
-  mount = (el: HTMLElement | string, canMove: boolean = true) => {
+  mount = (el: HTMLElement | string) => {
     // pre check
     let _el: HTMLElement | null;
     if (typeof el === 'string') {
@@ -607,7 +613,7 @@ class SakanaWidget {
     }
 
     // append event listeners
-    if (canMove) {
+    if (this._options.draggable) {
       this._domImage.addEventListener('mousedown', this._onMouseDown);
       this._domImage.addEventListener('touchstart', this._onTouchStart);
     }

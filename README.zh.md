@@ -12,7 +12,7 @@
 [![Codacy](https://img.shields.io/codacy/grade/c978c911293b45ada37f1fa8db09d8a9)](https://www.codacy.com/gh/dsrkafuu/sakana-widget/dashboard)
 [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/sakana-widget)](https://www.jsdelivr.com/package/npm/sakana-widget)
 ![Upstream](https://img.shields.io/badge/upstream-670c1f1-blue)
-[![Rate this package](https://badges.openbase.com/js/rating/sakana-widget.svg?token=CUNJuDinmQTed7492eRloc9QKvfxxGxtPl70NKCII04=)](https://openbase.com/js/sakana-widget?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge)
+[![Rate this package](https://badges.openbase.com/js/rating/sakana-widget.svg?token=CUNJuDinmQTed7492eRloc9QKvfxxGxtPl70NKCII04=)](https://openbase.com/js/sakana-widget?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
 
 <https://github.dsrkafuu.net/sakana-widget/>
 
@@ -163,6 +163,14 @@ export interface SakanaWidgetOptions {
    * 控制栏，默认 `true`
    */
   controls?: boolean;
+  /**
+   * 展示支撑杆，默认 `true`
+   */
+  rod?: boolean;
+  /**
+   * 可拖动，默认 `true`
+   */
+  draggable?: boolean;
   /**
    * canvas 线条设置，默认 `#b4b4b4` & `10`
    */
