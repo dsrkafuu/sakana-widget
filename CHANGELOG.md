@@ -1,3 +1,7 @@
+## v2.6.0
+
+- feat: add `rod` and `draggable` options
+
 ## v2.5.0
 
 - fix: getCharacter before initCharacter
