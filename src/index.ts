@@ -515,7 +515,7 @@ class SakanaWidget {
    * @public
    * switch the auto mode
    */
-  triggetAutoMode = () => {
+  triggerAutoMode = () => {
     this._magicForceEnabled = !this._magicForceEnabled;
 
     // toggle icon rotate
@@ -619,14 +619,14 @@ class SakanaWidget {
     }
 
     this._domCtrlPerson.addEventListener('click', this.nextCharacter);
-    this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
+    this._domCtrlMagic.addEventListener('click', this.triggerAutoMode);
     this._domCtrlClose.addEventListener('click', this.unmount);
 
     // if auto fit mode
     if (this._options.autoFit) {
       // initial resize
       this._onResize(this._domWrapper.getBoundingClientRect());
-      // handle furture resize
+      // handle future resize
       this._resizeObserver = new ResizeObserver(
         throttle((entries) => {
           if (!entries || !entries[0]) return;
@@ -653,7 +653,7 @@ class SakanaWidget {
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
     this._domCtrlPerson.removeEventListener('click', this.nextCharacter);
-    this._domCtrlMagic.removeEventListener('click', this.triggetAutoMode);
+    this._domCtrlMagic.removeEventListener('click', this.triggerAutoMode);
     this._domCtrlClose.removeEventListener('click', this.unmount);
 
     // if auto fit mode
