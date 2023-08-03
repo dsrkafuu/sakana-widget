@@ -265,11 +265,17 @@ class SakanaWidget {
     const person = document.createElement('div');
     person.className = itemClass;
     person.innerHTML = svgPerson;
+    person.role = 'button';
+    person.tabIndex = 0;
+    person.title = 'Next character';
     this._domCtrlPerson = person;
     ctrl.appendChild(person);
     const magic = document.createElement('div');
     magic.className = itemClass;
     magic.innerHTML = svgSync;
+    magic.role = 'button';
+    magic.tabIndex = 0;
+    magic.title = 'Auto mode';
     this._domCtrlMagic = magic;
     ctrl.appendChild(magic);
     const github = document.createElement('a');
@@ -277,10 +283,14 @@ class SakanaWidget {
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
+    github.title = 'GitHub repository';
     ctrl.appendChild(github);
     const close = document.createElement('div');
     close.className = itemClass;
     close.innerHTML = svgClose;
+    close.role = 'button';
+    close.tabIndex = 0;
+    close.title = 'Close';
     this._domCtrlClose = close;
     ctrl.appendChild(close);
   };
@@ -515,7 +525,7 @@ class SakanaWidget {
    * @public
    * switch the auto mode
    */
-  triggetAutoMode = () => {
+  triggerAutoMode = () => {
     this._magicForceEnabled = !this._magicForceEnabled;
 
     // toggle icon rotate
@@ -619,14 +629,14 @@ class SakanaWidget {
     }
 
     this._domCtrlPerson.addEventListener('click', this.nextCharacter);
-    this._domCtrlMagic.addEventListener('click', this.triggetAutoMode);
+    this._domCtrlMagic.addEventListener('click', this.triggerAutoMode);
     this._domCtrlClose.addEventListener('click', this.unmount);
 
     // if auto fit mode
     if (this._options.autoFit) {
       // initial resize
       this._onResize(this._domWrapper.getBoundingClientRect());
-      // handle furture resize
+      // handle future resize
       this._resizeObserver = new ResizeObserver(
         throttle((entries) => {
           if (!entries || !entries[0]) return;
@@ -653,7 +663,7 @@ class SakanaWidget {
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
     this._domCtrlPerson.removeEventListener('click', this.nextCharacter);
-    this._domCtrlMagic.removeEventListener('click', this.triggetAutoMode);
+    this._domCtrlMagic.removeEventListener('click', this.triggerAutoMode);
     this._domCtrlClose.removeEventListener('click', this.unmount);
 
     // if auto fit mode
