@@ -267,7 +267,7 @@ class SakanaWidget {
     person.innerHTML = svgPerson;
     person.role = 'button';
     person.tabIndex = 0;
-    person.title = 'Next character';
+    person.title = 'Next Character';
     this._domCtrlPerson = person;
     ctrl.appendChild(person);
     const magic = document.createElement('div');
@@ -275,7 +275,7 @@ class SakanaWidget {
     magic.innerHTML = svgSync;
     magic.role = 'button';
     magic.tabIndex = 0;
-    magic.title = 'Auto mode';
+    magic.title = 'Auto Mode';
     this._domCtrlMagic = magic;
     ctrl.appendChild(magic);
     const github = document.createElement('a');
@@ -283,7 +283,7 @@ class SakanaWidget {
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
-    github.title = 'GitHub repository';
+    github.title = 'GitHub Repository';
     ctrl.appendChild(github);
     const close = document.createElement('div');
     close.className = itemClass;
