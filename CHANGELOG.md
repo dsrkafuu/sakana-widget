@@ -1,3 +1,11 @@
+## v2.7.0
+
+- feat: make accessibility improvement optional
+
+## v2.6.1
+
+- feat: improve accessibility
+
 ## v2.6.0
 
 - feat: add `rod` and `draggable` options

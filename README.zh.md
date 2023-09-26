@@ -32,14 +32,14 @@
 首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.5.0/lib/sakana.min.css -->
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.5.0/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.5.0/sakana.min.css -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.5.0/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.7.0/lib/sakana.min.css -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.7.0/lib/sakana.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.7.0/sakana.min.css -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.7.0/sakana.min.js -->
 
 <link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.5.0/lib/sakana.min.css"
+  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.7.0/lib/sakana.min.css"
 />
 <div id="sakana-widget"></div>
 <script>
@@ -50,7 +50,7 @@
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.5.0/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.7.0/lib/sakana.min.js"
 ></script>
 ```
 
@@ -186,6 +186,10 @@ export interface SakanaWidgetOptions {
    * 旋转角度，默认 `0`
    */
   rotate?: number;
+  /**
+   * 开启 title 属性，默认 `false`
+   */
+  title?: boolean;
 }
 ```
 

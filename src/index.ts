@@ -48,6 +48,10 @@ interface SakanaWidgetOptions {
    * rotate origin, default to `0`
    */
   rotate?: number;
+  /**
+   * enable accessibility title feature, default to `false`
+   */
+  title?: boolean;
 }
 
 const defaultOptions: SakanaWidgetOptions = {
@@ -63,6 +67,7 @@ const defaultOptions: SakanaWidgetOptions = {
   },
   threshold: 0.1,
   rotate: 0,
+  title: false,
 };
 
 // register default characters
@@ -267,7 +272,9 @@ class SakanaWidget {
     person.innerHTML = svgPerson;
     person.role = 'button';
     person.tabIndex = 0;
-    person.title = 'Next Character';
+    if (this._options.title) {
+      person.title = 'Next Character';
+    }
     this._domCtrlPerson = person;
     ctrl.appendChild(person);
     const magic = document.createElement('div');
@@ -275,7 +282,9 @@ class SakanaWidget {
     magic.innerHTML = svgSync;
     magic.role = 'button';
     magic.tabIndex = 0;
-    magic.title = 'Auto Mode';
+    if (this._options.title) {
+      magic.title = 'Auto Mode';
+    }
     this._domCtrlMagic = magic;
     ctrl.appendChild(magic);
     const github = document.createElement('a');
@@ -283,14 +292,18 @@ class SakanaWidget {
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
     github.innerHTML = svgGitHub;
-    github.title = 'GitHub Repository';
+    if (this._options.title) {
+      github.title = 'GitHub Repository';
+    }
     ctrl.appendChild(github);
     const close = document.createElement('div');
     close.className = itemClass;
     close.innerHTML = svgClose;
     close.role = 'button';
     close.tabIndex = 0;
-    close.title = 'Close';
+    if (this._options.title) {
+      close.title = 'Close';
+    }
     this._domCtrlClose = close;
     ctrl.appendChild(close);
   };
