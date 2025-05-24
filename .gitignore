@@ -1,5 +1,7 @@
 docs/**
 !docs/github.png
+!docs/apple-touch-icon.png
+!docs/favicon.ico
 lib/
 node_modules/
 .DS_Store
