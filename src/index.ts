@@ -680,7 +680,9 @@ class SakanaWidget {
     this._domCtrlClose.removeEventListener('click', this.unmount);
 
     // if auto fit mode
-    this._resizeObserver && this._resizeObserver.disconnect();
+    if (this._resizeObserver) {
+      this._resizeObserver.disconnect();
+    }
 
     // unmount node
     const _el = this._domWrapper.parentNode;

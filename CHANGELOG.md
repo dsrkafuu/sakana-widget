@@ -1,3 +1,7 @@
+## v2.7.1
+
+- chore: common deps update
+
 ## v2.7.0
 
 - feat: make accessibility improvement optional

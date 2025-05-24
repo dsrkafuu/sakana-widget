@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 export type RequiredDeep<T> = {
   [K in keyof T]: RequiredDeep<T[K]>;
 } & Required<T>;
