@@ -1,7 +1,8 @@
 /*! sakana-widget | DSRKafuU (https://dsrkafuu.net) | Copyright (c) MIT License */
 
-import { SakanaWidget } from './core';
-import './index.scss';
+import { chisato, takina } from '../characters';
+import { SakanaWidget as CoreSakana } from '../core';
+import '../index.scss';
 import type {
   SakanaWidgetCharacter,
   SakanaWidgetCharacterConfiguration,
@@ -9,7 +10,17 @@ import type {
   SakanaWidgetProps,
   SakanaWidgetRegistry,
   SakanaWidgetState,
-} from './types';
+} from '../types';
+
+interface UmdSakana extends CoreSakana {
+  chisato: SakanaWidgetCharacter;
+  takina: SakanaWidgetCharacter;
+}
+
+const SakanaWidget = CoreSakana as unknown as UmdSakana;
+
+SakanaWidget.chisato = chisato;
+SakanaWidget.takina = takina;
 
 export default SakanaWidget;
 export type {

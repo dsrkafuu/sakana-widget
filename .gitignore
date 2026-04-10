@@ -1,8 +1,5 @@
-docs/**
-!docs/github.png
-!docs/apple-touch-icon.png
-!docs/favicon.ico
-lib/
+docs/.vitepress/cache/
 node_modules/
 .DS_Store
 /.idea/
+dist/
