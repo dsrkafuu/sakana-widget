@@ -1,0 +1,21 @@
+#VPContent > div > div.VPHero.has-image.VPHomeHero > div > div.image > div > img:hover {
+  animation: marshmallowStretchFixed 0.7s cubic-bezier(0.25, 1.5, 0.5, 1) forwards;
+}
+
+@keyframes marshmallowStretchFixed {
+  0% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) scaleX(1.5) scaleY(0.7);
+  }
+  50% {
+    transform: translate(-50%, -50%) scaleX(0.95) scaleY(1.05);
+  }
+  75% {
+    transform: translate(-50%, -50%) scaleX(1.2) scaleY(0.9);
+  }
+  100% {
+    transform: translate(-50%, -50%) scaleX(1) scaleY(1);
+  }
+}

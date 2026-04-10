@@ -1,6 +1,5 @@
-docs/**
-!docs/github.png
-lib/
+docs/.vitepress/cache/
+dist/
 node_modules/
 .DS_Store
 *-lock.*

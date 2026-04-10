@@ -1,4 +1,4 @@
-import type { SakanaWidgetOptions } from "./types";
+import type { SakanaWidgetOptions } from './types';
 
 /**
  * throttle a func with requestAnimationFrame,
@@ -42,8 +42,7 @@ export function getCanvasCtx(
   return ctx;
 }
 
-
-export function getDefaultOptions(): Omit<SakanaWidgetOptions, "character"> {
+export function getDefaultOptions(): Omit<SakanaWidgetOptions, 'registry'> {
   return {
     size: 200,
     autoFit: false,
@@ -58,4 +57,38 @@ export function getDefaultOptions(): Omit<SakanaWidgetOptions, "character"> {
     rotate: 0,
     title: false,
   };
+}
+
+export function getDefaultCharacterConfiguration(
+  variant: 'chisato' | 'takina'
+) {
+  if (variant === 'chisato') {
+    return {
+      props: {
+        i: 0.08,
+        s: 0.1,
+        d: 0.99,
+      },
+      initialState: {
+        r: 1,
+        y: 40,
+        t: 0,
+        w: 0,
+      },
+    };
+  } else {
+    return {
+      props: {
+        i: 0.08,
+        s: 0.1,
+        d: 0.988,
+      },
+      initialState: {
+        r: 12,
+        y: 2,
+        t: 0,
+        w: 0,
+      },
+    };
+  }
 }

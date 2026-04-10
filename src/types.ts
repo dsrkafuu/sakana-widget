@@ -37,11 +37,21 @@ export interface SakanaWidgetState {
 export interface SakanaWidgetCharacter {
   image: string;
   props: SakanaWidgetProps;
-  initialState:  SakanaWidgetState;
+  initialState: SakanaWidgetState;
 }
 
+export type SakanaWidgetCharacterConfiguration = Omit<
+  SakanaWidgetCharacter,
+  'image'
+>;
+
+export type SakanaWidgetRegistry = Record<string, SakanaWidgetCharacter>;
 
 export interface SakanaWidgetOptions {
+  /**
+   * sakana registry
+   */
+  registry: SakanaWidgetRegistry;
   /**
    * widget size, default to `200`
    */
