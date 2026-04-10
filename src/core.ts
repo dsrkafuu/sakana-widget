@@ -1,4 +1,3 @@
-import { ResizeObserver } from '@juggle/resize-observer';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import { throttle, getCanvasCtx, getDefaultOptions } from './utils';
 import type {
@@ -35,6 +34,7 @@ export class SakanaWidget {
   private domCanvasCtx!: CanvasRenderingContext2D;
   private domMain!: HTMLDivElement;
   private domImage!: HTMLDivElement;
+
   private domCtrlPerson!: HTMLDivElement;
   private domCtrlMagic!: HTMLDivElement;
   private domCtrlClose!: HTMLDivElement;

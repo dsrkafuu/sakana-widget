@@ -1,8 +1,9 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig([
+  // umd version
   {
-    entry: ['./src/index-umd.ts'],
+    entry: ['./src/umd/index.ts'],
     format: ['umd'],
     outDir: './dist/umd',
     globalName: 'SakanaWidget',
@@ -17,12 +18,10 @@ export default defineConfig([
       '.gif': 'dataurl',
       '.svg': 'text',
     },
-    deps: {
-      alwaysBundle: ['@juggle/resize-observer'],
-    },
   },
+  // cdn version
   {
-    entry: ['./src/index-umd.ts'],
+    entry: ['./src/umd/index.ts'],
     format: ['umd'],
     outDir: './dist/cdn',
     globalName: 'SakanaWidget',
@@ -39,10 +38,8 @@ export default defineConfig([
       '.gif': 'dataurl',
       '.svg': 'text',
     },
-    deps: {
-      alwaysBundle: ['@juggle/resize-observer'],
-    },
   },
+  // esm version
   {
     entry: ['./src/index.ts'],
     format: ['esm'],
