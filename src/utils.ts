@@ -1,47 +1,4 @@
-export type RequiredDeep<T> = {
-  [K in keyof T]: RequiredDeep<T[K]>;
-} & Required<T>;
-
-/**
- * simple is object
- */
-export function isObject(value: any) {
-  const type = typeof value;
-  return value != null && (type === 'object' || type === 'function');
-}
-
-/**
- * simple deep clone
- */
-export function cloneDeep<T>(value: T): T {
-  if (typeof window.structuredClone === 'function') {
-    return window.structuredClone(value);
-  } else {
-    return JSON.parse(JSON.stringify(value));
-  }
-}
-
-/**
- * simple deep merge
- */
-export function mergeDeep<T, U>(target: T, source: U): T & U {
-  const _target = cloneDeep(target) as any;
-  const _source = cloneDeep(source) as any;
-  if (!isObject(_target) || !isObject(_source)) {
-    return _target;
-  }
-  Object.keys(_source).forEach((key) => {
-    if (isObject(_source[key])) {
-      if (!isObject(_target[key])) {
-        _target[key] = {};
-      }
-      _target[key] = mergeDeep(_target[key], _source[key]);
-    } else {
-      _target[key] = _source[key];
-    }
-  });
-  return _target;
-}
+import type { SakanaWidgetOptions } from "./types";
 
 /**
  * throttle a func with requestAnimationFrame,
@@ -83,4 +40,22 @@ export function getCanvasCtx(
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(devicePixelRatio, devicePixelRatio);
   return ctx;
+}
+
+
+export function getDefaultOptions(): Omit<SakanaWidgetOptions, "character"> {
+  return {
+    size: 200,
+    autoFit: false,
+    controls: true,
+    rod: true,
+    draggable: true,
+    stroke: {
+      color: '#b4b4b4',
+      width: 10,
+    },
+    threshold: 0.1,
+    rotate: 0,
+    title: false,
+  };
 }
