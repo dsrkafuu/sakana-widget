@@ -14,16 +14,14 @@
   "license": "MIT",
   "author": "DSRKafuU <dsrkafuu@outlook.com>",
   "repository": "github:dsrkafuu/sakana-widget",
-  "style": "./lib/index.css",
   "files": [
     "lib"
   ],
   "type": "module",
   "main": "./lib/index.js",
-  "module": "./lib/index.esm.js",
   "types": "./lib/index.d.ts",
-  "unpkg": "./lib/sakana.min.js",
-  "jsdelivr": "./lib/sakana.min.js",
+  "unpkg": "./lib/index.umd.js",
+  "jsdelivr": "./lib/index.umd.js",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

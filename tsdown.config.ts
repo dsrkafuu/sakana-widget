@@ -14,6 +14,7 @@ export default defineConfig([
       umd: {
         target: ['es2021'],
         globalName: 'SakanaWidget',
+        minify: true,
         css: {
           fileName: 'index.min.css',
           minify: true,
