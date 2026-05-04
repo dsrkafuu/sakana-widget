@@ -18,7 +18,7 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 
 ## Features
 
-- Sizes: `~90KB JS (include images), ~1KB CSS`
+- Sizes: `~60 kB ALL-IN-ONE JS` (includes 2 built-in characters, brotli compressed)
 - Register and use your own character
 - Auto resizing support, 120px minimum
 - Press and hold the stand and drag, after releasing the hand the stand will bounce in the opposite direction
@@ -31,12 +31,9 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.min.css -->
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/3.0.0/index.min.css -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/3.0.0/index.umd.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/3.0.0/index.umd.min.js -->
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.min.css" />
 <div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
@@ -46,7 +43,7 @@ First you need to import the module, either directly using a CDN or by installin
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.min.js"
 ></script>
 ```
 

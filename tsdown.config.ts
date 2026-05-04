@@ -27,6 +27,5 @@ export default defineConfig([
       '.png': 'dataurl',
       '.svg': 'text',
     },
-    sourcemap: true,
   },
 ]);

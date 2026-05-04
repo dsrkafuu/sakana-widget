@@ -30,15 +30,9 @@
 首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.7.1/lib/sakana.min.css -->
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@2.7.1/lib/sakana.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.7.1/sakana.min.css -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/2.7.1/sakana.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/3.0.0/index.umd.min.js -->
 
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/sakana-widget@2.7.1/lib/sakana.min.css"
-/>
 <div id="sakana-widget"></div>
 <script>
   function initSakanaWidget() {
@@ -48,7 +42,7 @@
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@2.7.1/lib/sakana.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@3.0.0/lib/index.umd.min.js"
 ></script>
 ```
 
