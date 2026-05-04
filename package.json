@@ -1,31 +1,31 @@
 {
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "name": "sakana-widget",
-  "version": "2.7.1",
+  "version": "3.0.0",
   "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
   "keywords": [
-    "widget",
-    "lycoris-recoil",
-    "lycoris",
-    "recoil",
     "chisato",
-    "takina"
+    "lycoris",
+    "lycoris-recoil",
+    "recoil",
+    "takina",
+    "widget"
   ],
-  "author": "DSRKafuU <dsrkafuu@outlook.com>",
   "homepage": "https://github.dsrkafuu.net/sakana-widget/",
   "license": "MIT",
+  "author": "DSRKafuU <dsrkafuu@outlook.com>",
   "repository": "github:dsrkafuu/sakana-widget",
+  "style": "./lib/index.css",
   "files": [
     "lib"
   ],
   "main": "./lib/index.js",
   "module": "./lib/index.esm.js",
-  "style": "./lib/index.css",
   "types": "./lib/index.d.ts",
   "unpkg": "./lib/sakana.min.js",
   "jsdelivr": "./lib/sakana.min.js",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "lint": "eslint",
     "build:docs": "rollup -c ./rollup.docs.js",
@@ -36,26 +36,10 @@
     "dev:serve": "serve ./docs",
     "dev": "npm-run-all -p dev:nodemon dev:serve"
   },
-  "dependencies": {
-    "@juggle/resize-observer": "^3.4.0",
-    "tslib": "^2.8.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@dsrca/config": "^5.0.1",
-    "@rollup/plugin-html": "^1.1.0",
-    "@rollup/plugin-image": "^3.0.3",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
-    "eslint": "^9.27.0",
-    "nodemon": "^3.1.10",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^3.5.3",
-    "rollup": "^4.41.0",
-    "rollup-plugin-scss": "^4.0.1",
-    "rollup-plugin-svgo": "^2.0.0",
-    "sass": "^1.89.0",
-    "serve": "^14.2.4",
-    "typescript": "~5.7.3"
+    "oxfmt": "^0.47.0",
+    "oxlint": "^1.62.0",
+    "typescript": "^6.0.3"
   }
 }
