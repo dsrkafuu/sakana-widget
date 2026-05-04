@@ -70,7 +70,7 @@ export function throttle<T extends (...args: any[]) => any>(callback: T): T {
 export function getCanvasCtx(
   canvas: HTMLCanvasElement,
   appSize: number,
-  devicePixelRatio = (window.devicePixelRatio || 1) * 2
+  devicePixelRatio = (window.devicePixelRatio || 1) * 2,
 ) {
   const canvasRenderSize = appSize * devicePixelRatio;
   canvas.width = canvasRenderSize;

@@ -1,30 +1,13 @@
-declare module '*.css' {
-  const css: string;
-  export default css;
-}
-declare module '*.sass' {
-  const css: string;
-  export default css;
-}
-declare module '*.scss' {
-  const css: string;
-  export default css;
+/// <reference types="tsdown/client" />
+
+declare module '*.scss' {}
+
+declare module '*.png' {
+  const base64: string;
+  export default base64;
 }
 
 declare module '*.svg' {
-  const src: string;
-  export default src;
-}
-
-declare module '*.jpg' {
-  const src: string;
-  export default src;
-}
-declare module '*.png' {
-  const src: string;
-  export default src;
-}
-declare module '*.gif' {
-  const src: string;
-  export default src;
+  const text: string;
+  export default text;
 }

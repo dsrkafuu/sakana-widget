@@ -18,7 +18,7 @@
     />
     <link rel="icon shortcut" href="favicon.ico" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <link rel="stylesheet" href="sakana.min.css" />
+    <link rel="stylesheet" href="../lib/index.min.css" />
     <style>
       html,
       body {
@@ -85,12 +85,10 @@
     <main>
       <h1>🐟「Sakana! Widget」</h1>
       <p>
-        Add the Sakana! Widget to your own web page! Support custom images, auto
-        resizing and more runtime params!
+        Add the Sakana! Widget to your own web page! Support custom images, auto resizing and more
+        runtime params!
       </p>
-      <p>
-        把石蒜模拟器添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！
-      </p>
+      <p>把石蒜模拟器添加到你自己的网页内！支持自定义图片、自动缩放和更多运行参数！</p>
       <div>
         <img
           src="https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/src/characters/chisato.png"
@@ -105,13 +103,11 @@
           title="Takina"
         />
       </div>
-      <a href="https://github.com/dsrkafuu/sakana-widget" target="_blank">
-        GitHub
-      </a>
+      <a href="https://github.com/dsrkafuu/sakana-widget" target="_blank"> GitHub </a>
     </main>
     <div id="sakana-widget-chisato"></div>
     <div id="sakana-widget-takina"></div>
-    <script src="sakana.min.js"></script>
+    <script src="../lib/index.umd.js"></script>
     <script>
       new SakanaWidget().mount('#sakana-widget-chisato');
       new SakanaWidget({ character: 'takina' }).mount('#sakana-widget-takina');

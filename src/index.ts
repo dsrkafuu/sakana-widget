@@ -1,11 +1,10 @@
 /*! sakana-widget | DSRKafuU (https://dsrkafuu.net) | Copyright (c) MIT License */
 
 import './index.scss';
-import type { RequiredDeep } from './utils';
 import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
-import { ResizeObserver } from '@juggle/resize-observer';
 import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
+import type { RequiredDeep } from './utils';
 import { cloneDeep, mergeDeep, throttle, getCanvasCtx } from './utils';
 
 interface SakanaWidgetOptions {
@@ -144,10 +143,7 @@ class SakanaWidget {
    * @static
    * registered a new character
    */
-  static registerCharacter = (
-    name: string,
-    character: SakanaWidgetCharacter
-  ) => {
+  static registerCharacter = (name: string, character: SakanaWidgetCharacter) => {
     const _char = cloneDeep(character);
     // validate inertia
     let inertia = _char.initialState.i;
@@ -162,9 +158,7 @@ class SakanaWidget {
       _initCharacters();
     }
 
-    this._options = cloneDeep(
-      defaultOptions
-    ) as RequiredDeep<SakanaWidgetOptions>;
+    this._options = cloneDeep(defaultOptions) as RequiredDeep<SakanaWidgetOptions>;
     this._options = mergeDeep(this._options, options);
 
     // init default character
@@ -312,12 +306,7 @@ class SakanaWidget {
    * @private
    * calculate center of the image
    */
-  private _calcCenterPoint = (
-    degree: number,
-    radius: number,
-    x: number,
-    y: number
-  ) => {
+  private _calcCenterPoint = (degree: number, radius: number, x: number, y: number) => {
     const radian = (Math.PI / 180) * degree;
     const cos = Math.cos(radian);
     const sin = Math.sin(radian);
@@ -406,7 +395,7 @@ class SakanaWidget {
         Math.abs(this._state.w),
         Math.abs(this._state.r),
         Math.abs(this._state.t),
-        Math.abs(this._state.y)
+        Math.abs(this._state.y),
       ) < cut
     ) {
       this._running = false;
@@ -516,7 +505,9 @@ class SakanaWidget {
       const available = Object.keys(_characters);
       const index = Math.floor(Math.random() * available.length);
       const _char = available[index];
-      this.setCharacter(_char);
+      if (_char) {
+        this.setCharacter(_char);
+      }
     } else {
       // add random velocities in the vertical and horizontal directions
       this._state.t = this._state.t + (Math.random() - 0.5) * 150;
@@ -528,10 +519,7 @@ class SakanaWidget {
       requestAnimationFrame(this._run);
     }
     // set a variable delay between applying magic powers
-    this._magicForceTimeout = window.setTimeout(
-      this._magicForce,
-      Math.random() * 3000 + 2000
-    );
+    this._magicForceTimeout = window.setTimeout(this._magicForce, Math.random() * 3000 + 2000);
   };
 
   /**
@@ -552,10 +540,7 @@ class SakanaWidget {
     // clear the timer or start a timer
     clearTimeout(this._magicForceTimeout);
     if (this._magicForceEnabled) {
-      this._magicForceTimeout = window.setTimeout(
-        this._magicForce,
-        Math.random() * 1000 + 500
-      );
+      this._magicForceTimeout = window.setTimeout(this._magicForce, Math.random() * 1000 + 500);
     }
   };
 
@@ -600,7 +585,9 @@ class SakanaWidget {
     const curCharIdx = _chars.indexOf(this._char);
     const nextCharIdx = (curCharIdx + 1) % _chars.length;
     const nextChar = _chars[nextCharIdx];
-    this.setCharacter(nextChar);
+    if (nextChar) {
+      this.setCharacter(nextChar);
+    }
     return this;
   };
 
@@ -654,7 +641,7 @@ class SakanaWidget {
         throttle((entries) => {
           if (!entries || !entries[0]) return;
           this._onResize(entries[0].contentRect);
-        })
+        }),
       );
       this._resizeObserver.observe(this._domWrapper);
     }
