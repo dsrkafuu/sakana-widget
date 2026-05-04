@@ -1,3 +1,8 @@
+## v3.0.0
+
+- build: umd build now includes css styles (inlined in js)
+- build: migrate to tsdown and becomes pure es module (supports es2021+)
+
 ## v2.7.1
 
 - chore: common deps update
