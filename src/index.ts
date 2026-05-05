@@ -659,6 +659,11 @@ class SakanaWidget {
    * unmount the widget
    */
   unmount = () => {
+    // stop animation and auto mode
+    this._running = false;
+    this._magicForceEnabled = false;
+    clearTimeout(this._magicForceTimeout);
+
     // remove event listeners
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
@@ -669,6 +674,7 @@ class SakanaWidget {
     // if auto fit mode
     if (this._resizeObserver) {
       this._resizeObserver.disconnect();
+      this._resizeObserver = null;
     }
 
     // unmount node

@@ -34,8 +34,12 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # Finder (MacOS) folder config
 .DS_Store
 
-# Docs
+# docs
 docs/**
 !docs/github.png
 !docs/apple-touch-icon.png
 !docs/favicon.ico
+
+# llm related
+PLAN.md
+AGENTS.md

@@ -21,19 +21,18 @@ htmlContent = htmlContent.replaceAll('<link rel="stylesheet" href="../lib/index.
 
 // update script src paths
 htmlContent = htmlContent.replaceAll('../lib/index.umd.js', 'index.umd.min.js');
-fs.writeFileSync(path.join(docsDir, 'index.html'), htmlContent, 'utf-8');
 
-// minify html simply
-minify(htmlContent, {
-  collapseWhitespace: true,
-  removeComments: true,
-  minifyCSS: true,
-  minifyJS: true,
-})
-  .then((minified) => {
-    fs.writeFileSync(path.join(docsDir, 'index.html'), minified, 'utf-8');
-    console.log('✔ Docs site built');
-  })
-  .catch((err) => {
-    console.error('✕ Error minifying HTML:', err);
+// minify html and write
+try {
+  const minified = await minify(htmlContent, {
+    collapseWhitespace: true,
+    removeComments: true,
+    minifyCSS: true,
+    minifyJS: true,
   });
+  fs.writeFileSync(path.join(docsDir, 'index.html'), minified, 'utf-8');
+  console.log('✔ Docs site built');
+} catch (err) {
+  console.error('✕ Error minifying HTML:', err);
+  process.exit(1);
+}

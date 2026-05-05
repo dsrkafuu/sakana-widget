@@ -12,7 +12,7 @@ const minifiedCss = fs.readFileSync(path.join(buildDir, 'index.min.css'), 'utf-8
 const umdJs = fs.readFileSync(path.join(buildDir, 'index.umd.js'), 'utf-8');
 
 const processedCss = minifiedCss.replace(/\n/g, '').replace(/"/g, '\\"');
-const umdWithCss = `const e=document.createElement("style");e.textContent="${processedCss}",document.head.appendChild(e);${umdJs}`;
+const umdWithCss = `const e=document.createElement("style");e.textContent="${processedCss}";document.head.appendChild(e);${umdJs}`;
 
 fs.writeFileSync(path.join(buildDir, 'index.umd.min.js'), umdWithCss, 'utf-8');
 
