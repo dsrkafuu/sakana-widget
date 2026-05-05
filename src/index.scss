@@ -71,7 +71,9 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       color: $color-font;
       background-color: transparent;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
+        outline: none;
         color: $color-font;
         background-color: $color-bg-active;
       }

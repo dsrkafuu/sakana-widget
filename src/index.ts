@@ -600,7 +600,7 @@ class SakanaWidget {
    * @private
    * handle widget resize
    */
-  _onResize = (rect: DOMRect) => {
+  private _onResize = (rect: DOMRect) => {
     let newSize = Math.min(rect.width, rect.height);
     newSize = Math.max(120, newSize); // at least 120
     this._updateSize(newSize);
