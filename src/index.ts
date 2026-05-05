@@ -51,6 +51,14 @@ interface SakanaWidgetOptions {
    * enable accessibility title feature, default to `false`
    */
   title?: boolean;
+  /**
+   * enable persistent hide state via localStorage, default to `false`
+   */
+  saveState?: boolean;
+  /**
+   * localStorage key for persist state, default to `sakana-widget-status`
+   */
+  stateKey?: string;
 }
 
 const defaultOptions: SakanaWidgetOptions = {
@@ -67,6 +75,8 @@ const defaultOptions: SakanaWidgetOptions = {
   threshold: 0.1,
   rotate: 0,
   title: false,
+  saveState: false,
+  stateKey: 'sakana-widget-status',
 };
 
 // register default characters
@@ -94,6 +104,9 @@ class SakanaWidget {
   private _running = true;
   private _magicForceTimeout = 0;
   private _magicForceEnabled = false;
+  private _saveState: boolean;
+  private _stateKey: string;
+  private _hidden = false;
 
   // character related
   private _char!: string;
@@ -165,6 +178,10 @@ class SakanaWidget {
 
     // init default character
     this.setCharacter(this._options.character);
+
+    // init saveState options
+    this._saveState = this._options.saveState;
+    this._stateKey = this._options.stateKey;
 
     // init dom
     this._updateDom();
@@ -598,6 +615,52 @@ class SakanaWidget {
 
   /**
    * @private
+   * control widget visibility and persist state
+   */
+  private _setHidden = (hidden: boolean, persist = true) => {
+    this._hidden = hidden;
+    this._domWrapper.style.display = hidden ? 'none' : '';
+
+    if (hidden) {
+      this._running = false;
+      this._magicForceEnabled = false;
+      clearTimeout(this._magicForceTimeout);
+    } else {
+      this._running = true;
+      requestAnimationFrame(this._run);
+    }
+
+    if (this._saveState && persist) {
+      localStorage.setItem(this._stateKey, hidden ? 'hide' : 'show');
+    }
+  };
+
+  /**
+   * @public
+   * hide the widget (stops animation, persists state if saveState is enabled)
+   */
+  hide = () => {
+    if (!this._hidden) {
+      this._setHidden(true);
+    }
+    return this;
+  };
+
+  /**
+   * @public
+   * show the widget if previously hidden
+   */
+  show = () => {
+    if (this._hidden) {
+      this._setHidden(false);
+    } else {
+      console.warn('[sakana-widget] show() called but widget is not hidden');
+    }
+    return this;
+  };
+
+  /**
+   * @private
    * handle widget resize
    */
   private _onResize = (rect: DOMRect) => {
@@ -635,7 +698,11 @@ class SakanaWidget {
 
     this._domCtrlPerson.addEventListener('click', this.nextCharacter);
     this._domCtrlMagic.addEventListener('click', this.triggerAutoMode);
-    this._domCtrlClose.addEventListener('click', this.unmount);
+    if (this._saveState) {
+      this._domCtrlClose.addEventListener('click', this.hide);
+    } else {
+      this._domCtrlClose.addEventListener('click', this.unmount);
+    }
 
     // if auto fit mode
     if (this._options.autoFit) {
@@ -655,7 +722,13 @@ class SakanaWidget {
     const _newEl = _el.cloneNode(false) as HTMLElement;
     _newEl.appendChild(this._domWrapper);
     parent.replaceChild(_newEl, _el);
-    requestAnimationFrame(this._run);
+
+    // restore persisted hide state
+    if (this._saveState && localStorage.getItem(this._stateKey) === 'hide') {
+      this._setHidden(true, false);
+    } else {
+      requestAnimationFrame(this._run);
+    }
     return this;
   };
 
@@ -674,7 +747,11 @@ class SakanaWidget {
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
     this._domCtrlPerson.removeEventListener('click', this.nextCharacter);
     this._domCtrlMagic.removeEventListener('click', this.triggerAutoMode);
-    this._domCtrlClose.removeEventListener('click', this.unmount);
+    if (this._saveState) {
+      this._domCtrlClose.removeEventListener('click', this.hide);
+    } else {
+      this._domCtrlClose.removeEventListener('click', this.unmount);
+    }
 
     // if auto fit mode
     if (this._resizeObserver) {

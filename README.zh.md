@@ -49,7 +49,6 @@
 
 ```ts
 // npm install --save sakana-widget
-import 'sakana-widget/lib/index.css';
 import SakanaWidget from 'sakana-widget';
 new SakanaWidget().mount('#sakana-widget');
 ```
@@ -85,6 +84,30 @@ github.image = `https://raw.githubusercontent.com/dsrkafuu/sakana-widget/main/do
 SakanaWidget.registerCharacter('github', github);
 new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 ```
+
+## 记忆隐藏状态
+
+启用 `saveState: true` 可通过 localStorage 持久化小组件的隐藏状态。启用后，点击关闭按钮会通过 `display: none` 隐藏小组件并保存 `'hide'`，下次加载页面时自动恢复为隐藏状态。
+
+被隐藏的组件可以通过调用 `show()` 实例方法从页面其他位置的按钮重新唤出：
+
+```ts
+const widget = new SakanaWidget({ saveState: true }).mount('#sakana-widget');
+
+// 通过自定义按钮唤出小组件
+document.getElementById('sakana-revive').addEventListener('click', () => {
+  widget.show();
+});
+```
+
+同一页面使用多个组件时，为每个实例指定不同的 `stateKey` 避免冲突：
+
+```ts
+new SakanaWidget({ saveState: true, stateKey: 'sakana-status-chisato' }).mount('#chisato');
+new SakanaWidget({ saveState: true, stateKey: 'sakana-status-takina' }).mount('#takina');
+```
+
+`saveState` 为 `false`（默认）时，点击关闭将彻底移除组件。
 
 详细的参数和返回实例请见下文 [API](#api) 章节。
 
@@ -151,7 +174,7 @@ export interface SakanaWidgetOptions {
   /**
    * 角色，默认 `chisato`
    */
-  character?: 'chisato' | 'takina';
+  character?: string;
   /**
    * 控制栏，默认 `true`
    */
@@ -183,6 +206,14 @@ export interface SakanaWidgetOptions {
    * 开启 title 属性，默认 `false`
    */
   title?: boolean;
+  /**
+   * 启用 localStorage 持久化隐藏状态，默认 `false`
+   */
+  saveState?: boolean;
+  /**
+   * localStorage 存储键名，默认 `sakana-widget-status`
+   */
+  stateKey?: string;
 }
 ```
 
@@ -217,7 +248,7 @@ class SakanaWidget {
   /**
    * 切换自走模式
    */
-  triggetAutoMode();
+  triggerAutoMode();
   /**
    * 挂载组件
    */
@@ -226,6 +257,14 @@ class SakanaWidget {
    * 移除组件
    */
   unmount();
+  /**
+   * 隐藏组件（停止动画，若 saveState 启用则持久化状态）
+   */
+  hide();
+  /**
+   * 唤出之前隐藏的组件
+   */
+  show();
 }
 ```
 

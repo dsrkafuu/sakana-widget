@@ -87,6 +87,30 @@ SakanaWidget.registerCharacter('github', github);
 new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 ```
 
+## Persist Hide State
+
+Enable `saveState: true` to persist the widget's hidden state via localStorage. When enabled, clicking the close button hides the widget via `display: none` and saves `'hide'`. On next page load, the widget automatically restores the hidden state.
+
+A hidden widget can be revived by calling the `show()` instance method from a button elsewhere on the page.
+
+```ts
+const widget = new SakanaWidget({ saveState: true }).mount('#sakana-widget');
+
+// Bring back the widget from a custom button
+document.getElementById('sakana-revive').addEventListener('click', () => {
+  widget.show();
+});
+```
+
+To use multiple widgets on the same page, provide a unique `stateKey` for each instance to avoid conflicts:
+
+```ts
+new SakanaWidget({ saveState: true, stateKey: 'sakana-status-chisato' }).mount('#chisato');
+new SakanaWidget({ saveState: true, stateKey: 'sakana-status-takina' }).mount('#takina');
+```
+
+When `saveState` is `false` (default), clicking close permanently unmounts the widget.
+
 See the [API](#api) section below for detailed parameters and class type.
 
 ## Auto Resizing
@@ -152,7 +176,7 @@ export interface SakanaWidgetOptions {
   /**
    * default character, default to `chisato`
    */
-  character?: 'chisato' | 'takina';
+  character?: string;
   /**
    * controls bar, default to `true`
    */
@@ -184,6 +208,14 @@ export interface SakanaWidgetOptions {
    * enable accessibility title feature, default to `false`
    */
   title?: boolean;
+  /**
+   * enable persistent hide state via localStorage, default to `false`
+   */
+  saveState?: boolean;
+  /**
+   * localStorage key for persist state, default to `sakana-widget-status`
+   */
+  stateKey?: string;
 }
 ```
 
@@ -218,7 +250,7 @@ class SakanaWidget {
   /**
    * switch the auto mode
    */
-  triggetAutoMode();
+  triggerAutoMode();
   /**
    * mount the widget
    */
@@ -227,6 +259,14 @@ class SakanaWidget {
    * unmount the widget
    */
   unmount();
+  /**
+   * hide the widget (stops animation, persists state if saveState is enabled)
+   */
+  hide();
+  /**
+   * show the widget if previously hidden
+   */
+  show();
 }
 ```
 

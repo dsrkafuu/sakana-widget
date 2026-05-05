@@ -1,5 +1,7 @@
 ## v3.0.0
 
+- feat: add persisit state mode
+- chore: some memory fix & stability improvement
 - build: umd build now includes css styles (inlined in js)
 - build: migrate to tsdown and becomes pure es module (supports es2021+)
 
