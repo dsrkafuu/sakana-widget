@@ -535,7 +535,8 @@ class SakanaWidget {
     this._magicForceEnabled = !this._magicForceEnabled;
 
     // toggle icon rotate
-    const icon = this._domCtrlMagic.querySelector('svg') as SVGSVGElement;
+    const icon = this._domCtrlMagic.querySelector('svg');
+    if (!icon) return;
     if (this._magicForceEnabled) {
       icon.classList.add('sakana-widget-icon--rotate');
     } else {
