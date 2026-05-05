@@ -70,14 +70,13 @@ const defaultOptions: SakanaWidgetOptions = {
 };
 
 // register default characters
-let _characters: { [key: string]: SakanaWidgetCharacter } = null as any;
+let _characters: Record<string, SakanaWidgetCharacter> | null = null;
 function _initCharacters() {
   if (_characters) return;
   _characters = {};
-  (Object.keys(characters) as Array<keyof typeof characters>).forEach((key) => {
-    const _char = characters[key];
-    _characters[key] = cloneDeep(_char);
-  });
+  for (const [key, value] of Object.entries(characters)) {
+    _characters[key] = cloneDeep(value);
+  }
 }
 
 /**
@@ -122,7 +121,7 @@ class SakanaWidget {
     if (_characters == null) {
       _initCharacters();
     }
-    const _char = _characters[name];
+    const _char = _characters![name];
     return _char ? cloneDeep(_char) : null;
   };
 
@@ -135,7 +134,7 @@ class SakanaWidget {
     if (_characters == null) {
       _initCharacters();
     }
-    return cloneDeep(_characters);
+    return cloneDeep(_characters!);
   };
 
   /**
@@ -153,7 +152,7 @@ class SakanaWidget {
     inertia = Math.min(0.5, Math.max(0, inertia));
     _char.initialState.i = inertia;
     // register character
-    _characters[name] = _char;
+    _characters![name] = _char;
   };
 
   constructor(options: SakanaWidgetOptions = {}) {
@@ -507,7 +506,7 @@ class SakanaWidget {
   private _magicForce = () => {
     // 0.1 probability to randomly switch character
     if (Math.random() < 0.1) {
-      const available = Object.keys(_characters);
+      const available = Object.keys(_characters!);
       const index = Math.floor(Math.random() * available.length);
       const _char = available[index];
       if (_char) {
@@ -567,7 +566,7 @@ class SakanaWidget {
    * set current character of widget
    */
   setCharacter = (name: string) => {
-    const targetChar = _characters[name];
+    const targetChar = _characters![name];
     if (!targetChar) {
       throw new Error(`invalid character ${name}`);
     }
