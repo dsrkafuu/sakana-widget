@@ -93,8 +93,14 @@ Enable `saveState: true` to persist the widget's hidden state via localStorage. 
 
 A hidden widget can be revived by calling the `show()` instance method from a button elsewhere on the page.
 
+Use `addStateListener` to react to visibility changes. Listeners fire once on mount and every time the widget is hidden or shown.
+
 ```ts
-const widget = new SakanaWidget({ saveState: true }).mount('#sakana-widget');
+const widget = new SakanaWidget({ saveState: true })
+  .addStateListener((state) => {
+    console.log(`widget is now ${state}`);
+  })
+  .mount('#sakana-widget');
 
 // Bring back the widget from a custom button
 document.getElementById('sakana-revive').addEventListener('click', () => {
@@ -159,6 +165,8 @@ export interface SakanaWidgetCharacter {
   image: string;
   initialState: SakanaWidgetState;
 }
+
+export type SakanaWidgetVisibility = 'show' | 'hide';
 ```
 
 ### Constructor Params
@@ -267,6 +275,14 @@ class SakanaWidget {
    * show the widget if previously hidden
    */
   show();
+  /**
+   * add a listener for widget visibility changes (fires once on mount)
+   */
+  addStateListener(listener: (state: SakanaWidgetVisibility) => void): this;
+  /**
+   * remove a previously added state listener
+   */
+  removeStateListener(listener: (state: SakanaWidgetVisibility) => void): this;
 }
 ```
 

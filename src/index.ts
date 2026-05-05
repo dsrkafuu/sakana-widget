@@ -7,6 +7,8 @@ import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import type { RequiredDeep } from './utils';
 import { cloneDeep, mergeDeep, throttle, getCanvasCtx } from './utils';
 
+type SakanaWidgetVisibility = 'show' | 'hide';
+
 interface SakanaWidgetOptions {
   /**
    * widget size, default to `200`
@@ -107,6 +109,7 @@ class SakanaWidget {
   private _saveState: boolean;
   private _stateKey: string;
   private _hidden = false;
+  private _stateListeners: Array<(state: SakanaWidgetVisibility) => void> = [];
 
   // character related
   private _char!: string;
@@ -621,6 +624,11 @@ class SakanaWidget {
     this._hidden = hidden;
     this._domWrapper.style.display = hidden ? 'none' : '';
 
+    const state: SakanaWidgetVisibility = hidden ? 'hide' : 'show';
+    for (const listener of this._stateListeners) {
+      listener(state);
+    }
+
     if (hidden) {
       this._running = false;
       this._magicForceEnabled = false;
@@ -655,6 +663,27 @@ class SakanaWidget {
       this._setHidden(false);
     } else {
       console.warn('[sakana-widget] show() called but widget is not hidden');
+    }
+    return this;
+  };
+
+  /**
+   * @public
+   * add a listener for widget visibility changes
+   */
+  addStateListener = (listener: (state: SakanaWidgetVisibility) => void) => {
+    this._stateListeners.push(listener);
+    return this;
+  };
+
+  /**
+   * @public
+   * remove a previously added state listener
+   */
+  removeStateListener = (listener: (state: SakanaWidgetVisibility) => void) => {
+    const idx = this._stateListeners.indexOf(listener);
+    if (idx !== -1) {
+      this._stateListeners.splice(idx, 1);
     }
     return this;
   };
@@ -729,6 +758,12 @@ class SakanaWidget {
     } else {
       requestAnimationFrame(this._run);
     }
+
+    // notify initial state
+    const mountState: SakanaWidgetVisibility = this._hidden ? 'hide' : 'show';
+    for (const listener of this._stateListeners) {
+      listener(mountState);
+    }
     return this;
   };
 
@@ -770,4 +805,9 @@ class SakanaWidget {
 }
 
 export default SakanaWidget;
-export type { SakanaWidgetCharacter, SakanaWidgetState, SakanaWidgetOptions };
+export type {
+  SakanaWidgetCharacter,
+  SakanaWidgetState,
+  SakanaWidgetOptions,
+  SakanaWidgetVisibility,
+};

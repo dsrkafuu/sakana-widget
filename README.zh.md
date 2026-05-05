@@ -89,10 +89,16 @@ new SakanaWidget({ character: 'github' }).mount('#sakana-widget');
 
 启用 `saveState: true` 可通过 localStorage 持久化小组件的隐藏状态。启用后，点击关闭按钮会通过 `display: none` 隐藏小组件并保存 `'hide'`，下次加载页面时自动恢复为隐藏状态。
 
-被隐藏的组件可以通过调用 `show()` 实例方法从页面其他位置的按钮重新唤出：
+被隐藏的组件可以通过调用 `show()` 实例方法从页面其他位置的按钮重新唤出。
+
+使用 `addStateListener` 可以监听可见性变化。监听器在 mount 时固定触发一次，之后每次隐藏/唤出时也会触发。
 
 ```ts
-const widget = new SakanaWidget({ saveState: true }).mount('#sakana-widget');
+const widget = new SakanaWidget({ saveState: true })
+  .addStateListener((state) => {
+    console.log(`组件当前状态: ${state}`);
+  })
+  .mount('#sakana-widget');
 
 // 通过自定义按钮唤出小组件
 document.getElementById('sakana-revive').addEventListener('click', () => {
@@ -157,6 +163,8 @@ export interface SakanaWidgetCharacter {
   image: string;
   initialState: SakanaWidgetState;
 }
+
+export type SakanaWidgetVisibility = 'show' | 'hide';
 ```
 
 ### 构造函数选项
@@ -265,6 +273,14 @@ class SakanaWidget {
    * 唤出之前隐藏的组件
    */
   show();
+  /**
+   * 添加组件可见性变化的监听器（mount 时固定触发一次）
+   */
+  addStateListener(listener: (state: SakanaWidgetVisibility) => void): this;
+  /**
+   * 移除之前添加的状态监听器
+   */
+  removeStateListener(listener: (state: SakanaWidgetVisibility) => void): this;
 }
 ```
 
