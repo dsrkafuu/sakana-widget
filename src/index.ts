@@ -144,6 +144,9 @@ class SakanaWidget {
    * registered a new character
    */
   static registerCharacter = (name: string, character: SakanaWidgetCharacter) => {
+    if (_characters == null) {
+      _initCharacters();
+    }
     const _char = cloneDeep(character);
     // validate inertia
     let inertia = _char.initialState.i;
