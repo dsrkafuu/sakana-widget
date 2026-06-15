@@ -1,2 +1,6 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize text files to LF in both the index and working tree.
+* text=auto eol=lf
+
+# Binary assets
+*.ico -text
+*.png -text
