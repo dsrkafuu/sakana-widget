@@ -1,6 +1,6 @@
 {
   "name": "sakana-widget",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
   "keywords": [
     "chisato",
@@ -13,7 +13,10 @@
   "homepage": "https://github.dsrkafuu.net/sakana-widget/",
   "license": "MIT",
   "author": "DSRKafuU <dsrkafuu@outlook.com>",
-  "repository": "github:dsrkafuu/sakana-widget",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsrkafuu/sakana-widget.git"
+  },
   "files": [
     "lib"
   ],
@@ -23,7 +26,7 @@
   "unpkg": "./lib/index.umd.min.js",
   "jsdelivr": "./lib/index.umd.min.js",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "fmt": "oxfmt",
@@ -46,6 +49,7 @@
     "oxfmt": "^0.47.0",
     "oxlint": "^1.62.0",
     "sass": "^1.99.0",
+    "serve": "^14.2.6",
     "tsdown": "^0.21.10",
     "typescript": "^6.0.3"
   }

@@ -1,3 +1,9 @@
+## v3.0.1
+
+- fix: avoid duplicate initial state listener notifications when restoring persisted hide state
+- fix: ignore localStorage failures in restricted browsing contexts
+- chore: add missing dev server dependency
+
 ## v3.0.0
 
 - feat: add persisit state mode

@@ -620,13 +620,31 @@ class SakanaWidget {
    * @private
    * control widget visibility and persist state
    */
-  private _setHidden = (hidden: boolean, persist = true) => {
+  private _saveHiddenState = (hidden: boolean) => {
+    try {
+      localStorage.setItem(this._stateKey, hidden ? 'hide' : 'show');
+    } catch {
+      // Ignore storage failures in privacy-restricted browsing contexts.
+    }
+  };
+
+  private _getSavedHiddenState = () => {
+    try {
+      return localStorage.getItem(this._stateKey) === 'hide';
+    } catch {
+      return false;
+    }
+  };
+
+  private _setHidden = (hidden: boolean, persist = true, notify = true) => {
     this._hidden = hidden;
     this._domWrapper.style.display = hidden ? 'none' : '';
 
-    const state: SakanaWidgetVisibility = hidden ? 'hide' : 'show';
-    for (const listener of this._stateListeners) {
-      listener(state);
+    if (notify) {
+      const state: SakanaWidgetVisibility = hidden ? 'hide' : 'show';
+      for (const listener of this._stateListeners) {
+        listener(state);
+      }
     }
 
     if (hidden) {
@@ -639,7 +657,7 @@ class SakanaWidget {
     }
 
     if (this._saveState && persist) {
-      localStorage.setItem(this._stateKey, hidden ? 'hide' : 'show');
+      this._saveHiddenState(hidden);
     }
   };
 
@@ -753,8 +771,8 @@ class SakanaWidget {
     parent.replaceChild(_newEl, _el);
 
     // restore persisted hide state
-    if (this._saveState && localStorage.getItem(this._stateKey) === 'hide') {
-      this._setHidden(true, false);
+    if (this._saveState && this._getSavedHiddenState()) {
+      this._setHidden(true, false, false);
     } else {
       requestAnimationFrame(this._run);
     }
