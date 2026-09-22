@@ -2,17 +2,17 @@
 
 ## Setup
 
-- **Runtime & package manager**: Bun (lockfile is `bun.lock`). Use `bun install`, not npm/yarn.
+- **Runtime & package manager**: Node.js >=24.11.0 + pnpm 11 (lockfile is `pnpm-lock.yaml`). Use `pnpm install`, not npm/yarn.
 
 ## Commands
 
 | Task                | Command             |
 | ------------------- | ------------------- |
-| Format              | `bun run fmt`       |
-| Lint                | `bun run lint`      |
-| Build (all)         | `bun run build`     |
-| Build lib only      | `bun run build:lib` |
-| Dev (watch + serve) | `bun run dev`       |
+| Format              | `pnpm run fmt`       |
+| Lint                | `pnpm run lint`      |
+| Build (all)         | `pnpm run build`     |
+| Build lib only      | `pnpm run build:lib` |
+| Dev (watch + serve) | `pnpm run dev`       |
 
 ## Build order
 
@@ -40,8 +40,8 @@
 
 ## CI
 
-- GitHub Actions `.github/workflows/docs.yml` builds docs on push to `main` and deploys to GitHub Pages via `peaceiris/actions-gh-pages`.
-- Uses Bun 1.2.14.
+- GitHub Actions `.github/workflows/gh-pages.yml` builds docs on push to `main` and deploys to GitHub Pages via `peaceiris/actions-gh-pages`.
+- Uses Node.js 24 and the pnpm version pinned in package.json.
 
 ## Testing
 
