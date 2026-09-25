@@ -212,7 +212,7 @@ export interface SakanaWidgetOptions {
    */
   draggable?: boolean;
   /**
-   * canvas stroke settings, default to `#b4b4b4` & `10`
+   * rod color and width, default to `#b4b4b4` & `10`
    */
   stroke?: {
     color?: string;

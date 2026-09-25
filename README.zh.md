@@ -210,7 +210,7 @@ export interface SakanaWidgetOptions {
    */
   draggable?: boolean;
   /**
-   * canvas 线条设置，默认 `#b4b4b4` & `10`
+   * 连杆颜色和粗细，默认 `#b4b4b4` & `10`
    */
   stroke?: {
     color?: string;

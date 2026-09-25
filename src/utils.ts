@@ -63,24 +63,3 @@ export function throttle<T extends (...args: any[]) => any>(callback: T): T {
   } as T;
   return throttled;
 }
-
-/**
- * get the canvas context with device pixel ratio
- */
-export function getCanvasCtx(
-  canvas: HTMLCanvasElement,
-  appSize: number,
-  devicePixelRatio = (window.devicePixelRatio || 1) * 2,
-) {
-  const canvasRenderSize = appSize * devicePixelRatio;
-  canvas.width = canvasRenderSize;
-  canvas.height = canvasRenderSize;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) {
-    return null;
-  }
-  // scale all drawing operations by the dpr
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.scale(devicePixelRatio, devicePixelRatio);
-  return ctx;
-}

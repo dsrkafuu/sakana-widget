@@ -5,7 +5,7 @@ import type { SakanaWidgetCharacter, SakanaWidgetState } from './characters';
 import characters from './characters';
 import { svgClose, svgGitHub, svgPerson, svgSync } from './icons';
 import type { RequiredDeep } from './utils';
-import { cloneDeep, mergeDeep, throttle, getCanvasCtx } from './utils';
+import { cloneDeep, mergeDeep, throttle } from './utils';
 
 type SakanaWidgetVisibility = 'show' | 'hide';
 
@@ -35,7 +35,7 @@ interface SakanaWidgetOptions {
    */
   draggable?: boolean;
   /**
-   * canvas stroke settings, default to `#b4b4b4` & `10`
+   * rod color and width, default to `#b4b4b4` & `10`
    */
   stroke?: {
     color?: string;
@@ -99,7 +99,6 @@ class SakanaWidget {
 
   // app metadata
   private _imageSize!: number;
-  private _canvasSize!: number;
   private _limit!: { maxR: number; maxY: number; minY: number };
   private _lastRunUnix = Date.now();
   private _frameUnix = 1000 / 60; // default to speed of 60 fps
@@ -119,8 +118,7 @@ class SakanaWidget {
   // dom element related
   private _domWrapper!: HTMLDivElement; // this is needed for resize observer
   private _domApp!: HTMLDivElement; // actual app element
-  private _domCanvas!: HTMLCanvasElement;
-  private _domCanvasCtx!: CanvasRenderingContext2D;
+  private _domRod!: HTMLDivElement;
   private _domMain!: HTMLDivElement;
   private _domImage!: HTMLDivElement;
   private _domCtrlPerson!: HTMLDivElement;
@@ -215,21 +213,10 @@ class SakanaWidget {
   private _updateSize = (size: number) => {
     this._options.size = size;
     this._imageSize = this._options.size / 1.25;
-    this._canvasSize = this._options.size * 1.5;
 
     // widget root app
     this._domApp.style.width = `${size}px`;
     this._domApp.style.height = `${size}px`;
-
-    // canvas stroke palette
-    this._domCanvas.style.width = `${this._canvasSize}px`;
-    this._domCanvas.style.height = `${this._canvasSize}px`;
-    const ctx = getCanvasCtx(this._domCanvas, this._canvasSize);
-    if (!ctx) {
-      throw new Error('Invalid canvas context');
-    }
-    this._domCanvasCtx = ctx;
-    this._draw(); // refresh canvas
 
     // widget main container
     this._domMain.style.width = `${size}px`;
@@ -239,6 +226,8 @@ class SakanaWidget {
     this._domImage.style.width = `${this._imageSize}px`;
     this._domImage.style.height = `${this._imageSize}px`;
     this._domImage.style.transformOrigin = `50% ${size}px`; // use the bottom center of widget as trans origin
+
+    this._draw(); // refresh image and rod
   };
 
   /**
@@ -257,11 +246,15 @@ class SakanaWidget {
     this._domApp = app;
     wrapper.appendChild(app);
 
-    // canvas stroke palette
-    const canvas = document.createElement('canvas');
-    canvas.className = 'sakana-widget-canvas';
-    this._domCanvas = canvas;
-    app.appendChild(canvas);
+    // decorative rod behind the image and controls
+    const rod = document.createElement('div');
+    rod.className = 'sakana-widget-rod';
+    rod.setAttribute('aria-hidden', 'true');
+    rod.style.display = this._options.rod ? '' : 'none';
+    rod.style.width = `${this._options.stroke.width}px`;
+    rod.style.backgroundColor = this._options.stroke.color;
+    this._domRod = rod;
+    app.appendChild(rod);
 
     // widget main container
     const main = document.createElement('div');
@@ -346,37 +339,25 @@ class SakanaWidget {
     const { size, controls, stroke } = this._options;
     const img = this._domImage;
     const imgSize = this._imageSize;
-    const ctx = this._domCanvasCtx;
 
     // move the image
     const x = r * 1;
     img.style.transform = `rotate(${r}deg) translateX(${x}px) translateY(${y}px)`;
 
-    // draw the canvas line
-    ctx.clearRect(0, 0, this._canvasSize, this._canvasSize);
-    ctx.save();
-    // use the bottom center of widget as axis origin
-    // note that canvas is 1.5 times larger than widget
-    ctx.translate(this._canvasSize / 2, size + (this._canvasSize - size) / 2);
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.width;
-    ctx.lineCap = 'round';
-    if (this._options.rod) {
-      ctx.beginPath();
-    }
-    // use the bottom center (different offset) of widget as start of the line
-    if (controls) {
-      ctx.moveTo(0, -10);
-    } else {
-      ctx.moveTo(0, 10);
-    }
-    if (this._options.rod) {
-      const radius = size - imgSize / 2;
-      const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
-      ctx.lineTo(nx, -ny);
-      ctx.stroke();
-    }
-    ctx.restore();
+    if (!this._options.rod) return;
+
+    // The rod starts at the same offset from the widget's bottom as the old line.
+    const startY = controls ? 10 : -10;
+    const radius = size - imgSize / 2;
+    const { nx, ny } = this._calcCenterPoint(r, radius, x, y);
+    const deltaY = ny - startY;
+    const length = Math.hypot(nx, deltaY);
+    const halfWidth = stroke.width / 2;
+    const rod = this._domRod;
+    rod.style.bottom = `${startY - halfWidth}px`;
+    rod.style.height = `${length + stroke.width}px`;
+    rod.style.transformOrigin = `50% calc(100% - ${halfWidth}px)`;
+    rod.style.transform = `translateX(-50%) rotate(${Math.atan2(nx, deltaY)}rad)`;
   };
 
   /**
