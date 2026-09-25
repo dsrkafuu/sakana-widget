@@ -3,6 +3,6 @@ import { defineConfig } from 'oxfmt';
 export default defineConfig({
   singleQuote: true,
   jsxSingleQuote: true,
-  sortImports: {},
+  sortImports: true,
   ignorePatterns: ['*.svg'],
 });

@@ -26,6 +26,20 @@ Add the Sakana! Widget to your own web page! Support custom images, auto resizin
 - Automatic mode, applying a force of random size at random intervals
 - Prepared for CDN/NPM import, custom parameters, chained calls
 
+## Development
+
+Use Bun 1.4.2 to install dependencies and run the project:
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+bun run lint
+bun run typecheck
+bun run build
+```
+
+`build` runs the library, UMD bundle, and documentation builds in order.
+
 ## Usage
 
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:

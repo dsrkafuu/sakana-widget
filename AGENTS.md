@@ -2,17 +2,17 @@
 
 ## Setup
 
-- **Runtime & package manager**: Node.js >=24.11.0 + pnpm 11 (lockfile is `pnpm-lock.yaml`). Use `pnpm install`, not npm/yarn.
+- **Runtime & package manager**: Bun 1.4.2 (lockfile is `bun.lock`). Use `bun install --frozen-lockfile` for reproducible installs.
 
 ## Commands
 
 | Task                | Command             |
 | ------------------- | ------------------- |
-| Format              | `pnpm run fmt`       |
-| Lint                | `pnpm run lint`      |
-| Build (all)         | `pnpm run build`     |
-| Build lib only      | `pnpm run build:lib` |
-| Dev (watch + serve) | `pnpm run dev`       |
+| Format              | `bun run fmt`       |
+| Lint                | `bun run lint`      |
+| Build (all)         | `bun run build`     |
+| Build lib only      | `bun run build:lib` |
+| Dev (watch + serve) | `bun run dev`       |
 
 ## Build order
 
@@ -41,7 +41,7 @@
 ## CI
 
 - GitHub Actions `.github/workflows/gh-pages.yml` builds docs on push to `main` and deploys to GitHub Pages via `peaceiris/actions-gh-pages`.
-- Uses Node.js 24 and the pnpm version pinned in package.json.
+- Uses Bun via `oven-sh/setup-bun` and installs from `bun.lock` with `--frozen-lockfile`.
 
 ## Testing
 

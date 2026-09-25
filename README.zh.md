@@ -26,6 +26,20 @@
 - 自走模式，以随机间隔施加一个大小随机的力
 - CDN/NPM 引入，自定义参数，链式调用
 
+## 开发
+
+使用 Bun 1.4.2 安装依赖并运行项目：
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+bun run lint
+bun run typecheck
+bun run build
+```
+
+`build` 会依次构建库、UMD 包和文档站点。
+
 ## 使用
 
 首先需要引入模块，可以使用 CDN 直接引入或者通过 NPM 包的形式安装：
