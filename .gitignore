@@ -37,9 +37,6 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 # docs
 docs/**
 !docs/github.png
-!docs/apple-touch-icon.png
+!docs/apple-icon.png
 !docs/favicon.ico
-
-# llm related
-PLAN.md
-AGENTS.md
+!docs/icon.png
