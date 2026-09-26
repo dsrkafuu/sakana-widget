@@ -1,6 +1,7 @@
 ## v4.0.0
 
 - feat: provide a character-free ESM core and individual character imports for smaller consumer bundles (PR #22)
+- fix: use a stable filename for the shared ESM character type declaration
 - refactor: replace the Canvas rod with a styled DOM element
 - fix: keep one animation frame per widget and use elapsed frame time for motion
 - fix: redraw and resume motion after state or character changes

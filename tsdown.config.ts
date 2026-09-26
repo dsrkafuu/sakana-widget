@@ -47,6 +47,7 @@ export default defineConfig([
       'characters/chisato': './src/characters/chisato.ts',
       'characters/takina': './src/characters/takina.ts',
     },
+    hash: false,
     clean: false,
   },
 ]);

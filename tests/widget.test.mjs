@@ -123,6 +123,18 @@ test('ESM core excludes built-in images and character entries contain only their
   );
 });
 
+test('published declarations reference a stable shared types file', () => {
+  const coreTypes = readFileSync(new URL('../lib/core.d.ts', import.meta.url), 'utf8');
+  const characterTypes = readFileSync(
+    new URL('../lib/characters/chisato.d.ts', import.meta.url),
+    'utf8',
+  );
+  const sharedTypes = readFileSync(new URL('../lib/types.d.ts', import.meta.url), 'utf8');
+  expect(coreTypes).toContain('./types.js');
+  expect(characterTypes).toContain('../types.js');
+  expect(sharedTypes).toContain('SakanaWidgetCharacter');
+});
+
 test('controls are named native buttons and auto mode state resets on hide', () => {
   const { widget, host } = mount({ saveState: true });
   const buttons = [...host.querySelectorAll('button')];
