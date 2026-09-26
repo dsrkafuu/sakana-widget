@@ -1,6 +1,6 @@
 {
   "name": "sakana-widget",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Sakana widget for Web. | 网页小组件版本的石蒜模拟器。",
   "keywords": [
     "chisato",
@@ -43,6 +43,7 @@
     "fmt": "oxfmt",
     "lint": "oxlint",
     "typecheck": "tsc --noEmit",
+    "test": "bun run build:lib && bun test",
     "build:lib": "tsdown",
     "build:umd": "bun ./build.umd.ts",
     "build:docs": "bun ./build.docs.ts",
@@ -57,6 +58,7 @@
     "@tsdown/css": "^0.23.0",
     "@types/html-minifier-terser": "^7.0.2",
     "@types/node": "^26.6.2",
+    "happy-dom": "^20.14.5",
     "html-minifier-terser": "^7.2.0",
     "oxfmt": "^0.70.0",
     "oxlint": "^1.85.0",

@@ -35,10 +35,13 @@ bun install --frozen-lockfile
 bun run dev
 bun run lint
 bun run typecheck
+bun run test
 bun run build
 ```
 
 `build` runs the library, UMD bundle, and documentation builds in order.
+
+`mount()` appends the widget to the target element and keeps its existing children and listeners. `unmount()` removes only the widget.
 
 ## Usage
 

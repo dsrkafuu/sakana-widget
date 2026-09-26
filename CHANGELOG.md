@@ -1,3 +1,16 @@
+## v4.0.0
+
+- refactor: replace the Canvas rod with a styled DOM element
+- fix: keep one animation frame per widget and use elapsed frame time for motion
+- fix: redraw and resume motion after state or character changes
+- fix: use viewport coordinates for mouse and touch dragging
+- fix: stop animation at the configured rotation equilibrium
+- fix: reset the auto-mode indicator when hiding or unmounting
+- fix: preserve the mount element, its children, and its listeners; measure auto-fit size after mounting
+- feat: use accessible native buttons for widget controls
+- test: add interaction regression tests and run them in CI
+- build: switch package scripts, lockfile, and CI back to Bun
+
 ## v3.1.0
 
 - feat: define compatibility-preserving package exports

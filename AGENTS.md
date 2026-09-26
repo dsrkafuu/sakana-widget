@@ -10,6 +10,7 @@
 | ------------------- | ------------------- |
 | Format              | `bun run fmt`       |
 | Lint                | `bun run lint`      |
+| Test                | `bun run test`      |
 | Build (all)         | `bun run build`     |
 | Build lib only      | `bun run build:lib` |
 | Dev (watch + serve) | `bun run dev`       |
@@ -45,4 +46,4 @@
 
 ## Testing
 
-There are no tests.
+`bun run test` rebuilds the library and runs the interaction regression tests with Bun and happy-dom.

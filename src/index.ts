@@ -100,9 +100,12 @@ class SakanaWidget {
   // app metadata
   private _imageSize!: number;
   private _limit!: { maxR: number; maxY: number; minY: number };
-  private _lastRunUnix = Date.now();
-  private _frameUnix = 1000 / 60; // default to speed of 60 fps
-  private _running = true;
+  private _lastFrameTime: number | null = null;
+  private _frameRequestId: number | null = null;
+  private _running = false;
+  private _mounted = false;
+  private _dragging = false;
+  private _stopDrag: (() => void) | null = null;
   private _magicForceTimeout = 0;
   private _magicForceEnabled = false;
   private _saveState: boolean;
@@ -121,9 +124,10 @@ class SakanaWidget {
   private _domRod!: HTMLDivElement;
   private _domMain!: HTMLDivElement;
   private _domImage!: HTMLDivElement;
-  private _domCtrlPerson!: HTMLDivElement;
-  private _domCtrlMagic!: HTMLDivElement;
-  private _domCtrlClose!: HTMLDivElement;
+  private _domCtrlPerson!: HTMLButtonElement;
+  private _domCtrlMagic!: HTMLButtonElement;
+  private _domCtrlClose!: HTMLButtonElement;
+  private _mountElement: HTMLElement | null = null;
   private _resizeObserver: ResizeObserver | null = null;
 
   /**
@@ -266,6 +270,7 @@ class SakanaWidget {
     const img = document.createElement('div');
     img.className = 'sakana-widget-img';
     img.style.backgroundImage = `url('${this._image}')`;
+    if (this._options.draggable) img.style.touchAction = 'none';
     this._domImage = img;
     main.appendChild(img);
 
@@ -276,21 +281,22 @@ class SakanaWidget {
       main.appendChild(ctrl);
     }
     const itemClass = 'sakana-widget-ctrl-item';
-    const person = document.createElement('div');
+    const person = document.createElement('button');
     person.className = itemClass;
+    person.type = 'button';
     person.innerHTML = svgPerson;
-    person.role = 'button';
-    person.tabIndex = 0;
+    person.setAttribute('aria-label', 'Next Character');
     if (this._options.title) {
       person.title = 'Next Character';
     }
     this._domCtrlPerson = person;
     ctrl.appendChild(person);
-    const magic = document.createElement('div');
+    const magic = document.createElement('button');
     magic.className = itemClass;
+    magic.type = 'button';
     magic.innerHTML = svgSync;
-    magic.role = 'button';
-    magic.tabIndex = 0;
+    magic.setAttribute('aria-label', 'Auto Mode');
+    magic.setAttribute('aria-pressed', 'false');
     if (this._options.title) {
       magic.title = 'Auto Mode';
     }
@@ -300,16 +306,18 @@ class SakanaWidget {
     github.className = itemClass;
     github.href = '//github.com/dsrkafuu/sakana-widget';
     github.target = '_blank';
+    github.rel = 'noopener noreferrer';
     github.innerHTML = svgGitHub;
+    github.setAttribute('aria-label', 'GitHub Repository');
     if (this._options.title) {
       github.title = 'GitHub Repository';
     }
     ctrl.appendChild(github);
-    const close = document.createElement('div');
+    const close = document.createElement('button');
     close.className = itemClass;
+    close.type = 'button';
     close.innerHTML = svgClose;
-    close.role = 'button';
-    close.tabIndex = 0;
+    close.setAttribute('aria-label', 'Close');
     if (this._options.title) {
       close.title = 'Close';
     }
@@ -360,53 +368,77 @@ class SakanaWidget {
     rod.style.transform = `translateX(-50%) rotate(${Math.atan2(nx, deltaY)}rad)`;
   };
 
+  private _scheduleFrame = () => {
+    if (
+      !this._mounted ||
+      this._hidden ||
+      this._dragging ||
+      !this._running ||
+      this._frameRequestId !== null
+    ) {
+      return;
+    }
+    this._frameRequestId = requestAnimationFrame(this._run);
+  };
+
+  private _startAnimation = () => {
+    if (!this._running) this._lastFrameTime = null;
+    this._running = true;
+    this._scheduleFrame();
+  };
+
+  private _stopAnimation = () => {
+    this._running = false;
+    this._lastFrameTime = null;
+    if (this._frameRequestId !== null) {
+      cancelAnimationFrame(this._frameRequestId);
+      this._frameRequestId = null;
+    }
+  };
+
   /**
    * @private
    * run the widget in animation frame
    */
-  private _run = () => {
+  private _run = (time: number) => {
+    this._frameRequestId = null;
+    if (!this._running || !this._mounted || this._hidden || this._dragging) return;
+
     let originRotate = this._options.rotate;
     originRotate = Math.min(120, Math.max(0, originRotate));
     const cut = this._options.threshold;
-    if (!this._running) {
-      return;
-    }
     let { r, y, t, w } = this._state;
     const { d, i } = this._state;
-    const thisRunUnix = Date.now();
-    let _inertia = i;
+    const frameStep =
+      this._lastFrameTime === null
+        ? 1
+        : Math.min(2, Math.max(0, (time - this._lastFrameTime) / (1000 / 60)));
+    this._lastFrameTime = time;
 
-    // ignore if frame diff is above 16ms (60fps)
-    const lastRunUnixDiff = thisRunUnix - this._lastRunUnix;
-    if (lastRunUnixDiff < 16) {
-      _inertia = (i / this._frameUnix) * lastRunUnixDiff;
-    }
-    this._lastRunUnix = thisRunUnix;
-
-    w = w - r * 2 - originRotate;
-    r = r + w * _inertia * 1.2;
-    this._state.w = w * d;
+    w -= (r * 2 + originRotate) * frameStep;
+    r += w * i * 1.2 * frameStep;
+    this._state.w = w * d ** frameStep;
     this._state.r = r;
-    t = t - y * 2;
-    y = y + t * _inertia * 2;
-    this._state.t = t * d;
+    t -= y * 2 * frameStep;
+    y += t * i * 2 * frameStep;
+    this._state.t = t * d ** frameStep;
     this._state.y = y;
+
+    this._draw();
 
     // stop if motion is too little
     if (
       Math.max(
         Math.abs(this._state.w),
-        Math.abs(this._state.r),
+        Math.abs(this._state.r + originRotate / 2),
         Math.abs(this._state.t),
         Math.abs(this._state.y),
       ) < cut
     ) {
-      this._running = false;
+      this._stopAnimation();
       return;
     }
-
-    this._draw();
-    requestAnimationFrame(this._run);
+    this._scheduleFrame();
   };
 
   /**
@@ -433,31 +465,37 @@ class SakanaWidget {
    * handle mouse down event
    */
   private _onMouseDown = (e: MouseEvent) => {
+    if (e.button !== 0 || this._dragging) return;
     e.preventDefault();
-    this._running = false;
-    const { pageY } = e;
-    const _downPageY = pageY;
+    this._stopAnimation();
+    this._dragging = true;
+    const downClientY = e.clientY;
     this._state.w = 0;
     this._state.t = 0;
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = this._domMain.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
-      const { pageX, pageY } = e;
-      const x = pageX - leftCenter;
-      const y = pageY - _downPageY;
+      const x = e.clientX - leftCenter;
+      const y = e.clientY - downClientY;
       this._move(x, y);
     };
 
     const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-      this._running = true;
-      requestAnimationFrame(this._run);
+      this._stopDrag?.();
+      this._startAnimation();
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('blur', onMouseUp);
+    this._stopDrag = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('blur', onMouseUp);
+      this._stopDrag = null;
+      this._dragging = false;
+    };
   };
 
   /**
@@ -465,39 +503,41 @@ class SakanaWidget {
    * handle touch start event
    */
   private _onTouchStart = (e: TouchEvent) => {
+    if (this._dragging || !e.touches[0]) return;
     e.preventDefault();
-    this._running = false;
-    if (!e.touches[0]) {
-      return;
-    }
-    const { pageY } = e.touches[0];
-    const _downPageY = pageY;
+    this._stopAnimation();
+    this._dragging = true;
+    const { clientY: downClientY, identifier } = e.touches[0];
     this._state.w = 0;
     this._state.t = 0;
 
     const onTouchMove = (e: TouchEvent) => {
-      if (!e.touches[0]) {
-        return;
-      }
+      const touch = Array.from(e.touches).find((item) => item.identifier === identifier);
+      if (!touch) return;
+      e.preventDefault();
       const rect = this._domMain.getBoundingClientRect();
       const leftCenter = rect.left + rect.width / 2;
-      const { pageX, pageY } = e.touches[0];
-      const x = pageX - leftCenter;
-      const y = pageY - _downPageY;
+      const x = touch.clientX - leftCenter;
+      const y = touch.clientY - downClientY;
       this._move(x, y);
     };
 
-    const onTouchEnd = () => {
+    const onTouchEnd = (e: TouchEvent) => {
+      if (!Array.from(e.changedTouches).some((item) => item.identifier === identifier)) return;
+      this._stopDrag?.();
+      this._startAnimation();
+    };
+
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd);
+    document.addEventListener('touchcancel', onTouchEnd);
+    this._stopDrag = () => {
       document.removeEventListener('touchmove', onTouchMove);
       document.removeEventListener('touchend', onTouchEnd);
       document.removeEventListener('touchcancel', onTouchEnd);
-      this._running = true;
-      requestAnimationFrame(this._run);
+      this._stopDrag = null;
+      this._dragging = false;
     };
-
-    document.addEventListener('touchmove', onTouchMove);
-    document.addEventListener('touchend', onTouchEnd);
-    document.addEventListener('touchcancel', onTouchEnd);
   };
 
   /**
@@ -505,6 +545,7 @@ class SakanaWidget {
    * do a force on widget (for auto mode)
    */
   private _magicForce = () => {
+    if (!this._mounted || this._hidden || !this._magicForceEnabled) return;
     // 0.1 probability to randomly switch character
     if (Math.random() < 0.1) {
       const available = Object.keys(_characters!);
@@ -519,10 +560,7 @@ class SakanaWidget {
       this._state.w = this._state.w + (Math.random() - 0.5) * 200;
     }
 
-    if (!this._running) {
-      this._running = true;
-      requestAnimationFrame(this._run);
-    }
+    this._startAnimation();
     // set a variable delay between applying magic powers
     this._magicForceTimeout = window.setTimeout(this._magicForce, Math.random() * 3000 + 2000);
   };
@@ -531,23 +569,19 @@ class SakanaWidget {
    * @public
    * switch the auto mode
    */
-  triggerAutoMode = () => {
-    this._magicForceEnabled = !this._magicForceEnabled;
-
-    // toggle icon rotate
+  private _setAutoMode = (enabled: boolean) => {
+    this._magicForceEnabled = enabled;
     const icon = this._domCtrlMagic.querySelector('svg');
-    if (!icon) return;
-    if (this._magicForceEnabled) {
-      icon.classList.add('sakana-widget-icon--rotate');
-    } else {
-      icon.classList.remove('sakana-widget-icon--rotate');
-    }
-
-    // clear the timer or start a timer
+    icon?.classList.toggle('sakana-widget-icon--rotate', enabled);
+    this._domCtrlMagic.setAttribute('aria-pressed', String(enabled));
     clearTimeout(this._magicForceTimeout);
-    if (this._magicForceEnabled) {
+    if (enabled && this._mounted && !this._hidden) {
       this._magicForceTimeout = window.setTimeout(this._magicForce, Math.random() * 1000 + 500);
     }
+  };
+
+  triggerAutoMode = () => {
+    this._setAutoMode(!this._magicForceEnabled);
   };
 
   /**
@@ -559,6 +593,10 @@ class SakanaWidget {
       this._state = {} as SakanaWidgetState;
     }
     this._state = mergeDeep(this._state, cloneDeep(state));
+    if (this._domImage) {
+      this._draw();
+      if (this._mounted && !this._hidden && !this._dragging) this._startAnimation();
+    }
     return this;
   };
 
@@ -573,12 +611,10 @@ class SakanaWidget {
     }
     this._char = name;
     this._image = targetChar.image;
-    this.setState(targetChar.initialState);
-
-    // refresh the widget image
     if (this._domImage) {
       this._domImage.style.backgroundImage = `url('${this._image}')`;
     }
+    this.setState(targetChar.initialState);
     return this;
   };
 
@@ -587,7 +623,7 @@ class SakanaWidget {
    * set to next character of widget
    */
   nextCharacter = () => {
-    const _chars = Object.keys(SakanaWidget.getCharacters()).sort();
+    const _chars = Object.keys(_characters!).sort();
     const curCharIdx = _chars.indexOf(this._char);
     const nextCharIdx = (curCharIdx + 1) % _chars.length;
     const nextChar = _chars[nextCharIdx];
@@ -629,12 +665,11 @@ class SakanaWidget {
     }
 
     if (hidden) {
-      this._running = false;
-      this._magicForceEnabled = false;
-      clearTimeout(this._magicForceTimeout);
+      this._stopDrag?.();
+      this._stopAnimation();
+      this._setAutoMode(false);
     } else {
-      this._running = true;
-      requestAnimationFrame(this._run);
+      this._startAnimation();
     }
 
     if (this._saveState && persist) {
@@ -713,10 +748,7 @@ class SakanaWidget {
     if (!_el) {
       throw new Error('Invalid mounting element');
     }
-    const parent = _el.parentNode;
-    if (!parent) {
-      throw new Error('Invalid mounting element parent');
-    }
+    if (this._mounted) throw new Error('Widget is already mounted');
 
     // append event listeners
     if (this._options.draggable) {
@@ -732,9 +764,16 @@ class SakanaWidget {
       this._domCtrlClose.addEventListener('click', this.unmount);
     }
 
+    // keep the host element and its existing children and listeners
+    _el.appendChild(this._domWrapper);
+    this._mountElement = _el;
+    this._mounted = true;
+    this._hidden = false;
+    this._domWrapper.style.display = '';
+
     // if auto fit mode
     if (this._options.autoFit) {
-      // initial resize
+      // measure after the wrapper is attached to its host
       this._onResize(this._domWrapper.getBoundingClientRect());
       // handle future resize
       this._resizeObserver = new ResizeObserver(
@@ -746,16 +785,12 @@ class SakanaWidget {
       this._resizeObserver.observe(this._domWrapper);
     }
 
-    // mount node
-    const _newEl = _el.cloneNode(false) as HTMLElement;
-    _newEl.appendChild(this._domWrapper);
-    parent.replaceChild(_newEl, _el);
-
     // restore persisted hide state
     if (this._saveState && this._getSavedHiddenState()) {
       this._setHidden(true, false, false);
     } else {
-      requestAnimationFrame(this._run);
+      this._startAnimation();
+      if (this._magicForceEnabled) this._setAutoMode(true);
     }
 
     // notify initial state
@@ -772,9 +807,9 @@ class SakanaWidget {
    */
   unmount = () => {
     // stop animation and auto mode
-    this._running = false;
-    this._magicForceEnabled = false;
-    clearTimeout(this._magicForceTimeout);
+    this._stopDrag?.();
+    this._stopAnimation();
+    this._setAutoMode(false);
 
     // remove event listeners
     this._domImage.removeEventListener('mousedown', this._onMouseDown);
@@ -794,11 +829,12 @@ class SakanaWidget {
     }
 
     // unmount node
-    const _el = this._domWrapper.parentNode;
-    if (!_el) {
+    if (!this._mountElement) {
       throw new Error('Invalid mounting element');
     }
-    _el.removeChild(this._domWrapper);
+    this._mountElement.removeChild(this._domWrapper);
+    this._mountElement = null;
+    this._mounted = false;
     return this;
   };
 }

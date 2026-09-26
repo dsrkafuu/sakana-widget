@@ -35,10 +35,13 @@ bun install --frozen-lockfile
 bun run dev
 bun run lint
 bun run typecheck
+bun run test
 bun run build
 ```
 
 `build` 会依次构建库、UMD 包和文档站点。
+
+`mount()` 会将组件追加到目标元素，保留其现有子节点和事件监听器；`unmount()` 只移除组件。
 
 ## 使用
 
