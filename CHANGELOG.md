@@ -13,7 +13,6 @@
 - fix: preserve the mount element, its children, and its listeners; measure auto-fit size after mounting
 - feat: use accessible native buttons for widget controls
 - test: add interaction regression tests and run them in CI
-- build: switch package scripts, lockfile, and CI back to Bun
 
 ## v3.1.0
 

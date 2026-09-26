@@ -48,8 +48,8 @@ bun run build
 First you need to import the module, either directly using a CDN or by installing it as an NPM package:
 
 ```html
-<!-- https://cdn.jsdelivr.net/npm/sakana-widget@3.1.0/lib/index.umd.min.js -->
-<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/3.1.0/index.umd.min.js -->
+<!-- https://cdn.jsdelivr.net/npm/sakana-widget@4.0.0/lib/index.umd.min.js -->
+<!-- https://cdnjs.cloudflare.com/ajax/libs/sakana-widget/4.0.0/index.umd.min.js -->
 
 <div id="sakana-widget"></div>
 <script>
@@ -60,7 +60,7 @@ First you need to import the module, either directly using a CDN or by installin
 <script
   async
   onload="initSakanaWidget()"
-  src="https://cdn.jsdelivr.net/npm/sakana-widget@3.1.0/lib/index.umd.min.js"
+  src="https://cdn.jsdelivr.net/npm/sakana-widget@4.0.0/lib/index.umd.min.js"
 ></script>
 ```
 

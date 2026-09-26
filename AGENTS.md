@@ -10,6 +10,7 @@
 | ------------------- | ------------------- |
 | Format              | `bun run fmt`       |
 | Lint                | `bun run lint`      |
+| Typecheck           | `bun run typecheck` |
 | Test                | `bun run test`      |
 | Build (all)         | `bun run build`     |
 | Build lib only      | `bun run build:lib` |
@@ -27,10 +28,10 @@
 
 - **Single package**, no monorepo. Source in `src/`, output in `lib/` (gitignored).
 - **Entries**: `src/index.ts` registers both built-in characters for the default/UMD bundle; `src/core.ts` exports the character-free ESM class. `src/characters/chisato.ts` and `takina.ts` are individual ESM character entries.
-- **Types**: `src/characters/index.ts` defines `SakanaWidgetState` and `SakanaWidgetCharacter`.
+- **Types**: `src/characters/types.ts` defines `SakanaWidgetState` and `SakanaWidgetCharacter`.
 - **Styles**: `src/index.scss` (SCSS, compiled by tsdown). All CSS uses `.sakana-widget-*` prefix.
 - **Static assets**: `.png` → base64 dataurl, `.svg` → inline text string (configured in `tsdown.config.ts`).
-- CSS is injected into the ESM bundle (`inject: true`), so consumers do not need to import CSS separately.
+- The ESM entry imports its generated CSS, so bundler consumers do not need a separate CSS import.
 
 ## Key conventions
 
@@ -46,4 +47,4 @@
 
 ## Testing
 
-`bun run test` rebuilds the library and runs the interaction regression tests with Bun and happy-dom.
+`bun run typecheck` and `bun run test` rebuild the library first. Tests run with Bun and happy-dom.
