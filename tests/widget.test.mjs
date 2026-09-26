@@ -86,6 +86,16 @@ test('rod uses a DOM element and respects the rod option', () => {
   expect(hidden.querySelector('.sakana-widget-rod').style.display).toBe('none');
 });
 
+test('imageFit defaults to cover and keeps contain when changing characters', () => {
+  const defaultImage = mount().host.querySelector('.sakana-widget-img');
+  const { widget, host } = mount({ imageFit: 'contain' });
+  const image = host.querySelector('.sakana-widget-img');
+  expect(defaultImage.style.backgroundSize).toBe('cover');
+  expect(image.style.backgroundSize).toBe('contain');
+  widget.setCharacter('takina');
+  expect(image.style.backgroundSize).toBe('contain');
+});
+
 test('ESM core excludes built-in images and character entries contain only their own image', async () => {
   const core = readFileSync(new URL('../lib/core.js', import.meta.url), 'utf8');
   const chisatoModule = readFileSync(

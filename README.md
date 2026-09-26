@@ -88,6 +88,12 @@ new SakanaWidget().mount('#sakana-widget');
 
 Import `sakana-widget/characters/takina` and register it the same way if needed. The core contains no built-in character images; custom characters can be registered without importing either image. Registration must happen before creating a widget. The default entry and UMD bundle retain the two built-in characters for existing usage.
 
+After registering a character with a tall or wide image, set `imageFit: 'contain'` to display the whole image inside the widget's square image area. The default `cover` fills the area and may crop a non-square image.
+
+```ts
+new SakanaWidget({ character: 'custom', imageFit: 'contain' }).mount('#sakana-widget');
+```
+
 You can continue to create widget instances and mount to more DOM elements, where the data is completely independent between widgets except for roles, and non-static methods support chaining calls.
 
 For example, you can modify some settings before mounting a widget and get a super-slow Chisato:
@@ -246,6 +252,10 @@ export interface SakanaWidgetOptions {
    * default character, default to `chisato`
    */
   character?: string;
+  /**
+   * how the character image fits its square area, default to `cover`
+   */
+  imageFit?: 'cover' | 'contain';
   /**
    * controls bar, default to `true`
    */

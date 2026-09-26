@@ -22,6 +22,10 @@ interface SakanaWidgetOptions {
    */
   character?: 'chisato' | 'takina' | string;
   /**
+   * how the character image fits its square area, default to `cover`
+   */
+  imageFit?: 'cover' | 'contain';
+  /**
    * controls bar, default to `true`
    */
   controls?: boolean;
@@ -76,6 +80,7 @@ const defaultOptions: SakanaWidgetOptions = {
   size: 200,
   autoFit: false,
   character: 'chisato',
+  imageFit: 'cover',
   controls: true,
   rod: true,
   draggable: true,
@@ -281,6 +286,7 @@ class SakanaWidget {
     const img = document.createElement('div');
     img.className = 'sakana-widget-img';
     img.style.backgroundImage = `url('${this._image}')`;
+    img.style.backgroundSize = this._options.imageFit;
     if (this._options.draggable) img.style.touchAction = 'none';
     this._domImage = img;
     main.appendChild(img);

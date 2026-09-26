@@ -2,11 +2,17 @@ import type { SakanaWidgetControl as RootControl } from 'sakana-widget';
 import chisato from 'sakana-widget/characters/chisato';
 import takina from 'sakana-widget/characters/takina';
 import SakanaWidget from 'sakana-widget/core';
-import type { SakanaWidgetCharacter, SakanaWidgetControl } from 'sakana-widget/core';
+import type {
+  SakanaWidgetCharacter,
+  SakanaWidgetControl,
+  SakanaWidgetOptions,
+} from 'sakana-widget/core';
 
 const characters: SakanaWidgetCharacter[] = [chisato, takina];
 void SakanaWidget;
 void characters;
+const options: SakanaWidgetOptions = { imageFit: 'contain' };
+void options;
 
 const control: SakanaWidgetControl = {
   id: 'notes',

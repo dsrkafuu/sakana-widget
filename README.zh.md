@@ -86,6 +86,12 @@ new SakanaWidget().mount('#sakana-widget');
 
 如需泷奈，可同样引入并注册 `sakana-widget/characters/takina`。自定义角色无需引入任何内置图片。请在创建组件前完成注册。默认入口和 UMD 包继续包含两个内置角色，保持现有用法。
 
+注册高或宽的自定义图片角色后，可设置 `imageFit: 'contain'`，使完整图片显示在组件的正方形图片区域内。默认的 `cover` 会填满该区域，可能裁切非正方形图片。
+
+```ts
+new SakanaWidget({ character: 'custom', imageFit: 'contain' }).mount('#sakana-widget');
+```
+
 你可以继续创建实例并挂载到更多的 DOM 元素上，组件之间除了角色以外，数据是完全独立的，非静态方法支持链式调用。
 
 例如，你可以在挂载组件之前修改一些设置，并获得一个超慢速的永续千束：
@@ -244,6 +250,10 @@ export interface SakanaWidgetOptions {
    * 角色，默认 `chisato`
    */
   character?: string;
+  /**
+   * 角色图片如何适应正方形区域，默认 `cover`
+   */
+  imageFit?: 'cover' | 'contain';
   /**
    * 控制栏，默认 `true`
    */
