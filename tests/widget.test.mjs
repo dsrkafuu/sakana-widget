@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, expect, test } from 'bun:test';
+import { readFileSync } from 'node:fs';
 
 import { Window } from 'happy-dom';
 
@@ -83,6 +84,43 @@ test('rod uses a DOM element and respects the rod option', () => {
   expect(document.querySelector('canvas')).toBeNull();
   expect(visible.querySelector('.sakana-widget-rod').style.display).toBe('');
   expect(hidden.querySelector('.sakana-widget-rod').style.display).toBe('none');
+});
+
+test('ESM core excludes built-in images and character entries contain only their own image', async () => {
+  const core = readFileSync(new URL('../lib/core.js', import.meta.url), 'utf8');
+  const chisatoModule = readFileSync(
+    new URL('../lib/characters/chisato.js', import.meta.url),
+    'utf8',
+  );
+  const takinaModule = readFileSync(
+    new URL('../lib/characters/takina.js', import.meta.url),
+    'utf8',
+  );
+  const chisatoImage = readFileSync(
+    new URL('../src/characters/chisato.png', import.meta.url),
+  ).toString('base64');
+  const takinaImage = readFileSync(
+    new URL('../src/characters/takina.png', import.meta.url),
+  ).toString('base64');
+  expect(core).not.toContain('data:image/png');
+  expect(chisatoModule).toContain(chisatoImage);
+  expect(chisatoModule).not.toContain(takinaImage);
+  expect(takinaModule).toContain(takinaImage);
+  expect(takinaModule).not.toContain(chisatoImage);
+
+  const [{ default: CoreWidget }, { default: chisato }] = await Promise.all([
+    import('sakana-widget/core'),
+    import('sakana-widget/characters/chisato'),
+  ]);
+  expect(CoreWidget.getCharacters()).toEqual({});
+  CoreWidget.registerCharacter('chisato', chisato);
+  const host = document.createElement('div');
+  document.body.appendChild(host);
+  const widget = new CoreWidget().mount(host);
+  widgets.push(widget);
+  expect(host.querySelector('.sakana-widget-img').style.backgroundImage).toContain(
+    'data:image/png',
+  );
 });
 
 test('controls are named native buttons and auto mode state resets on hide', () => {

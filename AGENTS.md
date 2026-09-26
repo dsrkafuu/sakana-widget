@@ -26,7 +26,7 @@
 ## Architecture
 
 - **Single package**, no monorepo. Source in `src/`, output in `lib/` (gitignored).
-- **Entry**: `src/index.ts` → exports default class `SakanaWidget`.
+- **Entries**: `src/index.ts` registers both built-in characters for the default/UMD bundle; `src/core.ts` exports the character-free ESM class. `src/characters/chisato.ts` and `takina.ts` are individual ESM character entries.
 - **Types**: `src/characters/index.ts` defines `SakanaWidgetState` and `SakanaWidgetCharacter`.
 - **Styles**: `src/index.scss` (SCSS, compiled by tsdown). All CSS uses `.sakana-widget-*` prefix.
 - **Static assets**: `.png` → base64 dataurl, `.svg` → inline text string (configured in `tsdown.config.ts`).

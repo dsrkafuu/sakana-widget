@@ -72,6 +72,20 @@ new SakanaWidget().mount('#sakana-widget');
 
 本包默认导出一个类 `SakanaWidget`，通过该类可以初始化一个小组件。上面的代码初始化了一个全默认设置的组件，并将其挂载到了 `#sakana-widget` 元素上。
 
+### 按需引入角色
+
+默认入口包含两个内置角色。使用 ESM 打包时，可以从不含内置角色图片的核心入口引入，并只注册需要的角色：
+
+```ts
+import SakanaWidget from 'sakana-widget/core';
+import chisato from 'sakana-widget/characters/chisato';
+
+SakanaWidget.registerCharacter('chisato', chisato);
+new SakanaWidget().mount('#sakana-widget');
+```
+
+如需泷奈，可同样引入并注册 `sakana-widget/characters/takina`。自定义角色无需引入任何内置图片。请在创建组件前完成注册。默认入口和 UMD 包继续包含两个内置角色，保持现有用法。
+
 你可以继续创建实例并挂载到更多的 DOM 元素上，组件之间除了角色以外，数据是完全独立的，非静态方法支持链式调用。
 
 例如，你可以在挂载组件之前修改一些设置，并获得一个超慢速的永续千束：

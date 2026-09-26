@@ -74,6 +74,20 @@ new SakanaWidget().mount('#sakana-widget');
 
 This package exports a class `SakanaWidget` by default, through which a widget can be initialized. The code above initializes a widget with default settings and mounts it to the `#sakana-widget` element.
 
+### Import only the characters you use
+
+The default entry includes both built-in characters. For an ESM bundle that includes only selected character images, import the core and register each character explicitly:
+
+```ts
+import SakanaWidget from 'sakana-widget/core';
+import chisato from 'sakana-widget/characters/chisato';
+
+SakanaWidget.registerCharacter('chisato', chisato);
+new SakanaWidget().mount('#sakana-widget');
+```
+
+Import `sakana-widget/characters/takina` and register it the same way if needed. The core contains no built-in character images; custom characters can be registered without importing either image. Registration must happen before creating a widget. The default entry and UMD bundle retain the two built-in characters for existing usage.
+
 You can continue to create widget instances and mount to more DOM elements, where the data is completely independent between widgets except for roles, and non-static methods support chaining calls.
 
 For example, you can modify some settings before mounting a widget and get a super-slow Chisato:

@@ -31,6 +31,21 @@
       "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
+    "./core": {
+      "types": "./lib/core.d.ts",
+      "import": "./lib/core.js",
+      "default": "./lib/core.js"
+    },
+    "./characters/chisato": {
+      "types": "./lib/characters/chisato.d.ts",
+      "import": "./lib/characters/chisato.js",
+      "default": "./lib/characters/chisato.js"
+    },
+    "./characters/takina": {
+      "types": "./lib/characters/takina.d.ts",
+      "import": "./lib/characters/takina.js",
+      "default": "./lib/characters/takina.js"
+    },
     "./lib": "./lib/index.js",
     "./lib/index": "./lib/index.js",
     "./lib/*": "./lib/*",

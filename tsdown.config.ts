@@ -1,8 +1,17 @@
 import { defineConfig } from 'tsdown';
 
+const shared = {
+  platform: 'browser' as const,
+  outDir: './lib',
+  loader: {
+    '.png': 'dataurl' as const,
+    '.svg': 'text' as const,
+  },
+};
+
 export default defineConfig([
   {
-    platform: 'browser',
+    ...shared,
     format: {
       esm: {
         target: ['esnext'],
@@ -22,10 +31,22 @@ export default defineConfig([
       },
     },
     entry: './src/index.ts',
-    outDir: './lib',
-    loader: {
-      '.png': 'dataurl',
-      '.svg': 'text',
+  },
+  {
+    ...shared,
+    format: {
+      esm: {
+        target: ['esnext'],
+        css: {
+          inject: true,
+        },
+      },
     },
+    entry: {
+      core: './src/core.ts',
+      'characters/chisato': './src/characters/chisato.ts',
+      'characters/takina': './src/characters/takina.ts',
+    },
+    clean: false,
   },
 ]);
