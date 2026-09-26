@@ -1,5 +1,6 @@
 ## v4.0.0
 
+- feat: add instance-level icon-only custom control bar buttons (issue #13)
 - feat: provide a character-free ESM core and individual character imports for smaller consumer bundles (PR #22)
 - fix: use a stable filename for the shared ESM character type declaration
 - refactor: replace the Canvas rod with a styled DOM element

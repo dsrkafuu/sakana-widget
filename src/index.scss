@@ -55,7 +55,8 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
     pointer-events: auto;
     position: relative;
     height: 24px;
-    width: 28px * 4;
+    width: max-content;
+    min-width: 28px * 4;
     display: flex;
     border-radius: 6px;
     background-color: $color-bg;
@@ -78,6 +79,15 @@ $box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         outline: none;
         color: $color-font;
         background-color: $color-bg-active;
+      }
+
+      &--custom {
+        flex: 0 0 28px;
+
+        > * {
+          max-width: 18px;
+          max-height: 18px;
+        }
       }
     }
   }

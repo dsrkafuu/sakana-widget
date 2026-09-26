@@ -9,6 +9,7 @@ export default SakanaWidget;
 export type {
   SakanaWidgetCharacter,
   SakanaWidgetOptions,
+  SakanaWidgetControl,
   SakanaWidgetState,
   SakanaWidgetVisibility,
 } from './core';

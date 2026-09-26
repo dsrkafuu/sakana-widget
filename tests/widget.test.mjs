@@ -155,6 +155,75 @@ test('controls are named native buttons and auto mode state resets on hide', () 
   expect(host.querySelector('.sakana-widget-wrapper').style.display).toBe('');
 });
 
+test('custom controls are instance-specific and can be added or removed after mount', () => {
+  const { widget, host } = mount({ title: true });
+  const other = mount();
+  const icon = document.createElement('span');
+  icon.textContent = '★';
+  let clicks = 0;
+  const control = {
+    id: 'notes',
+    label: 'Open notes',
+    icon,
+    onClick: (target, event) => {
+      expect(target).toBe(widget);
+      expect(event.type).toBe('click');
+      clicks++;
+    },
+  };
+  expect(widget.addControl(control)).toBe(widget);
+  const button = host.querySelector('[data-sakana-control="notes"]');
+  expect(button.tagName).toBe('BUTTON');
+  expect(button.getAttribute('aria-label')).toBe('Open notes');
+  expect(button.title).toBe('Open notes');
+  expect(button.firstChild).not.toBe(icon);
+  expect(button.firstChild.getAttribute('aria-hidden')).toBe('true');
+  expect(button.textContent).toBe('★');
+  expect(other.host.querySelector('[data-sakana-control="notes"]')).toBeNull();
+  button.click();
+  expect(clicks).toBe(1);
+  expect(() => widget.addControl(control)).toThrow();
+  widget.removeControl('notes');
+  expect(host.querySelector('[data-sakana-control="notes"]')).toBeNull();
+  button.click();
+  expect(clicks).toBe(1);
+  expect(host.querySelectorAll('.sakana-widget-ctrl-item')).toHaveLength(4);
+});
+
+test('custom control listeners detach on unmount and return once on remount', () => {
+  const host = document.createElement('div');
+  const widget = new SakanaWidget();
+  const icon = document.createElement('span');
+  icon.textContent = '★';
+  let clicks = 0;
+  widget.addControl({ id: 'notes', label: 'Open notes', icon, onClick: () => clicks++ });
+  document.body.appendChild(host);
+  widget.mount(host);
+  widgets.push(widget);
+  const button = host.querySelector('[data-sakana-control="notes"]');
+  expect(button.textContent).toBe('★');
+  expect(button.getAttribute('aria-label')).toBe('Open notes');
+  button.click();
+  widget.unmount();
+  button.click();
+  expect(clicks).toBe(1);
+  widget.mount(host);
+  button.click();
+  expect(clicks).toBe(2);
+
+  const hidden = mount({ controls: false });
+  hidden.widget.addControl({ id: 'notes', label: 'Open notes', icon, onClick: () => {} });
+  expect(hidden.host.querySelector('[data-sakana-control="notes"]')).toBeNull();
+});
+
+test('custom controls require an icon', () => {
+  const { widget, host } = mount();
+  expect(() => widget.addControl({ id: 'notes', label: 'Open notes', onClick: () => {} })).toThrow(
+    'Control icon must be a DOM element',
+  );
+  expect(host.querySelector('[data-sakana-control="notes"]')).toBeNull();
+});
+
 test('rapid hide and show keep only one animation frame scheduled', () => {
   const { widget } = mount();
   expect(frames.size).toBe(1);

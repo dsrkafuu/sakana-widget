@@ -62,6 +62,16 @@ interface SakanaWidgetOptions {
   stateKey?: string;
 }
 
+interface SakanaWidgetControl {
+  /** Unique identifier within this widget instance. */
+  id: string;
+  /** Accessible label for the icon button; never displayed as button text. */
+  label: string;
+  /** DOM icon. The widget clones it before inserting it. */
+  icon: Element;
+  onClick: (widget: SakanaWidget, event: MouseEvent) => void;
+}
+
 const defaultOptions: SakanaWidgetOptions = {
   size: 200,
   autoFit: false,
@@ -120,9 +130,14 @@ class SakanaWidget {
   private _domRod!: HTMLDivElement;
   private _domMain!: HTMLDivElement;
   private _domImage!: HTMLDivElement;
+  private _domCtrl!: HTMLDivElement;
   private _domCtrlPerson!: HTMLButtonElement;
   private _domCtrlMagic!: HTMLButtonElement;
   private _domCtrlClose!: HTMLButtonElement;
+  private _customControls = new Map<
+    string,
+    { button: HTMLButtonElement; listener: (event: MouseEvent) => void }
+  >();
   private _mountElement: HTMLElement | null = null;
   private _resizeObserver: ResizeObserver | null = null;
 
@@ -273,6 +288,7 @@ class SakanaWidget {
     // control bar
     const ctrl = document.createElement('div');
     ctrl.className = 'sakana-widget-ctrl';
+    this._domCtrl = ctrl;
     if (this._options.controls) {
       main.appendChild(ctrl);
     }
@@ -630,6 +646,52 @@ class SakanaWidget {
   };
 
   /**
+   * @public
+   * add a custom control to this widget's control bar
+   */
+  addControl = (control: SakanaWidgetControl) => {
+    if (!control.id.trim() || !control.label.trim()) {
+      throw new Error('Control id and label must not be empty');
+    }
+    if (!control.icon || control.icon.nodeType !== 1) {
+      throw new Error('Control icon must be a DOM element');
+    }
+    if (this._customControls.has(control.id)) {
+      throw new Error(`Control ${control.id} is already registered`);
+    }
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'sakana-widget-ctrl-item sakana-widget-ctrl-item--custom';
+    button.dataset.sakanaControl = control.id;
+    button.setAttribute('aria-label', control.label);
+    if (this._options.title) button.title = control.label;
+    const icon = control.icon.cloneNode(true) as Element;
+    icon.setAttribute('aria-hidden', 'true');
+    button.appendChild(icon);
+
+    const listener = (event: MouseEvent) => control.onClick(this, event);
+    this._domCtrl.insertBefore(button, this._domCtrlClose);
+    if (this._mounted) button.addEventListener('click', listener);
+    this._customControls.set(control.id, { button, listener });
+    return this;
+  };
+
+  /**
+   * @public
+   * remove a previously added custom control
+   */
+  removeControl = (id: string) => {
+    const control = this._customControls.get(id);
+    if (control) {
+      control.button.removeEventListener('click', control.listener);
+      control.button.remove();
+      this._customControls.delete(id);
+    }
+    return this;
+  };
+
+  /**
    * @private
    * control widget visibility and persist state
    */
@@ -754,6 +816,9 @@ class SakanaWidget {
 
     this._domCtrlPerson.addEventListener('click', this.nextCharacter);
     this._domCtrlMagic.addEventListener('click', this.triggerAutoMode);
+    for (const { button, listener } of this._customControls.values()) {
+      button.addEventListener('click', listener);
+    }
     if (this._saveState) {
       this._domCtrlClose.addEventListener('click', this.hide);
     } else {
@@ -812,6 +877,9 @@ class SakanaWidget {
     this._domImage.removeEventListener('touchstart', this._onTouchStart);
     this._domCtrlPerson.removeEventListener('click', this.nextCharacter);
     this._domCtrlMagic.removeEventListener('click', this.triggerAutoMode);
+    for (const { button, listener } of this._customControls.values()) {
+      button.removeEventListener('click', listener);
+    }
     if (this._saveState) {
       this._domCtrlClose.removeEventListener('click', this.hide);
     } else {
@@ -840,5 +908,6 @@ export type {
   SakanaWidgetCharacter,
   SakanaWidgetState,
   SakanaWidgetOptions,
+  SakanaWidgetControl,
   SakanaWidgetVisibility,
 };

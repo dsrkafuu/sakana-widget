@@ -57,7 +57,7 @@
   "scripts": {
     "fmt": "oxfmt",
     "lint": "oxlint",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun run build:lib && tsc --noEmit",
     "test": "bun run build:lib && bun test",
     "build:lib": "tsdown",
     "build:umd": "bun ./build.umd.ts",

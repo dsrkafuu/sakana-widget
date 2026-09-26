@@ -154,6 +154,29 @@ new SakanaWidget({ saveState: true, stateKey: 'sakana-status-takina' }).mount('#
 
 注意，开启自动缩放时需要**确保挂载容器是一个 [BFC](https://developer.mozilla.org/docs/Web/Guide/CSS/Block_formatting_context)**，最简单的方式就是设置 `position: relative` 或 `position: fixed`。组件在自动缩放模式下会额外在 app 和挂载容器之间添加一个包裹容器，并将其宽高设置为 `100%`，通过该包裹容器侦测实际的大小，因此，BFC 是必须的。
 
+## 自定义控制按钮
+
+可在挂载前或挂载后，为单个组件的控制栏添加按钮：
+
+```ts
+const icon = document.createElement('img');
+icon.src = '/icons/notes.svg';
+icon.alt = '';
+
+const widget = new SakanaWidget()
+  .addControl({
+    id: 'notes',
+    label: '打开笔记',
+    icon,
+    onClick: () => console.log('打开笔记'),
+  })
+  .mount('#sakana-widget');
+
+widget.removeControl('notes');
+```
+
+必须提供 DOM `icon` 元素，组件会复制该元素。`label` 只用作按钮的无障碍名称 (`aria-label`) 和可选的 `title`，不会显示为按钮文字。自定义按钮仅属于当前实例；`controls: false` 时同样隐藏。卸载时会移除点击监听器，重新挂载后恢复。
+
 ## API
 
 ### 类型定义
@@ -193,6 +216,13 @@ export interface SakanaWidgetState {
 export interface SakanaWidgetCharacter {
   image: string;
   initialState: SakanaWidgetState;
+}
+
+export interface SakanaWidgetControl {
+  id: string;
+  label: string;
+  icon: Element;
+  onClick: (widget: SakanaWidget, event: MouseEvent) => void;
 }
 
 export type SakanaWidgetVisibility = 'show' | 'hide';
@@ -284,6 +314,11 @@ class SakanaWidget {
    * 切换到下一个角色
    */
   nextCharacter();
+  /**
+   * 为当前组件添加或移除自定义控制按钮
+   */
+  addControl(control: SakanaWidgetControl): this;
+  removeControl(id: string): this;
   /**
    * 切换自走模式
    */
